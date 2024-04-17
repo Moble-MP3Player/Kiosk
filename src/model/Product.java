@@ -6,14 +6,16 @@ public class Product {
     private String inDate;// 상품 입고일
     private int inventory;// 상품 재고
     private String expiryDate;// 유통 기한
+    private double price;//가격
 
 
-    public Product(int id, String name, String inDate, int inventory, String expiryDate) {
+    public Product(int id, String name, String inDate, int inventory, String expiryDate, double price) {
         this.id = id;
         this.name = name;
         this.inDate = inDate;
         this.inventory = inventory;
         this.expiryDate = expiryDate;
+        this.price=price;
     }
 
     public int getId() {
@@ -43,4 +45,8 @@ public class Product {
     public void setExpiryDate(String expiryDate){this.expiryDate=expiryDate;}
 
     public String getExpiryDate(){return  expiryDate;}
+
+    public double getPrice(){return price;}
+
+    public void setPrice(double price) {this.price = price;}
 }
