@@ -2,6 +2,7 @@ package util;
 
 import model.Card;
 import model.Product;
+import model.Receipt;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,7 +19,9 @@ public class MockDataLoader implements DataLoader{
 
     @Override
     public List loadRecipeData() {
-        return null;
+        ArrayList<Receipt> receipts = new ArrayList<>();
+
+        return receipts;
     }
 
     @Override
