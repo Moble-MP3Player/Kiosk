@@ -28,5 +28,20 @@ public class Card {
     public void setPassword(int password) { this.password = password; }
 
     public void setPoint(long point) { this.point = point; }
-}
 
+    public long addPoint(long price) {
+        point += (long) (price * (0.01));
+        return point;
+    }
+
+    public long subPoint(long point) {
+        this.point -= point;
+        return point;
+    }
+
+    public String minus(long price) {
+        if ( cardBal - price < 0) return "잔액이 부족합니다.";
+        return "결제 중입니다.";
+    }
+
+}
