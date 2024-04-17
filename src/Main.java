@@ -2,7 +2,10 @@
 // 에디터 여백에 있는 <icon src="AllIcons.Actions.Execute"/> 아이콘을 클릭하세요.
 public class Main {
     public static void main(String[] args) {
-        System.out.println("키오스크 짱짱맨");
-        // push Test AAAAA
+        Kiosk koKiosk = new Kiosk();
+
+        koKiosk.init(); // 키오스크 초기화
+        koKiosk.start(); // 키오스크 실행
+        koKiosk.end(); // 키오스크 종료
     }
 }
