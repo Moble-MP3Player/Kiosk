@@ -5,6 +5,7 @@ public class Product {
     private String name;// 상품 이름
     private String inDate;// 상품 입고일
     private int inventory;// 상품 재고
+    private String expiryDate;// 유통 기한
 
     public int getId() {
         return id;
@@ -29,4 +30,8 @@ public class Product {
     public void setInventory(int inventory){this.inventory=inventory;}
 
     public int getInventory(){return inventory;}
+
+    public void setExpiryDate(String expiryDate){this.expiryDate=expiryDate;}
+
+    public String getExpiryDate(){return  expiryDate;}
 }
