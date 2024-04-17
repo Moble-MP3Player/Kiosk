@@ -3,6 +3,6 @@
 public class Main {
     public static void main(String[] args) {
         System.out.println("키오스크 짱짱맨");
-        // push Testssx
+        // push Test
     }
 }
