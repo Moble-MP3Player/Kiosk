@@ -7,6 +7,15 @@ public class Product {
     private int inventory;// 상품 재고
     private String expiryDate;// 유통 기한
 
+
+    public Product(int id, String name, String inDate, int inventory, String expiryDate) {
+        this.id = id;
+        this.name = name;
+        this.inDate = inDate;
+        this.inventory = inventory;
+        this.expiryDate = expiryDate;
+    }
+
     public int getId() {
         return id;
     }
