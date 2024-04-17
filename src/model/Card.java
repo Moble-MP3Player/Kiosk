@@ -28,5 +28,24 @@ public class Card {
     public void setPassword(int password) { this.password = password; }
 
     public void setPoint(long point) { this.point = point; }
-}
 
+    public long addPoint(long price) {   // 전달받은 가격의 1% 만큼 포인트 적립
+        point += (long) (price * (0.01));
+        return point;
+    }
+
+    public long subPoint(long point) {  // 사용한 포인트만큼 차감
+        this.point -= point;
+        return point;
+    }
+
+    public void pay(long price) {  // 총 상품 가격만큼 잔액 차감
+        cardBal -= price;
+    }
+
+    public void refund(long price) {  // 환불 금액 잔액에 추가
+        cardBal += price;
+    }
+
+
+}

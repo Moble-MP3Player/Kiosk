@@ -35,7 +35,7 @@ public class MockDataLoader implements DataLoader{
     @Override
     public List<Card> loadCardData() {
         List<Card> cards = new ArrayList<>();
-
+        cards.add(new Card());
         return cards;
     }
 
