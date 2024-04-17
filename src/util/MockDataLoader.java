@@ -13,10 +13,12 @@ public class MockDataLoader implements DataLoader{
     public List loadProductData() {
         ArrayList<Product> products = new ArrayList<>();
 //        products.add(new Product())
+        return products;
     }
 
     @Override
     public List loadRecipeData() {
+        return null;
     }
 
     @Override
@@ -28,5 +30,6 @@ public class MockDataLoader implements DataLoader{
 
     @Override
     public List loadBucketData() {
+        return null;
     }
 }
