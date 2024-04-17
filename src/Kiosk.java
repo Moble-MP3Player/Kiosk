@@ -1,3 +1,5 @@
+import service.DataService;
+
 public class Kiosk {
     /**
      * Kiosk 초기화 함수로 Kiosk 생성 시 호출되며 파일을 통해서 데이터를 불러옴.
