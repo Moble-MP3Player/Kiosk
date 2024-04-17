@@ -26,6 +26,8 @@ public class MockDataLoader implements DataLoader{
     @Override
     public List loadRecipeData() {
         ArrayList<Receipt> receipts = new ArrayList<>();
+        receipts.add(new Receipt("담배", 4500, 1, "카드", "2024-04-17",5000, 0,4500, 500, "홍길동", 1234, "2024-04-17", 2));
+        receipts.add(new Receipt("과자", 1800, 2, "카드", "2024-04-15",2000, 0,1800, 200, "임꺽정", 5678, "2024-04-15", 1));
 
         return receipts;
     }

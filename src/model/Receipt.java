@@ -1,26 +1,6 @@
 package model;
 
-class receiptTest {
-    public static void main(String[] args) {
-        // 테스트 코드
-//        Receipt r1 = new Receipt();
-//        r1.setProductName("사과");
-//        r1.setPrice(100);
-//        r1.setCount(3);
-//        r1.setPaymentMethod("카드");
-//        r1.setPaymentDate("2024-04-17");
-//        r1.setAmountReceived(500);
-//        r1.setDiscount(0);
-//        r1.setTotalPrice(100);
-//        r1.setChange(r1.getTotalPrice(), r1.amountReceived);
-//        r1.setCardName("황영진");
-//        r1.setCardNum(12345);
-//        r1.setReceiptNumber(1);
-//        r1.setReceiptDate("2024-04-17");
-//
-//        r1.printReceipt();
-    }
-}
+
 
 public class Receipt {
     //결제 내역 클래스에서 값을 받아와서 저장해야 할 변수들
@@ -37,14 +17,24 @@ public class Receipt {
     String cardName; //카드명
     int cardNum; //카드번호
     String receiptDate; //영수증 발행 일시
-
-    //영수증이 생성될 때 하나씩 증가
-    static int receiptNumber = 0; //영수증 번호
+    int receiptNumber = 0; //영수증 번호
 
 
     //영수증 생성자
-    Receipt(){
-        receiptNumber++; //영수증이 생성될 때마다 1씩 증가
+    public Receipt(String productName, int price, int count, String paymentMethod, String paymentDate, int amountReceived, int discount, int totalPrice, int change, String cardName, int cardNum, String receiptDate, int receiptNumber){
+        this.productName = productName;
+        this.price = price;
+        this.count = count;
+        this.paymentMethod = paymentMethod;
+        this.paymentDate = paymentDate;
+        this.amountReceived = amountReceived;
+        this.discount = discount;
+        this.totalPrice = totalPrice;
+        this.change = change;
+        this.cardName = cardName;
+        this.cardNum = cardNum;
+        this.receiptDate = receiptDate;
+        this.receiptNumber = receiptNumber;
     }
 
     void setProductName(String productName){
