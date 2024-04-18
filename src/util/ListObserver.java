@@ -8,7 +8,7 @@ import java.util.HashMap;
  * Listable이 참조하는 ArrayList의 데이터의 변화가 생기면 업데이트를 하기 위해 사용합니다.
  */
 public class ListObserver extends Thread {
-    public static volatile ListObserver listObserver;
+    private static volatile ListObserver instance;
 
     private final HashMap<ListTable, String[][]> obMap;
 
@@ -23,13 +23,13 @@ public class ListObserver extends Thread {
      * @return ListObserver 객체
      */
     public static ListObserver getInstance() {
-        if(listObserver == null) listObserver = new ListObserver();
-        return listObserver;
+        if (instance == null) { // First check (no locking)
+            synchronized (ListObserver.class) {
+                if (instance == null) instance = new ListObserver();
+            }
+        }
+        return instance;
     }
-
-    /**
-     *
-     */
 
     /**
      * List를 관찰목록에 추가하는 메서드
