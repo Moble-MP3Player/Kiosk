@@ -1,3 +1,7 @@
+import model.Card;
+
+import java.util.Scanner;
+
 public class Kiosk {
     KioskService kioskService;
 
@@ -18,6 +22,25 @@ public class Kiosk {
      * 키오스크 실행 함수 화면 출력 및 기능 동작 관리
      */
     public void start(){
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("상품을 결제하려면 아무 키나 눌러 진행해주세요.");
+        String s = sc.next();
+
+        if (s.equals("0000")) {
+            // 비밀번호 일치 시 관리자 모드 실행
+        } else {
+            // 장바구니 이동
+
+            // 상품 결제
+            Card c = new Card();
+            c.pay(price); // 총 상품 가격 = price
+
+
+
+            // 영수증 출력
+        }
+
 
     }
 

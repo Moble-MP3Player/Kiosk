@@ -38,14 +38,16 @@ public class Card {
         this.point -= point;
         return point;
     }
-
-    public void pay(long price) {  // 총 상품 가격만큼 잔액 차감
-        cardBal -= price;
+    
+    public void pay(long price) {  // 상품 결제하기
+        if( cardBal - price >= 0) {
+            cardBal -= price;
+        } else System.out.println("잔액이 부족합니다.");
     }
 
     public void refund(long price) {  // 환불 금액 잔액에 추가
         cardBal += price;
-    }
-
-
+    }  // 상품 환불받기
+    
+    
 }
