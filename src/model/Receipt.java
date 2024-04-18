@@ -20,6 +20,7 @@ public class Receipt {
     int receiptNumber = 0; //영수증 번호
 
 
+
     //영수증 생성자
     public Receipt(String productName, int price, int count, String paymentMethod, String paymentDate, int amountReceived, int discount, int totalPrice, int change, String cardName, int cardNum, String receiptDate, int receiptNumber){
         this.productName = productName;
