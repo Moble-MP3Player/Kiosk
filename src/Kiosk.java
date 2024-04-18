@@ -34,7 +34,7 @@ public class Kiosk {
 
             // 상품 결제
             Card c = new Card();
-            c.pay(price); // 총 상품 가격 = price
+//            c.pay(price); // 총 상품 가격 = price
 
 
 

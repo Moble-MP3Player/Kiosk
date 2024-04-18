@@ -15,7 +15,7 @@ public class ListTable {
 
     public ListTable(ArrayList<?> arrayList) {
         this.arrayList = arrayList;
-        titles = Reflections.getTitles(arrayList.getFirst().getClass());
+        titles = Reflections.getTitles(arrayList.get(0).getClass());
         data = Reflections.convertToArray(arrayList);
         initJFrame();
     }

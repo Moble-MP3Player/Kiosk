@@ -16,7 +16,7 @@ public class Reflections {
     public static String[][] convertToArray(ArrayList<?> arrayList){
         if (arrayList.isEmpty()) throw new RuntimeException("ListTable 생성자 오류");
 
-        Object firstElement = arrayList.getFirst();
+        Object firstElement = arrayList.get(0);
         Class<?> clazz = firstElement.getClass();
 
         final int ARRAY_SIZE = arrayList.size();
