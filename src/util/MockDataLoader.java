@@ -5,13 +5,10 @@ import model.Product;
 import model.Receipt;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.PrimitiveIterator;
 
 public class MockDataLoader implements DataLoader{
     @Override
-    public List loadProductData() {
+    public ArrayList<Product> loadProductData() {
         ArrayList<Product> products = new ArrayList<>();
         products.add(new Product(1,"담배","2024-04-17",10,"2034-04-17",4500));
         products.add(new Product(2,"탄산음료","2024-04-17",15,"2026-04-17",1000));
@@ -24,7 +21,7 @@ public class MockDataLoader implements DataLoader{
     }
 
     @Override
-    public List loadRecipeData() {
+    public ArrayList<Receipt> loadReceiptData() {
         ArrayList<Receipt> receipts = new ArrayList<>();
         receipts.add(new Receipt("담배", 4500, 1, "카드", "2024-04-17",5000, 0,4500, 500, "홍길동", 1234, "2024-04-17", 2));
         receipts.add(new Receipt("과자", 1800, 2, "카드", "2024-04-15",2000, 0,1800, 200, "임꺽정", 5678, "2024-04-15", 1));
@@ -33,14 +30,10 @@ public class MockDataLoader implements DataLoader{
     }
 
     @Override
-    public List<Card> loadCardData() {
-        List<Card> cards = new ArrayList<>();
+    public ArrayList<Card> loadCardData() {
+        ArrayList<Card> cards = new ArrayList<>();
         cards.add(new Card());
         return cards;
     }
 
-    @Override
-    public List loadBucketData() {
-        return null;
-    }
 }
