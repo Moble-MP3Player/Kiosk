@@ -143,6 +143,13 @@ public class Receipt {
         return cardNum;
     }
 
+
+    @Override
+    public String toString() {
+        printReceipt();
+        return "";
+    }
+
     //영수증 출력 메서드
     void printReceipt(){
         System.out.println("               영수증");

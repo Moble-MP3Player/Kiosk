@@ -2,16 +2,16 @@ package util;
 
 import model.Card;
 import model.Product;
+import model.Receipt;
 
-import java.util.List;
+import java.util.ArrayList;
 
 /**
  * 파일을 불러오고 저장하는 클래스
  */
 public interface DataLoader {
-    public List<Product> loadProductData();
-    public List loadRecipeData();
-    public List<Card> loadCardData();
-    public List loadBucketData();
+    public ArrayList<Product> loadProductData();
+    public ArrayList<Receipt> loadReceiptData();
+    public ArrayList<Card> loadCardData();
 
 }
