@@ -9,9 +9,9 @@ import java.util.Scanner;
 
 public class Kiosk {
     private final DataLoader dataLoader;
-    public ArrayList<Card> cards;
-    public ArrayList<Product> products;
-    public ArrayList<Receipt> receipts;
+    public static ArrayList<Card> cards;
+    public static ArrayList<Product> products;
+    public static ArrayList<Receipt> receipts;
     public Scanner sc = new Scanner(System.in);
 
     boolean debugMode = false; // 디버그 모드 설정
