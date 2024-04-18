@@ -1,6 +1,5 @@
 //package model;
 //
-//import service.ProductService;
 //
 //import java.util.ArrayList;
 //
@@ -28,7 +27,7 @@
 //          }
 //      }
 //      // 새 상품 장바구니에 추가
-//        products.add(new Product(name, quantity));
+////        products.add(new Product(name, quantity));
 //    }
 //
 //    //장바구니 내용 출력

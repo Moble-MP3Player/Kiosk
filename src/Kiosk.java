@@ -1,3 +1,4 @@
+import GUI.ListTable;
 import model.Card;
 import model.Product;
 import model.Receipt;
@@ -11,10 +12,13 @@ public class Kiosk {
     public ArrayList<Card> cards;
     public ArrayList<Product> products;
     public ArrayList<Receipt> receipts;
+    public Scanner sc = new Scanner(System.in);
 
+    boolean debugMode = false; // 디버그 모드 설정
 
-    public Kiosk(DataLoader dataLoader){
+    public Kiosk(DataLoader dataLoader, boolean debugMode){
         this.dataLoader = dataLoader;
+        this.debugMode = debugMode;
     }
 
     /**
@@ -24,27 +28,38 @@ public class Kiosk {
         cards = dataLoader.loadCardData();
         products = dataLoader.loadProductData();
         receipts = dataLoader.loadReceiptData();
+
+        if(debugMode){
+            new ListTable(cards);
+            new ListTable(products);
+            new ListTable(receipts);
+        }
     }
 
     /**
      * 키오스크 실행 함수 화면 출력 및 기능 동작 관리
      */
     public void start(){
-        System.out.println(cards);
-        System.out.println(products);
-        System.out.println(receipts);
+
     }
 
     /**
      *
      */
     public void test() {
-        System.out.println("""
-            테스트할 항목을 골라주세요.
-            프로그램이 종료되어도 데이터 변화는 반영되지 않습니다.
-            """);
-        switch (new Scanner(System.in).nextInt()){
-
+        // 삭제해도돼요
+        while(debugMode) {
+            System.out.println("""
+                    테스트할 항목을 골라주세요.
+                    프로그램이 종료되어도 데이터 변화는 반영되지 않습니다.
+                    
+                    Product 값 변경
+                    1) Product의 N번째 값을 변경합니다.
+                    """);
+            int input = sc.nextInt();
+            Product product = products.get(input);
+            System.out.println("변경할 문자열 입력 :");
+            product.setName(sc.next());
         }
     }
 
@@ -62,6 +77,8 @@ public class Kiosk {
     public void enterManagerMode(){
 
     }
+
+
 
 
 
