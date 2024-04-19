@@ -32,7 +32,17 @@ public class MockDataLoader implements DataLoader{
     @Override
     public ArrayList<Card> loadCardData() {
         ArrayList<Card> cards = new ArrayList<>();
-        cards.add(new Card());
+        cards.add( new Card("홍길동", 1234, 10000, 50000, 1111));
+        cards.add( new Card("임꺽정", 1235, 15000, 75000, 2222));
+        cards.add( new Card("이영희", 1236, 20000, 25000, 3333));
+        cards.add( new Card("박민수", 1237, 5000, 55000, 4444));
+        cards.add( new Card("최지은", 1238, 7500, 15000, 5555));
+        cards.add( new Card("강하늘", 1239, 8000, 20000, 6666));
+        cards.add( new Card("조미라", 1240, 12000, 30000, 7777));
+        cards.add( new Card("유재석", 1241, 30000, 40000, 8888));
+        cards.add( new Card("하하", 1242, 45000, 10000, 9999));
+        cards.add( new Card("노홍철", 1243, 25000, 15000, 0000));
+
         return cards;
     }
 
