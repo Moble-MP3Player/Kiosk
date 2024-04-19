@@ -1,6 +1,5 @@
 package GUI;
 
-import util.ListObserver;
 import util.Reflections;
 
 import javax.swing.*;
@@ -40,8 +39,6 @@ public class ListTable {
         JScrollPane scrollPane = new JScrollPane(jtable);
         frame.add(scrollPane);
         frame.setVisible(true);
-
-        ListObserver.getInstance().addList(this);
     }
 
 

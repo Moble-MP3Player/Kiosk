@@ -65,7 +65,11 @@ public class Reflections {
         }
         return titles;
     }
-    
+
+
+
+
+
     // 테스트코드
 //    public static void main(String[] args) {
 //        MockDataLoader mockDataLoader = new MockDataLoader();
