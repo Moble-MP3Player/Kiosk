@@ -59,7 +59,7 @@ public class ListObserver extends Thread {
 
             // 데이터 변화 체크
             if (!areStringArraysEqual(newList, oldList)) {
-                keys.update();
+                keys.update(newList);
             }
 
         });

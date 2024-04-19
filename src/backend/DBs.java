@@ -22,7 +22,7 @@ public class DBs {
      * 데이터베이스에 등록된 상품의 목록을 가져옵니다.
      * @return 상품목록
      */
-    static ArrayList<Product> getProducts(){
+    public static ArrayList<Product> getProducts(){
         return getInstance().getProducts();
     }
 
@@ -31,7 +31,7 @@ public class DBs {
      * 데이터 베이스에 등록된 카드의 목록을 가져옵니다.
      * @return 카드목록
      */
-    static ArrayList<Card> getCards(){
+    public static ArrayList<Card> getCards(){
         return getInstance().getCards();
     }
 
@@ -40,7 +40,7 @@ public class DBs {
      * 데이터 베이스에 등록된 영수증의 목록을 가져옵니다.
      * @return 영수증목록
      */
-    static ArrayList<Receipt> getReceipts(){
+    public static ArrayList<Receipt> getReceipts(){
         return getInstance().getReceipts();
     }
 }

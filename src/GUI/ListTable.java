@@ -45,10 +45,9 @@ public class ListTable {
     /**
      * arrayList의 값으로 해당 Table을 update하는 함수
      */
-    public void update() {
-        String[][] contents = Reflections.convertToArray(arrayList);
+    public void update(String[][] newList) {
 
-        DefaultTableModel newModel = new DefaultTableModel(contents, titles) {
+        DefaultTableModel newModel = new DefaultTableModel(newList, titles) {
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false;
