@@ -53,9 +53,7 @@ public class DBs {
     }
 
     /**
-     * 값이 변경되었을 때, 로그를 활성화 할지 반환합니다.
-     * @return true 시, 로깅이 현재 활성화중 <br>
-     *
+     * 로깅이 활성화되어있다면 전달된 문자열을 출력합니다.
      */
     public static void log(Object... objs){
         if(objs.length == 0) return;
