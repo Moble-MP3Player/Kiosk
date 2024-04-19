@@ -61,7 +61,7 @@ public class DBs {
         if(objs.length == 0) return;
         if(!getInstance().getDebugMode()) return; // 디버그 모드 비활성화시 종료
 
-        StringBuilder stringBuilder = new StringBuilder("[DBs]");
+        StringBuilder stringBuilder = new StringBuilder("[DBs] ");
 
         for(Object obj : objs){
             stringBuilder.append(obj);
