@@ -43,4 +43,37 @@ public class DBs {
     public static ArrayList<Receipt> getReceipts(){
         return getInstance().getReceipts();
     }
+
+    /**
+     * 데이터 값이 변경되었을 때, 콘솔에 로그를 출력할 지 설정합니다.
+     * @param isDebug true 시, 값이 변경되었을때 콘솔에 출력합니다.
+     */
+    public static void setLogging(boolean isDebug){
+        getInstance().setDebugMode(isDebug);
+    }
+
+    /**
+     * 값이 변경되었을 때, 로그를 활성화 할지 반환합니다.
+     * @return true 시, 로깅이 현재 활성화중 <br>
+     *
+     */
+    public static void log(Object... objs){
+        if(objs.length == 0) return;
+        if(!getInstance().getDebugMode()) return; // 디버그 모드 비활성화시 종료
+
+        StringBuilder stringBuilder = new StringBuilder("[DBs]");
+
+        for(Object obj : objs){
+            stringBuilder.append(obj);
+        }
+
+        System.out.println(stringBuilder.toString());
+    }
+
+    /**
+     * 데이터베이스가 형성되지 않았다면 생성합니다.
+     */
+    public static void init(){
+        if(!DB.getInstance().isIsinitalized()) DB.getInstance().initDB();
+    }
 }

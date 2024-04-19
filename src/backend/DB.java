@@ -22,6 +22,7 @@ public class DB {
 
     private DB(DataLoader dataLoader){
         this.dataLoader = dataLoader;
+        debugMode = false;
     }
 
     public static DB getInstance() {
@@ -42,6 +43,7 @@ public class DB {
     private ArrayList<Product> products;
     private ArrayList<Card> cards;
     private ArrayList<Receipt> receipts;
+    private boolean debugMode;
 
     public ArrayList<Product> getProducts(){
         if(!isinitalized) initDB();
@@ -57,10 +59,24 @@ public class DB {
         return receipts;
     }
 
+    public void setDebugMode(boolean isDebug){
+        debugMode = isDebug;
+    }
+
+    public boolean getDebugMode() {
+        return debugMode;
+    }
+
+    public boolean isIsinitalized(){
+        return isinitalized;
+    }
+
     /**
      * 데이터베이스 초기화 과정입니다. 생성자 호출 시 호출됩니다.
      */
-    private void initDB(){
+    public void initDB(){
+        DBs.log("데이터베이스 초기화");
+        
         // 데이터 로더에서 각종 데이터를 불러옵니다.
         products = dataLoader.loadProductData();
         cards = dataLoader.loadCardData();
@@ -79,5 +95,6 @@ public class DB {
 
         isinitalized = true;
     }
+
 
 }

@@ -1,6 +1,7 @@
 package util;
 
 import GUI.ListTable;
+import backend.DBs;
 
 import java.util.HashMap;
 
@@ -59,6 +60,8 @@ public class ListObserver extends Thread {
 
             // 데이터 변화 체크
             if (!areStringArraysEqual(newList, oldList)) {
+                DBs.log("[%s] 데이터 변경됨\n"
+                        , keys.getClass().getName());
                 keys.update(newList);
             }
 
