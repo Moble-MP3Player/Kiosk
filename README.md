@@ -1,10 +1,16 @@
-# Kiosk
+<div align="center">
+<h1>Kiosk</h1>
 <img src="https://github.com/Moble-MP3Player/Kiosk/assets/54611807/241e845a-d09d-482b-b393-d76ad77d69eb" width=500, height=500>
 
+<br>
+ 2023. 04.17 ~ 2023. 04.23 <br>
+ 콘솔을 통한 상품 재고 관리 및 결제 기능을 제공합니다.
 
-콘솔을 통한 상품 재고 관리 및 결제 기능을 제공합니다.
+<br>
+<br>
+</div>
 
-2023. 04.17 ~ 2023. 04.23
+
 
 
 
