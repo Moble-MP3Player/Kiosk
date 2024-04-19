@@ -1,11 +1,3 @@
-import GUI.ListTable;
-import model.Card;
-import model.Product;
-import model.Receipt;
-import util.DataLoader;
-import util.MockDataLoader;
-
-import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -31,4 +23,4 @@ public class KioskService {
 //            product.setName(sc.next());
         }
     }
-}
+
