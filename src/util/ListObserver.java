@@ -3,18 +3,21 @@ package util;
 import GUI.ListTable;
 import backend.DBs;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * Listable이 참조하는 ArrayList의 데이터의 변화가 생기면 업데이트를 하기 위해 사용합니다.
+ * ArrayList의 데이터의 변화가 생기면 업데이트를 하기 위해 사용합니다.
  */
 public class ListObserver extends Thread {
     private static volatile ListObserver instance;
 
-    private final HashMap<ListTable, String[][]> obMap;
+    private final HashMap<ArrayList<?>, ListTable > uiMap;
+    private final HashMap<ArrayList<?>, String[][]> listMap;
 
     private ListObserver(){
-        obMap = new HashMap<>();
+        uiMap = new HashMap<>();
+        listMap = new HashMap<>();
         this.start();
     }
 
@@ -34,35 +37,42 @@ public class ListObserver extends Thread {
 
     /**
      * List를 관찰목록에 추가하는 메서드
-     * @param listTable 관찰할 listTable
+     * @param arrayList 관찰목록에 추가할 리스트
+     * @param listTable 해당 arrayList의 변경이 있을 때, 업데이트할 Ui
      */
-    public void addList(ListTable listTable){
-        obMap.putIfAbsent(listTable, listTable.getData());
+    public void addList(ArrayList<?> arrayList, ListTable listTable){
+        uiMap.putIfAbsent(arrayList, listTable);
+        listMap.putIfAbsent(arrayList, Reflections.convertToArray(arrayList) );
     }
 
     /**
-     * 관찰목록에 등록된 listTable 삭제하는 메서드
-     * @param listTable 삭제할 listTable (값의 참조값이 다를 경우 작동하지 않습니다)
+     * 관찰목록에 등록된 리스트 삭제하는 메서드
+     * @param  arrayList 삭제할 리스트 (값의 참조값이 다를 경우 작동하지 않습니다)
      * @return 삭제에 성공했을 때, True를 반환합니다.
      */
-    public boolean removeList(ListTable listTable){
-        // obmap.remove()는 삭제 성공 시, 값 | 실패시 null 반환
-        return obMap.remove(listTable) != null;// 삭제 성공
+    public boolean removeList(ArrayList<?> arrayList){
+        // remove()는 삭제 성공 시, 값 | 실패시 null 반환
+        uiMap.remove(arrayList);
+        return null != listMap.remove(arrayList);// 삭제 성공
     }
 
     /**
      * 현재 관찰목록의 모든 데이터 관찰후, 데이터 변화 감지되면 해당 ListTable 업데이트
      */
     private void checkDiff() {
-        obMap.keySet().forEach(keys -> {
-            String[][] newList = Reflections.convertToArray(keys.getArrayList());
-            String[][] oldList = obMap.get(keys);
+        listMap.keySet().forEach(arrayList -> {
+            String[][] newList = Reflections.convertToArray(arrayList);
+            String[][] oldList = listMap.get(arrayList);
 
             // 데이터 변화 체크
             if (!areStringArraysEqual(newList, oldList)) {
-                DBs.log("[%s] 데이터 변경됨\n"
-                        , keys.getClass().getName());
-                keys.update(newList);
+                DBs.log("%s의 데이터 변경됨\n".formatted(arrayList.get(0).getClass().getName()));
+                // 변경된 리스트를 참조하는 테이블을 가져옴.
+                ListTable listTable = uiMap.get(arrayList);
+                listTable.update(newList); // GUI 업데이트
+
+                //변경 사항 저장
+                listMap.put(arrayList,newList);
             }
 
         });
@@ -109,5 +119,9 @@ public class ListObserver extends Thread {
                 throw new RuntimeException(e);
             }
         }
+    }
+
+    public static void main(String[] args) {
+        DBs.getProducts().get(3).setName("테스트");
     }
 }

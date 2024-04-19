@@ -82,16 +82,10 @@ public class DB {
         cards = dataLoader.loadCardData();
         receipts = dataLoader.loadReceiptData();
 
-        // 리스트 테이블을 생성합니다. (JFrame GUI)
-        ArrayList<ListTable> arrayList = new ArrayList<>();
-        arrayList.add(new ListTable(products));
-        arrayList.add(new ListTable(cards));
-        arrayList.add(new ListTable(receipts));
-
-        // 데이터 변화를 관찰하기 위해 관찰목록에 등록합니다.
-        for (ListTable listTable : arrayList) {
-            ListObserver.getInstance().addList(listTable);
-        }
+        // 리스트 테이블을 생성하고 관찰목록에 등록합니다.
+        ListObserver.getInstance().addList(products,new ListTable(products));
+        ListObserver.getInstance().addList(cards,new ListTable(cards));
+        ListObserver.getInstance().addList(receipts,new ListTable(receipts));
 
         isinitalized = true;
     }
