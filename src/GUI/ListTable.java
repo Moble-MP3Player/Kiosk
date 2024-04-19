@@ -9,11 +9,11 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class ListTable {
-    private static Point locations;
-    private JTable jtable;
-    private String[][] data;
-    private String[] titles;
-    private ArrayList<?> arrayList;
+    private static Point locations; // 표화면을 배치할 위치
+    private JTable jtable; // 화면에 보여줄 표
+    private String[][] data; // 표의 각 셀에 담기는 데이터 배열
+    private String[] titles; // 표의 속성들의 이름을 담는 배열
+    private final ArrayList<?> arrayList; // 표를 구성하는 arrayList
 
     public ListTable(ArrayList<?> arrayList) {
         this.arrayList = arrayList;
@@ -21,7 +21,7 @@ public class ListTable {
     }
 
     /**
-     * JFrame을 생성하고 성공 시, true를 반환합니다. 실패 시 false를 반환합니다.
+     * 화면을 생성하고 성공 시, true 를 반환합니다. 실패 시 false 를 반환합니다.
      * @return True : 생성 성공 <br> False : 생성 실패
      */
     private boolean initJFrame() {
@@ -31,9 +31,10 @@ public class ListTable {
             DBs.log("데이터가 존재하지 않아 ListTable을 생성할 수 없습니다.");
             return false;
         }
+        // 처음으로 생성되는 GUI 위치 설정 (10,10 에 배치)
         if(locations == null) locations = new Point(10,10);
 
-        titles = Reflections.getTitles(arrayList.get(0).getClass());
+        titles = Reflections.getTitles(arrayList.get(0).getClass()); // GUI의 제목설정
         data = Reflections.convertToArray(arrayList);
         JFrame frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -48,18 +49,19 @@ public class ListTable {
             public boolean isCellEditable(int row, int column) {
                 return false;
             }
-        };
+        }; // 표에 담기는 데이터를 설정하면서 해당 표를 조작하지 못하게 함.
         jtable = new JTable(defaultTableModel);
 
-        JScrollPane scrollPane = new JScrollPane(jtable);
-        frame.add(scrollPane);
-        frame.setVisible(true);
-        return true;
+        JScrollPane scrollPane = new JScrollPane(jtable); // 표가 스크롤이 가능하게함.
+        frame.add(scrollPane); // 프레임에 부여
+        frame.setVisible(true); // 화면 보여주기
+        return true; // 정상종료
     }
 
 
     /**
-     * arrayList의 값으로 해당 Table을 update하는 함수
+     * 표를 최신화하여 다시 보여주는 기능을 가집니다.
+     * 데이터가 변경될 경우 호출됩니다. (호출 위치 ListObserver.java)
      */
     public void update(String[][] newList) {
 
@@ -70,13 +72,5 @@ public class ListTable {
             }
         };
         jtable.setModel(newModel);
-    }
-
-    public String[][] getData() {
-        return data;
-    }
-
-    public ArrayList<?> getArrayList() {
-        return arrayList;
     }
 }
