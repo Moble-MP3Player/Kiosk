@@ -146,7 +146,7 @@ public class Receipt {
 
 
     //영수증 출력 메서드
-    void printReceipt(){
+    public void printReceipt(){
         System.out.println("               영수증");
         System.out.println("===================================");
         System.out.println("결제 일시 : " + this.getPaymentDate() + " 영수증 번호 : " + this.getReceiptNumber());
