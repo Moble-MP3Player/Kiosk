@@ -6,7 +6,7 @@ public class Main {
         DBs.init();
         Kiosk koKiosk = new Kiosk(new KioskService());
         koKiosk.init(); // 키오스크 초기화
-//        koKiosk.start(); // 키오스크 실행
+        koKiosk.start(); // 키오스크 실행
         koKiosk.end(); // 키오스크 종료
     }
 

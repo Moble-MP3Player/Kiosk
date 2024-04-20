@@ -1,4 +1,4 @@
-package util;
+package backend;
 
 import model.Card;
 import model.Product;
@@ -6,7 +6,7 @@ import model.Receipt;
 
 import java.util.ArrayList;
 
-public class MockDataLoader implements DataLoader{
+public class MockDataLoader implements DataLoader {
     @Override
     public ArrayList<Product> loadProductData() {
         ArrayList<Product> products = new ArrayList<>();

@@ -1,4 +1,4 @@
-package util;
+package backend;
 
 import model.Card;
 import model.Product;

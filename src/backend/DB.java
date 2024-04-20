@@ -4,25 +4,28 @@ import GUI.ListTable;
 import model.Card;
 import model.Product;
 import model.Receipt;
-import util.DataLoader;
 import util.ListObserver;
-import util.MockDataLoader;
 
 import java.util.ArrayList;
 
 /**
  * DB 클래스는 시스템의 상품, 영수증, 카드 목록을 유지하는 데이터베이스 클래스입니다. <br>
- *
+ * <p>
  * 기능을 호출하려면 DBs 클래스를 사용해주세요.
  */
 public class DB {
 
-    // 싱글톤 구현부 입니다. DB 객체를 하나로 유지하기 위해 사용합니다.
+    private boolean isinitalized = false;
+    private boolean isGUIEnabled = true;
+    private DataLoader dataLoader;
+    private ArrayList<Product> products;
+    private ArrayList<Card> cards;
+    private ArrayList<Receipt> receipts;
+    private boolean debugMode = false;
     private static volatile DB instance;
 
-    private DB(DataLoader dataLoader){
+    private DB(DataLoader dataLoader) {
         this.dataLoader = dataLoader;
-        debugMode = true;
     }
 
     public static DB getInstance() {
@@ -38,28 +41,22 @@ public class DB {
     }
     //
 
-    private boolean isinitalized = false;
-    private DataLoader dataLoader;
-    private ArrayList<Product> products;
-    private ArrayList<Card> cards;
-    private ArrayList<Receipt> receipts;
-    private boolean debugMode;
-
-    public ArrayList<Product> getProducts(){
-        if(!isinitalized) initDB();
+    public ArrayList<Product> getProducts() {
+        if (!isinitalized) initDB();
         return products;
     }
 
-    public ArrayList<Card> getCards(){
-        if(!isinitalized) initDB();
+    public ArrayList<Card> getCards() {
+        if (!isinitalized) initDB();
         return cards;
     }
-    public ArrayList<Receipt> getReceipts(){
-        if(!isinitalized) initDB();
+
+    public ArrayList<Receipt> getReceipts() {
+        if (!isinitalized) initDB();
         return receipts;
     }
 
-    public void setDebugMode(boolean isDebug){
+    public void setDebugMode(boolean isDebug) {
         debugMode = isDebug;
     }
 
@@ -67,31 +64,33 @@ public class DB {
         return debugMode;
     }
 
-    public boolean isIsinitalized(){
+
+    public boolean isIsinitalized() {
         return isinitalized;
     }
 
     /**
      * 데이터베이스 초기화 과정입니다. 생성자 호출 시 호출됩니다.
      */
-    public void initDB(){
+    public void initDB() {
         DBs.log("데이터베이스 초기화");
-        
+
         // 데이터 로더에서 각종 데이터를 불러옵니다.
         products = dataLoader.loadProductData();
         cards = dataLoader.loadCardData();
         receipts = dataLoader.loadReceiptData();
 
-        // 리스트 테이블을 생성하고 관찰목록에 등록합니다.
-        ListObserver.getInstance().add(products,new ListTable(products));
-        ListObserver.getInstance().add(cards,new ListTable(cards));
-        ListObserver.getInstance().add(receipts,new ListTable(receipts));
-      
-//        // GUI가 없시, 데이터만 관찰목록에 추가
-//        ListObserver.getInstance().add(products);
-//        ListObserver.getInstance().add(cards);
-//        ListObserver.getInstance().add(receipts);
-
+        if (isGUIEnabled) {
+            // 리스트 테이블을 생성하고 관찰목록에 등록합니다.
+            ListObserver.getInstance().add(products, new ListTable(products));
+            ListObserver.getInstance().add(cards, new ListTable(cards));
+            ListObserver.getInstance().add(receipts, new ListTable(receipts));
+        } else {
+            // GUI가 없시, 데이터만 관찰목록에 추가
+            ListObserver.getInstance().add(products);
+            ListObserver.getInstance().add(cards);
+            ListObserver.getInstance().add(receipts);
+        }
         isinitalized = true;
     }
 
