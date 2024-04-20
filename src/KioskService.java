@@ -1,26 +1,92 @@
+import backend.db.DBs;
+import backend.reflections.KioskMenu;
+import backend.reflections.Reflections;
+import menu.CustomerService;
+import menu.ManagementService;
+
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
- * 키오스의 기능을 정의하는 클래스입니다.
- * static 클래스로 정의해주시면 됩니다.
+ *
  */
 public class KioskService {
-    public Scanner sc = new Scanner(System.in); // 데이터 입출력에 사용
 
-    public void test() {
+    public static boolean isManageMode;
+    private CustomerService customerService;
+    private ManagementService managementService;
 
-//        while (debugMode) {
-//            System.out.println("""
-//                    테스트할 항목을 골라주세요.
-//                    프로그램이 종료되어도 데이터 변화는 반영되지 않습니다.
-//
-//                    Product 값 변경
-//                    1) Product의 N번째 값을 변경합니다.
-//                    """);
-//            int input = sc.nextInt();
-//            Product product = products.get(input);
-//            System.out.println("변경할 문자열 입력 :");
-//            product.setName(sc.next());
+    private ArrayList<KioskMenu> uesrMenus;
+    private ArrayList<KioskMenu> managerMenus;
+
+    private Scanner scanner = new Scanner(System.in);
+
+    public KioskService(CustomerService customerService, ManagementService managementService) {
+        this.customerService = customerService;
+        this.managementService = managementService;
+    }
+
+    public void initMenu() {
+        uesrMenus = Reflections.makeUserMenu(customerService);
+        managerMenus = Reflections.makeManagerMenu(managementService);
+        isManageMode = false;
+    }
+
+    public void showManageMenu() {
+        System.out.println("관리자 메뉴입니다.");
+        System.out.println("=======================");
+
+        for (KioskMenu kioskMenu : managerMenus) {
+            System.out.printf("%d) %s\n",
+                    kioskMenu.getMenuId(),
+                    kioskMenu.getMenuTitle()
+            );
+        }
+        System.out.println("=======================");
+    }
+
+    public void printUserMenu(){
+        for (KioskMenu kioskMenu : uesrMenus) {
+            System.out.printf("%d) %s\n",
+                    kioskMenu.getMenuId(),
+                    kioskMenu.getMenuTitle()
+            );
         }
     }
 
+    public void chooseAndExecuteUserMenu(){
+        int input = scanner.nextInt();
+        boolean isExecuted = false;
+
+        for (KioskMenu kioskMenu : uesrMenus) {
+            if (kioskMenu.getMenuId() == input) {
+                try {
+                    kioskMenu.getMenuMethod().invoke(customerService, null);
+                } catch (Exception e) {
+                    DBs.log("reflection 오류 " + e.getCause());
+                    throw new RuntimeException("메뉴 메서드에서 매개변수가 있으면 안됩니다.");
+                }
+                isExecuted = true;
+            }
+        }
+        if(!isExecuted) {
+            System.out.println("입력 값이 정확하지 않습니다.");
+        }
+    }
+
+    public void chooseAndExecuteManagerMenu(){
+        int input = scanner.nextInt();
+
+        for (KioskMenu kioskMenu : managerMenus) {
+            if (kioskMenu.getMenuId() == input) {
+                try {
+                    kioskMenu.getMenuMethod().invoke(customerService, null);
+                } catch (Exception e) {
+                    DBs.log("reflection 오류 " + e.getCause());
+                    throw new RuntimeException("메뉴 메서드에서 매개변수가 있으면 안됩니다.");
+                }
+            }
+        }
+    }
+
+}

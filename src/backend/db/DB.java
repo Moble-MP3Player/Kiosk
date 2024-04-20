@@ -1,10 +1,12 @@
-package backend;
+package backend.db;
 
 import GUI.ListTable;
+import backend.dataLoader.DataLoader;
+import backend.dataLoader.MockDataLoader;
 import model.Card;
 import model.Product;
 import model.Receipt;
-import util.ListObserver;
+import backend.util.ListObserver;
 
 import java.util.ArrayList;
 
@@ -14,7 +16,6 @@ import java.util.ArrayList;
  * 기능을 호출하려면 DBs 클래스를 사용해주세요.
  */
 public class DB {
-
     private boolean isinitalized = false;
     private boolean isGUIEnabled = true;
     private DataLoader dataLoader;

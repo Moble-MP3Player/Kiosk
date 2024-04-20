@@ -1,4 +1,4 @@
-package backend;
+package backend.db;
 
 import model.Card;
 import model.Product;
@@ -6,7 +6,7 @@ import model.Receipt;
 
 import java.util.ArrayList;
 
-import static backend.DB.getInstance;
+import static backend.db.DB.getInstance;
 
 /**
  * DBS 클래스는 함수호출을 위한 클래스입니다.

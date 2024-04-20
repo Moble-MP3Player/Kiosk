@@ -1,6 +1,6 @@
-package util;
+package backend.util;
 
-import backend.MockDataLoader;
+import backend.dataLoader.MockDataLoader;
 import model.Product;
 
 import java.util.ArrayList;

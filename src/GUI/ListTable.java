@@ -1,7 +1,7 @@
 package GUI;
 
-import backend.DBs;
-import util.Reflections;
+import backend.db.DBs;
+import backend.reflections.Reflections;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;

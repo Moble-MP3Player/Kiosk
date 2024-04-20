@@ -1,4 +1,4 @@
-package backend;
+package backend.dataLoader;
 
 import model.Card;
 import model.Product;

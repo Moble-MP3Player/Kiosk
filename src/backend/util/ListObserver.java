@@ -1,7 +1,8 @@
-package util;
+package backend.util;
 
 import GUI.ListTable;
-import backend.DBs;
+import backend.db.DBs;
+import backend.reflections.Reflections;
 
 import java.util.ArrayList;
 
