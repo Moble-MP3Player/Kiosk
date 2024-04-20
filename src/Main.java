@@ -9,4 +9,7 @@ public class Main {
 //        koKiosk.start(); // 키오스크 실행
         koKiosk.end(); // 키오스크 종료
     }
+
+
+
 }

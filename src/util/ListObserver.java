@@ -4,7 +4,6 @@ import GUI.ListTable;
 import backend.DBs;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * ArrayList의 데이터의 변화가 생기면 업데이트를 하기 위해 사용합니다.
@@ -12,12 +11,13 @@ import java.util.HashMap;
 public class ListObserver extends Thread {
     private static volatile ListObserver instance;
 
-    private final HashMap<ArrayList<?>, ListTable > uiMap;
-    private final HashMap<ArrayList<?>, String[][]> listMap;
+    /**
+     * 관찰하는 데이터들의 리스트
+     */
+    private final ArrayList<ObservableEntity> observableEntities;
 
     private ListObserver(){
-        uiMap = new HashMap<>();
-        listMap = new HashMap<>();
+        observableEntities = new ArrayList<>();
         this.start();
     }
 
@@ -36,47 +36,35 @@ public class ListObserver extends Thread {
     }
 
     /**
-     * List를 관찰목록에 추가하는 메서드
+     * 옵저버의 관찰목록에 추가하는 메서드
      * @param arrayList 관찰목록에 추가할 리스트
      * @param listTable 해당 arrayList의 변경이 있을 때, 업데이트할 Ui
      */
-    public void addList(ArrayList<?> arrayList, ListTable listTable){
-        uiMap.putIfAbsent(arrayList, listTable);
-        listMap.putIfAbsent(arrayList, Reflections.convertToArray(arrayList) );
-    }
-
-    /**
-     * 관찰목록에 등록된 리스트 삭제하는 메서드
-     * @param  arrayList 삭제할 리스트 (값의 참조값이 다를 경우 작동하지 않습니다)
-     * @return 삭제에 성공했을 때, True를 반환합니다.
-     */
-    public boolean removeList(ArrayList<?> arrayList){
-        // remove()는 삭제 성공 시, 값 | 실패시 null 반환
-        uiMap.remove(arrayList);
-        return null != listMap.remove(arrayList);// 삭제 성공
+    public void add(ArrayList<?> arrayList, ListTable listTable){
+        String[][] data = Reflections.convertToArray(arrayList);
+        ObservableEntity entity = new ObservableEntity(listTable,arrayList,data);
+        observableEntities.add(entity);
     }
 
     /**
      * 현재 관찰목록의 모든 데이터 관찰후, 데이터 변화 감지되면 해당 ListTable 업데이트
      */
     private void checkDiff() {
-        listMap.keySet().forEach(arrayList -> {
-            String[][] newList = Reflections.convertToArray(arrayList);
-            String[][] oldList = listMap.get(arrayList);
+
+        for(ObservableEntity entity : observableEntities){
+            String[][] newData = Reflections.convertToArray(entity.getList());
+            String[][] oldData = entity.getData();
 
             // 데이터 변화 체크
-            if (!areStringArraysEqual(newList, oldList)) {
-                DBs.log("%s의 데이터 변경됨\n".formatted(arrayList.get(0).getClass().getName()));
+            if (!areStringArraysEqual(newData, oldData)) {
+                DBs.log(entity.getId() + "의 데이터 변경 : ");
                 // 변경된 리스트를 참조하는 테이블을 가져옴.
-                ListTable listTable = uiMap.get(arrayList);
-                listTable.update(newList); // GUI 업데이트
-
-                //변경 사항 저장
-                listMap.put(arrayList,newList);
+                entity.setData(newData);
             }
 
-        });
+        }
     }
+
 
     /**
      * 2차원 배열 String[][]의 값이 다른 지 확인하는 함수입니다.

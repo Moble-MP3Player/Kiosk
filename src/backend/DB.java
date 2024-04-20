@@ -83,9 +83,9 @@ public class DB {
         receipts = dataLoader.loadReceiptData();
 
         // 리스트 테이블을 생성하고 관찰목록에 등록합니다.
-        ListObserver.getInstance().addList(products,new ListTable(products));
-        ListObserver.getInstance().addList(cards,new ListTable(cards));
-        ListObserver.getInstance().addList(receipts,new ListTable(receipts));
+        ListObserver.getInstance().add(products,new ListTable(products));
+        ListObserver.getInstance().add(cards,new ListTable(cards));
+        ListObserver.getInstance().add(receipts,new ListTable(receipts));
 
         isinitalized = true;
     }

@@ -4,7 +4,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 /**
- * ListTable에서 해당클래스의 맴버를 직렬화 하기 위한 클래스입니다.
+ *
  */
 public class Reflections {
 

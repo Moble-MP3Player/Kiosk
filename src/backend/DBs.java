@@ -59,11 +59,14 @@ public class DBs {
         if(objs.length == 0) return;
         if(!getInstance().getDebugMode()) return; // 디버그 모드 비활성화시 종료
 
-        StringBuilder stringBuilder = new StringBuilder("[ DBS ] ");
+        StringBuilder stringBuilder = new StringBuilder("[ Debug ] ");
 
         for(Object obj : objs){
             stringBuilder.append(obj);
         }
+
+        stringBuilder.append("\n\t 위치: ")
+                .append(Thread.currentThread().getStackTrace()[2]);
 
         System.out.println(stringBuilder.toString());
     }
@@ -73,5 +76,21 @@ public class DBs {
      */
     public static void init(){
         if(!DB.getInstance().isIsinitalized()) DB.getInstance().initDB();
+    }
+
+    public static void main(String[] args) {
+        ArrayList<Card> arrayList = DBs.getCards();
+
+        // 새로운 카드 생성
+            // 카드 이름 : 새로운카드
+            // 카드 번호 : 12345
+            // 포인트 : 0
+            // 잔액 : 10,000
+            // 비밀번호 : 1234
+        Card myCard = new Card("새로운 카드",12345,0,10_000,1234);
+
+        // 카드 전체 목록에 해당 카드 추가
+        arrayList.add(myCard);
+
     }
 }

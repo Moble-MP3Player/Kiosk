@@ -9,7 +9,9 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class ListTable {
+
     private static Point locations; // 표화면을 배치할 위치
+    private JFrame frame;
     private JTable jtable; // 화면에 보여줄 표
     private String[][] data; // 표의 각 셀에 담기는 데이터 배열
     private String[] titles; // 표의 속성들의 이름을 담는 배열
@@ -36,7 +38,7 @@ public class ListTable {
 
         titles = Reflections.getTitles(arrayList.get(0).getClass()); // GUI의 제목설정
         data = Reflections.convertToArray(arrayList);
-        JFrame frame = new JFrame();
+        frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(500, 300);
         frame.setTitle(arrayList.get(0).getClass().getName() + " data");
@@ -72,5 +74,10 @@ public class ListTable {
             }
         };
         jtable.setModel(newModel);
+    }
+
+    @Override
+    public String toString() {
+        return frame.getTitle() ;
     }
 }
