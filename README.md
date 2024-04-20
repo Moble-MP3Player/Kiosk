@@ -26,7 +26,9 @@
 # **Features**
 
 콘솔을 통한 상품 재고 관리 및 결제 기능을 제공합니다.
-<a href="https://branch-horn-d6b.notion.site/Kiosk-f06cbcfbed9e4e129c3cc880881026d1?pvs=4"> 📒 노션 </a> 
+<br>
+<a href="https://branch-horn-d6b.notion.site/Kiosk-f06cbcfbed9e4e129c3cc880881026d1?pvs=4"> **📒 Notion**
+</a> 
 
 # Members
 
