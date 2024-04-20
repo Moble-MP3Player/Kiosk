@@ -1,5 +1,6 @@
 package backend.reflections;
 
+import backend.annotations.ManagerMenu;
 import backend.annotations.UserMenu;
 import menu.CustomerService;
 import menu.ManagementService;
@@ -75,7 +76,7 @@ public class Reflections {
 
     public static ArrayList<KioskMenu> makeUserMenu(CustomerService customerService) {
         ArrayList<KioskMenu> menus = new ArrayList<>();
-
+        KioskMenu.resetId();
         Method[] methods = customerService.getClass().getMethods();
 
         for (Method method : methods) {
@@ -90,12 +91,12 @@ public class Reflections {
 
     public static ArrayList<KioskMenu> makeManagerMenu(ManagementService managementService) {
         ArrayList<KioskMenu> menus = new ArrayList<>();
-
+        KioskMenu.resetId();
         Method[] methods = managementService.getClass().getMethods();
 
         for (Method method : methods) {
-            if (!method.isAnnotationPresent(UserMenu.class)) continue; // 메뉴 어노테이션 찾기
-            UserMenu menu = method.getAnnotation(UserMenu.class); // 어노테이션 가져오기
+            if (!method.isAnnotationPresent(ManagerMenu.class)) continue; // 메뉴 어노테이션 찾기
+            ManagerMenu menu = method.getAnnotation(ManagerMenu.class); // 어노테이션 가져오기
             String menuTitle = menu.value(); // 메뉴 설명 가져오기
             menus.add(new KioskMenu(method,menuTitle));
         }

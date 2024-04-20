@@ -1,6 +1,5 @@
 package backend.dataLoader;
 
-import backend.dataLoader.DataLoader;
 import model.Card;
 import model.Product;
 import model.Receipt;

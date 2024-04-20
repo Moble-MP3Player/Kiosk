@@ -3,10 +3,10 @@ package backend.db;
 import GUI.ListTable;
 import backend.dataLoader.DataLoader;
 import backend.dataLoader.MockDataLoader;
+import backend.util.ListObserver;
 import model.Card;
 import model.Product;
 import model.Receipt;
-import backend.util.ListObserver;
 
 import java.util.ArrayList;
 
@@ -18,11 +18,13 @@ import java.util.ArrayList;
 public class DB {
     private boolean isinitalized = false;
     private boolean isGUIEnabled = true;
+    private boolean debugMode = false;
+
     private DataLoader dataLoader;
     private ArrayList<Product> products;
     private ArrayList<Card> cards;
     private ArrayList<Receipt> receipts;
-    private boolean debugMode = false;
+
     private static volatile DB instance;
 
     private DB(DataLoader dataLoader) {

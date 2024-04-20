@@ -1,27 +1,21 @@
 package menu;
 
 import backend.annotations.UserMenu;
-import backend.db.DBs;
 import model.Card;
-import model.Product;
 
-import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * 사용자 메뉴 구현하시면됩니다.
+ * 메뉴에 보여줄 함수는 @UserMenu("메뉴에 보여줄 텍스트") 형식으로 작성하시면 되고,
+ * 메뉴에 안보여줄 함수나, 변수는 자유롭게 쓰시면 됩니다.
+ * DBs 클래스 참고하시면 데이터 가져오는 함수 있어요!
+ */
 public class CustomerService {
 
     @UserMenu("테스트 출력하기")
     public void print(){
         System.out.println("테스트 결과입니다.");
-    }
-    
-    @UserMenu("상품 전체 보기")
-    public void makeshop(){
-        ArrayList<Product> arrayList = DBs.getProducts(); // 상품 전체 가져오기
-        for(int i = 0; i<arrayList.size(); i++){ //상품 리스트을 순회
-            Product product = arrayList.get(i);
-            System.out.println(product.getName()); // 사품이름을 출력
-        }
     }
 
     @UserMenu("상품 결제하기")

@@ -15,6 +15,10 @@ public class KioskMenu {
         this.menuId = counter.incrementAndGet();
     }
 
+    public static void resetId(){
+        counter = new AtomicInteger(0);
+    }
+
     public Method getMenuMethod() {
         return menuMethod;
     }
