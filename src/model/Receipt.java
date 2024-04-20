@@ -72,75 +72,75 @@ public class Receipt {
         this.change = amountReceived - totalPrice; //매개변수로 전달받은 받은 돈에서 총합 금액을 빼서 거스름 돈(change)에 저장
     }
 
-    void setCardName(String cardName){
+    public void setCardName(String cardName){
         this.cardName = cardName;
     }
 
-    void setReceiptNumber(int receiptNumber){
+    public void setReceiptNumber(int receiptNumber){
         this.receiptNumber = receiptNumber;
     }
 
-    void setReceiptDate(String receiptDate){
+    public void setReceiptDate(String receiptDate){
         this.receiptDate = receiptDate;
     }
 
-    void setDiscount(int discount){
+    public void setDiscount(int discount){
         this.discount = discount;
     }
-    
-    void setCardNum(int cardNum){
+
+    public void setCardNum(int cardNum){
         this.cardNum = cardNum;
     }
 
-    String getProductName(){
+    public String getProductName(){
         return productName;
     }
 
-    int getPrice(){
+    public int getPrice(){
         return price;
     }
 
-    int getCount(){
+    public int getCount(){
         return count;
     }
 
-    String getPaymentMethod(){
+    public String getPaymentMethod(){
         return paymentMethod;
     }
 
-    String getPaymentDate(){
+    public String getPaymentDate(){
         return paymentDate;
     }
 
-    int getAmountReceived(){
+    public int getAmountReceived(){
         return amountReceived;
     }
 
-    int getTotalPrice(){
+    public int getTotalPrice(){
         return totalPrice;
     }
 
-    int getChange(){
+    public int getChange(){
         return change;
     }
 
-    String getCardName(){
+    public String getCardName(){
         return cardName;
     }
 
-    int getReceiptNumber(){
+    public int getReceiptNumber(){
         return receiptNumber;
     }
 
-    String getReceiptDate(){
+    public String getReceiptDate(){
         return receiptDate;
     }
 
-    int getDiscount(){
+    public int getDiscount(){
         return discount;
     }
-    
-    int getCardNum(){
+
+    public int getCardNum(){
         return cardNum;
     }
 
