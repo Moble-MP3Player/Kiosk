@@ -47,6 +47,17 @@ public class ListObserver extends Thread {
     }
 
     /**
+     * 옵저버의 관찰목록에 ArrayList만 추가하는 메서드
+     * @param arrayList 관찰목록에 추가할 리스트
+     */
+    public void add(ArrayList<?> arrayList){
+        String[][] data = Reflections.convertToArray(arrayList);
+        ObservableEntity entity = new ObservableEntity(arrayList,data);
+        observableEntities.add(entity);
+    }
+    
+
+    /**
      * 현재 관찰목록의 모든 데이터 관찰후, 데이터 변화 감지되면 해당 ListTable 업데이트
      */
     private void checkDiff() {

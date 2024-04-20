@@ -22,7 +22,7 @@ public class DB {
 
     private DB(DataLoader dataLoader){
         this.dataLoader = dataLoader;
-        debugMode = false;
+        debugMode = true;
     }
 
     public static DB getInstance() {
@@ -86,6 +86,11 @@ public class DB {
         ListObserver.getInstance().add(products,new ListTable(products));
         ListObserver.getInstance().add(cards,new ListTable(cards));
         ListObserver.getInstance().add(receipts,new ListTable(receipts));
+      
+//        // GUI가 없시, 데이터만 관찰목록에 추가
+//        ListObserver.getInstance().add(products);
+//        ListObserver.getInstance().add(cards);
+//        ListObserver.getInstance().add(receipts);
 
         isinitalized = true;
     }
