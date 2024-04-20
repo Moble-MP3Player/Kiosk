@@ -14,21 +14,21 @@ import java.util.ArrayList;
  */
 public class KioskService {
 
-    private final CustomerService customerService;
-    private final ManagementService managementService;
+    private final CustomerService customerService; // 유저 메뉴가 정의된 클래스
+    private final ManagementService managementService; // 관리자 메뉴가 정의된 클래스
 
-    private ArrayList<KioskMenu> uesrMenus;
-    private ArrayList<KioskMenu> managerMenus;
+    private ArrayList<KioskMenu> uesrMenus; // @UserMenu 사용자 메뉴 목록(함수와 기능의 이름들)
+    private ArrayList<KioskMenu> managerMenus; // @ManagerMenu 관리자 메뉴 목록(함수와 기능의 이름들)
 
 
     public KioskService(CustomerService customerService, ManagementService managementService) {
-        this.customerService = customerService; // 사용자 메뉴
-        this.managementService = managementService; // 관리자 메뉴
+        this.customerService = customerService; // 사용자 메뉴 클래스 초기화
+        this.managementService = managementService; // 관리자 메뉴 클래스 초기화
     }
 
     public void initMenu() {
-        uesrMenus = Reflections.makeUserMenu(customerService);
-        managerMenus = Reflections.makeManagerMenu(managementService);
+        uesrMenus = Reflections.makeUserMenu(customerService); // 동적으로 코드를 읽어 @UserMenu가 정의된 함수를 목록으로 가져옴.
+        managerMenus = Reflections.makeManagerMenu(managementService); // 동적으로 코드를 읽어 @ManagerMenu 정의된 함수를 목록으로 가져옴.
     }
 
     /**
@@ -36,8 +36,8 @@ public class KioskService {
      * @param menus 출력할 메뉴
      */
     private void showMenu(ArrayList<KioskMenu> menus){
-        for (KioskMenu kioskMenu : menus) {
-            System.out.printf("%d) %s\n",
+        for (KioskMenu kioskMenu : menus) { // 메뉴 목록마다
+            System.out.printf("%d) %s\n", // id) "menuTitle" 형식으로 출력합니다.
                     kioskMenu.getMenuId(),
                     kioskMenu.getMenuTitle()
             );
@@ -48,14 +48,14 @@ public class KioskService {
      * 관리자 메뉴를 보여줍니다.
      */
     public void showManageMenu() {
-        showMenu(managerMenus);
+        showMenu(managerMenus); // 유저 메뉴 출력
     }
 
     /**
      * 유저 메뉴를 보여줍니다.
      */
     public void showUserMenu(){
-        showMenu(uesrMenus);
+        showMenu(uesrMenus); // 관리자 메뉴 출력
     }
 
 
@@ -64,7 +64,7 @@ public class KioskService {
      * 매개변수로 입력받은 값으로 해당 메뉴의 함수를 실행시킵니다.
      * @param input 사용자 입력
      */
-    public void chooseAndExecuteUserMenu(int input){
+    public void chooseAndExecuteUserMenu(int input){ // 입력받은 input에 해당하는 유저메뉴 함수 출력
         boolean isExecuted = false;
 
         for (KioskMenu kioskMenu : uesrMenus) {
@@ -83,7 +83,7 @@ public class KioskService {
         }
     }
 
-    public void chooseAndExecuteManagerMenu(int input){
+    public void chooseAndExecuteManagerMenu(int input){  // 입력받은 input에 해당하는 관리자 메뉴 함수 출력
         boolean isExecuted = false;
 
         for (KioskMenu kioskMenu : managerMenus) {

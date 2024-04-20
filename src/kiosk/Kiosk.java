@@ -12,13 +12,13 @@ public class Kiosk {
     KioskService kioskService;
 
     /**
-     * kiosk.Kiosk 초기화 함수로 kiosk.Kiosk 생성 시 호출되며 파일을 통해서 데이터를 불러옴.
+     * 키오스크를 생성하는데 초기화해야하는 변수들에게 초깃값을 부여합니다.
      */
     public void init() {
-        CustomerService customerService = new CustomerService();
-        ManagementService managementService = new ManagementService();
-        kioskService = new KioskService(customerService, managementService);
-        kioskService.initMenu();
+        CustomerService customerService = new CustomerService(); // 고객 메뉴 생성
+        ManagementService managementService = new ManagementService(); // 관리자 메뉴 생성
+        kioskService = new KioskService(customerService, managementService); // 키오스크 서비스 생성
+        kioskService.initMenu(); // 메뉴 초기화
     }
 
     /**
