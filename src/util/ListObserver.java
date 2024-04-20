@@ -71,6 +71,8 @@ public class ListObserver extends Thread {
                 DBs.log(entity.getId() + "의 데이터 변경 : ");
                 // 변경된 리스트를 참조하는 테이블을 가져옴.
                 entity.setData(newData);
+
+                if(entity.hasGUI()) entity.getGUI().update(newData);
             }
 
         }
@@ -120,7 +122,4 @@ public class ListObserver extends Thread {
         }
     }
 
-    public static void main(String[] args) {
-        DBs.getProducts().get(3).setName("테스트");
-    }
 }
