@@ -6,7 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 유저 메뉴에 추가할 메뉴에 추가해주세요.
+ * 유저 메뉴에 추가할 메뉴에 추가해주세요. <br>
  * ex) @CustomerService("상품 구매 메뉴")
  */
 @Target(ElementType.METHOD)

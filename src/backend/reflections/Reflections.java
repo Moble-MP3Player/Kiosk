@@ -10,7 +10,9 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 /**
- *
+ * 코드를 동적으로 읽어오는 기능을 가진 클래스입니다.
+ * ListTable을 생성하기 위해, arrayList를 직렬화 하거나
+ * 키오스크 메뉴들을 읽어와 제공합니다.
  */
 public class Reflections {
 

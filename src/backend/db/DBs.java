@@ -57,7 +57,8 @@ public class DBs {
     }
 
     /**
-     * 로깅이 활성화되어있다면 전달된 문자열을 출력합니다.
+     * 로깅이 활성화되어 있을 경우,
+     * 매개변수로 전달된 내용을 출력합니다. 또한 해당 함수(log)가 출력된 위치 또한 출력합니다.
      */
     public static void log(Object... objs) {
         if (objs.length == 0) return;

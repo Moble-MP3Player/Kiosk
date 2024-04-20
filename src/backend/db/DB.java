@@ -36,7 +36,7 @@ public class DB {
             synchronized (DB.class) {
                 if (instance == null) { // Second check (with locking)
                     // 다른 쓰레드에서 if문을 통과할수있기떄문에 double Locking을 함.
-                    instance = new DB(new MockDataLoader());
+                    instance = new DB(new MockDataLoader()); // 샘플 데이터를 받아옴.
                 }
             }
         }

@@ -6,6 +6,9 @@ import model.Receipt;
 
 import java.util.ArrayList;
 
+/**
+ * 테스트를 위한 임시로 만든 샘플 데이터를 반환하는 기능을 가진 클래스
+ */
 public class MockDataLoader implements DataLoader {
     @Override
     public ArrayList<Product> loadProductData() {
