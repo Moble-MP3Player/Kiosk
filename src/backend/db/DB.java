@@ -16,9 +16,9 @@ import java.util.ArrayList;
  * 기능을 호출하려면 DBs 클래스를 사용해주세요.
  */
 public class DB {
-    private boolean isinitalized = false;
-    private boolean isGUIEnabled = true;
-    private boolean debugMode = false;
+    private boolean isinitalized = false; // 데이터베이스 초기화 여부
+    private boolean isGUIEnabled = true; // 화면에 표를 띄울지 말지
+    private boolean debugMode = false; // 로그 남기기 여부
 
     private DataLoader dataLoader;
     private ArrayList<Product> products;
