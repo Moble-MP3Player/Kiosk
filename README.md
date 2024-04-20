@@ -1,5 +1,5 @@
 <div align="center">
-<h1>kiosk.Kiosk</h1>
+<h1>Kiosk</h1>
 <img src="https://github.com/Moble-MP3Player/Kiosk/assets/54611807/241e845a-d09d-482b-b393-d76ad77d69eb" width=500, height=500>
 
 <br>
