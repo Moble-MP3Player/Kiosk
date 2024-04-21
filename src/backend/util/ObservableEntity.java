@@ -17,18 +17,21 @@ public class ObservableEntity {
     private ListTable GUI;
     private ArrayList<?> list;
     private String[][] data;
+    private Class<?> clazz;
 
-    public ObservableEntity(ListTable GUI, ArrayList<?> list, String[][] data) {
+    public ObservableEntity(ListTable GUI, ArrayList<?> list,Class<?> clazz, String[][] data) {
         this.id = counter.getAndIncrement();
         this.GUI = GUI;
         this.list = list;
         this.data = data;
+        this.clazz = clazz;
     }
 
-    public ObservableEntity(ArrayList<?> list, String[][] data) {
+    public ObservableEntity(ArrayList<?> list, String[][] data, Class<?> clazz) {
         this.id = counter.getAndIncrement();
         this.list = list;
         this.data = data;
+        this.clazz = clazz;
         this.GUI = null;
     }
 
@@ -47,16 +50,10 @@ public class ObservableEntity {
         return GUI;
     }
 
-    public void setGUI(ListTable GUI) {
-        this.GUI = GUI;
-    }
+    public Class<?> getClazz() {return clazz;}
 
     public ArrayList<?> getList() {
         return list;
-    }
-
-    public void setList(ArrayList<?> list) {
-        this.list = list;
     }
 
     public String[][] getData() {
