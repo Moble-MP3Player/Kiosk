@@ -13,9 +13,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class ObservableEntity {
 
     private static AtomicInteger counter = new AtomicInteger();
-    private int id;
-    private ListTable GUI;
-    private ArrayList<?> list;
+    private final int id;
+    private final ListTable GUI;
+    private final ArrayList<?> list;
     private String[][] data;
     private Class<?> clazz;
 
