@@ -53,6 +53,7 @@ public class Card {
     public void pay(long price) {  // 상품 결제하기
         if( cardBal - price >= 0) {
             cardBal -= price;
+            System.out.println("결제가 완료되었습니다.");
         } else System.out.println("잔액이 부족합니다.");
     }
 
