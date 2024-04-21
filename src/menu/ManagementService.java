@@ -1,6 +1,10 @@
 package menu;
 
 import backend.annotations.ManagerMenu;
+import backend.db.DBs;
+import model.Product;
+
+import java.util.ArrayList;
 
 /**
  * 관리자 메뉴 구현하시면됩니다.
@@ -14,4 +18,25 @@ public class ManagementService {
     public void printTest(){
         System.out.println("매니저 모드입니다.");
     }
+
+   @ManagerMenu("상품 발주하기")
+    public void ProductOrder(){
+       ArrayList<Product> arrayList = DBs.getProducts();
+       for (int i = 0; i < arrayList.size(); i++) {
+           Product p=arrayList.get(i);
+           if (p.getInventory()==0){
+               p.setInventory(10);
+
+           }
+       }
+   }
+
+    public static void main(String[] args) {
+        ArrayList<Product> arrayList = DBs.getProducts();
+
+        for(int i=0;i<arrayList.size();i++){
+
+        }
+    }
 }
+
