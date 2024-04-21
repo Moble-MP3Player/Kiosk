@@ -1,6 +1,5 @@
 package GUI;
 
-import backend.db.DBs;
 import backend.reflections.Reflections;
 
 import javax.swing.*;
@@ -10,40 +9,34 @@ import java.util.ArrayList;
 
 public class ListTable {
 
-    private static Point locations; // 표화면을 배치할 위치
+    private static final Point locations = new Point(10,10); // 표화면을 배치할 위치
     private JFrame frame;
     private JTable jtable; // 화면에 보여줄 표
     private String[][] data; // 표의 각 셀에 담기는 데이터 배열
     private String[] titles; // 표의 속성들의 이름을 담는 배열
     private final ArrayList<?> arrayList; // 표를 구성하는 arrayList
+    private final Class<?> listElementClass; // ArrayList 가 담고있는 클래스
 
-    public ListTable(ArrayList<?> arrayList) {
+    public ListTable(String title,ArrayList<?> arrayList, Class<?> listElementClass) {
         this.arrayList = arrayList;
-        initJFrame();
+        this.listElementClass = listElementClass;
+        initJFrame(title);
     }
 
     /**
      * 화면을 생성하고 성공 시, true 를 반환합니다. 실패 시 false 를 반환합니다.
      * @return True : 생성 성공 <br> False : 생성 실패
      */
-    private boolean initJFrame() {
-        // 존재하지 않는 데이터 베이스 출력 시,
-        if(arrayList.isEmpty()) {
-            // 에러 출력 및 화면 생성 실패
-            DBs.log("데이터가 존재하지 않아 ListTable을 생성할 수 없습니다.");
-            return false;
-        }
-        // 처음으로 생성되는 GUI 위치 설정 (10,10 에 배치)
-        if(locations == null) locations = new Point(10,10);
-
-        titles = Reflections.getTitles(arrayList.get(0).getClass()); // GUI의 제목설정
-        data = Reflections.convertToArray(arrayList);
+    private boolean initJFrame(String title) {
         frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(500, 300);
-        frame.setTitle(arrayList.get(0).getClass().getName() + " data");
-        frame.setLocation(locations);
-        locations.x = locations.x + 500;
+        frame.setTitle(title);
+
+        titles = Reflections.getTitles(listElementClass); // GUI의 제목설정
+        data = Reflections.convertToArray(arrayList, listElementClass);
+
+        updateFrameLocation();
 
         DefaultTableModel defaultTableModel = new DefaultTableModel(data, titles) {
             // cell 편집 불가하게
@@ -79,5 +72,33 @@ public class ListTable {
     @Override
     public String toString() {
         return frame.getTitle() ;
+    }
+
+    public ArrayList<?> getList() {
+        return this.arrayList;
+    }
+
+    public Class<?> getListElementClazz() {
+        return this.listElementClass;
+    }
+
+    /**
+     * GUI의 배치 장소를 설정합니다.
+     * 10,10 부터 행마다 3개씩 배치합니다.
+     */
+    private void updateFrameLocation(){
+        frame.setLocation(locations);
+        locations.x = locations.x + 500;
+        if(locations.x>1500){ // x가 1500이 넘어갈 경우
+            locations.x = 10; // x를 10으로 수정
+            locations.y = locations.y + 310; // y축 310 이동(ui 화면 크기 + 10)
+        }
+    }
+
+    /**
+     * GUI가 보일지 말지 설정하는 함수
+     */
+    public void setVisible(boolean visible){
+        frame.setVisible(visible);
     }
 }

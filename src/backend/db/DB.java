@@ -16,7 +16,7 @@ import java.util.ArrayList;
  * 기능을 호출하려면 DBs 클래스를 사용해주세요.
  */
 public class DB {
-    private boolean isinitalized = false; // 데이터베이스 초기화 여부
+    private boolean isInitalized = false; // 데이터베이스 초기화 여부
     private boolean isGUIEnabled = true; // 화면에 표를 띄울지 말지
     private boolean debugMode = false; // 로그 남기기 여부
 
@@ -25,37 +25,28 @@ public class DB {
     private ArrayList<Card> cards;
     private ArrayList<Receipt> receipts;
 
-    private static volatile DB instance;
+    private static final DB instance = new DB(new MockDataLoader());
 
     private DB(DataLoader dataLoader) {
         this.dataLoader = dataLoader;
     }
 
     public static DB getInstance() {
-        if (instance == null) { // First check (no locking)
-            synchronized (DB.class) {
-                if (instance == null) { // Second check (with locking)
-                    // 다른 쓰레드에서 if문을 통과할수있기떄문에 double Locking을 함.
-                    instance = new DB(new MockDataLoader()); // 샘플 데이터를 받아옴.
-                }
-            }
-        }
         return instance;
     }
-    //
 
     public ArrayList<Product> getProducts() {
-        if (!isinitalized) initDB();
+        if (!isInitalized) initDB();
         return products;
     }
 
     public ArrayList<Card> getCards() {
-        if (!isinitalized) initDB();
+        if (!isInitalized) initDB();
         return cards;
     }
 
     public ArrayList<Receipt> getReceipts() {
-        if (!isinitalized) initDB();
+        if (!isInitalized) initDB();
         return receipts;
     }
 
@@ -69,7 +60,7 @@ public class DB {
 
 
     public boolean isIsinitalized() {
-        return isinitalized;
+        return isInitalized;
     }
 
     /**
@@ -85,16 +76,16 @@ public class DB {
 
         if (isGUIEnabled) {
             // 리스트 테이블을 생성하고 관찰목록에 등록합니다.
-            ListObserver.getInstance().add(products, new ListTable(products));
-            ListObserver.getInstance().add(cards, new ListTable(cards));
-            ListObserver.getInstance().add(receipts, new ListTable(receipts));
+            ListObserver.getInstance().add(new ListTable("상품 재고 목록",products,Product.class));
+            ListObserver.getInstance().add(new ListTable("등록된 카드 목록",cards,Card.class));
+            ListObserver.getInstance().add(new ListTable("영수증 전체 목록",receipts,Receipt.class));
         } else {
             // GUI가 없시, 데이터만 관찰목록에 추가
-            ListObserver.getInstance().add(products);
-            ListObserver.getInstance().add(cards);
-            ListObserver.getInstance().add(receipts);
+            ListObserver.getInstance().add(products, Product.class);
+            ListObserver.getInstance().add(cards, Card.class);
+            ListObserver.getInstance().add(receipts, Receipt.class);
         }
-        isinitalized = true;
+        isInitalized = true;
     }
 
 
