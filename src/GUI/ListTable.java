@@ -29,7 +29,7 @@ public class ListTable {
      */
     private boolean initJFrame(String title) {
         frame = new JFrame();
-        frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(500, 300);
         frame.setTitle(title);
 
