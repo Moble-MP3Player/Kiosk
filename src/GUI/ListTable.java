@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class ListTable {
 
-    private static Point locations; // 표화면을 배치할 위치
+    private static final Point locations = new Point(10,10); // 표화면을 배치할 위치
     private JFrame frame;
     private JTable jtable; // 화면에 보여줄 표
     private String[][] data; // 표의 각 셀에 담기는 데이터 배열
@@ -28,24 +28,15 @@ public class ListTable {
      * @return True : 생성 성공 <br> False : 생성 실패
      */
     private boolean initJFrame(String title) {
-        // 존재하지 않는 데이터 베이스 출력 시,
-
-        // 처음으로 생성되는 GUI 위치 설정 (10,10 에 배치)
-        if(locations == null) locations = new Point(10,10);
+        frame = new JFrame();
+        frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        frame.setSize(500, 300);
+        frame.setTitle(title);
 
         titles = Reflections.getTitles(listElementClass); // GUI의 제목설정
         data = Reflections.convertToArray(arrayList, listElementClass);
-        frame = new JFrame();
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(500, 300);
-        frame.setTitle(title);
-        frame.setLocation(locations);
 
-        locations.x = locations.x + 500;
-        if(locations.x>1500){
-            locations.x = 10;
-            locations.y = locations.y + 310;
-        }
+        updateFrameLocation();
 
         DefaultTableModel defaultTableModel = new DefaultTableModel(data, titles) {
             // cell 편집 불가하게
@@ -89,5 +80,25 @@ public class ListTable {
 
     public Class<?> getListElementClazz() {
         return this.listElementClass;
+    }
+
+    /**
+     * GUI의 배치 장소를 설정합니다.
+     * 10,10 부터 행마다 3개씩 배치합니다.
+     */
+    private void updateFrameLocation(){
+        frame.setLocation(locations);
+        locations.x = locations.x + 500;
+        if(locations.x>1500){ // x가 1500이 넘어갈 경우
+            locations.x = 10; // x를 10으로 수정
+            locations.y = locations.y + 310; // y축 310 이동(ui 화면 크기 + 10)
+        }
+    }
+
+    /**
+     * GUI가 보일지 말지 설정하는 함수
+     */
+    public void setVisible(boolean visible){
+        frame.setVisible(visible);
     }
 }
