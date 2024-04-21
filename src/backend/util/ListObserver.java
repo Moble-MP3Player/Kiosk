@@ -38,22 +38,25 @@ public class ListObserver extends Thread {
 
     /**
      * 옵저버의 관찰목록에 추가하는 메서드
-     * @param arrayList 관찰목록에 추가할 리스트
-     * @param listTable 해당 arrayList의 변경이 있을 때, 업데이트할 Ui
+     * @param listTable 리스트를 담고 있는 UI
      */
-    public void add(ArrayList<?> arrayList, ListTable listTable){
-        String[][] data = Reflections.convertToArray(arrayList);
-        ObservableEntity entity = new ObservableEntity(listTable,arrayList,data);
+    public void add(ListTable listTable){
+        ArrayList<?> arrayList = listTable.getList();
+        Class<?> clazz = listTable.getListElementClazz();
+
+        String[][] data = Reflections.convertToArray(arrayList,clazz);
+        ObservableEntity entity = new ObservableEntity(listTable,arrayList,clazz,data);
         observableEntities.add(entity);
     }
 
     /**
      * 옵저버의 관찰목록에 ArrayList만 추가하는 메서드
      * @param arrayList 관찰목록에 추가할 리스트
+     * @param clazz 해당 리스크가 담고있는 객체 클래스
      */
-    public void add(ArrayList<?> arrayList){
-        String[][] data = Reflections.convertToArray(arrayList);
-        ObservableEntity entity = new ObservableEntity(arrayList,data);
+    public void add(ArrayList<?> arrayList, Class<?> clazz){
+        String[][] data = Reflections.convertToArray(arrayList,clazz);
+        ObservableEntity entity = new ObservableEntity(arrayList,data,clazz);
         observableEntities.add(entity);
     }
     
@@ -64,7 +67,7 @@ public class ListObserver extends Thread {
     private void checkDiff() {
 
         for(ObservableEntity entity : observableEntities){
-            String[][] newData = Reflections.convertToArray(entity.getList());
+            String[][] newData = Reflections.convertToArray(entity.getList(), entity.getClazz());
             String[][] oldData = entity.getData();
 
             // 데이터 변화 체크
