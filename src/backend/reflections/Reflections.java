@@ -167,7 +167,6 @@ public class Reflections {
         Object[] newParams = new Object[paramClasses.length];
 
         for (int i = 0; i < paramClasses.length; i++) {
-            System.out.println(paramClasses[i].toString());
             newParams[i] = switch (paramClasses[i].toString()) {
                 case "class java.lang.String" -> paramData[i];
                 case "int" -> Integer.parseInt(paramData[i]);
