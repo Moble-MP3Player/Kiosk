@@ -83,10 +83,11 @@ public class KioskService {
                             해당 메뉴 제목 : %s
                             해당 함수 이름 : %s << 여길 확인하세요.""".formatted(kioskMenu.getMenuTitle(), kioskMenu.getMenuMethod()));
 
-
-                    DBs.log("reflection 오류 " + e.getCause());
-                    throw new RuntimeException("서윤오한테 말좀해주세요..." + e.getCause());
-
+                    throw new RuntimeException("""
+                            %s
+                            해당 메뉴 제목 : %s
+                            해당 함수 이름 : %s << 여길 확인하세요.
+                            """.formatted(e.getCause(),kioskMenu.getMenuTitle(),kioskMenu.getMenuMethod()));
                 }
                 isExecuted = true;
             }
