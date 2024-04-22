@@ -75,6 +75,7 @@ public class ListObserver extends Thread {
                 DBs.log(entity.getId() + "의 데이터 변경 : ");
                 // 변경된 리스트를 참조하는 테이블을 가져옴.
                 entity.setData(newData);
+                DBs.update();
 
                 if(entity.hasGUI()) entity.getGUI().update(newData);
             }
@@ -104,6 +105,8 @@ public class ListObserver extends Thread {
             }
 
             for (int j = 0; j < arr1[i].length; j++) {
+                if(arr1[i][j] == null) arr1[i][j] = "";
+                if(arr2[i][j] == null) arr2[i][j] = "";
                 if (!arr1[i][j].equals(arr2[i][j])) {
                     return false; // 요소 비교, 다르면 false 반환
                 }

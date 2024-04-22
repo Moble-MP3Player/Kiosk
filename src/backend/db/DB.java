@@ -2,6 +2,7 @@ package backend.db;
 
 import GUI.ListTable;
 import backend.dataLoader.DataLoader;
+import backend.dataLoader.FileDataLoader;
 import backend.dataLoader.MockDataLoader;
 import backend.util.ListObserver;
 import model.Card;
@@ -89,4 +90,9 @@ public class DB {
     }
 
 
+    public void updateDB() {
+        if(dataLoader instanceof FileDataLoader) {
+            ((FileDataLoader) dataLoader).notifyDataSetChanged();
+        }
+    }
 }

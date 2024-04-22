@@ -1,5 +1,6 @@
 package backend.db;
 
+import backend.util.ObservableEntity;
 import model.Card;
 import model.Product;
 import model.Receipt;
@@ -83,5 +84,8 @@ public class DBs {
         if (!DB.getInstance().isIsinitalized()) DB.getInstance().initDB();
     }
 
+    public static void update() {
+        getInstance().updateDB();
+    }
 }
 
