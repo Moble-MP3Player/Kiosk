@@ -43,6 +43,7 @@ public class ManagementService {
            if (serch.equals(product.getName())){
                System.out.println(product.getName()+product.getInventory());
                found=true;
+               break;
            }
            if (!found){
                System.out.println("해당되는 이름의 상품이 없습니다.");
