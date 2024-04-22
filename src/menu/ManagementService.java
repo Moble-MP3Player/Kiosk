@@ -62,7 +62,10 @@ public class ManagementService {
         }
         int buy= scanner.nextInt();
         if (selectedProduct!=null && buy<selectedProduct.getInventory()){
-            
+            selectedProduct.setInventory(selectedProduct.getInventory()-buy);
+        }
+        else {
+            System.out.println("현재 재고량: "+selectedProduct.getInventory());
         }
    }
 
