@@ -29,4 +29,5 @@ bin/
 .DS_Store
 
 ##? ##
-hs_err_pid14452.log
+*.log
+/.idea/misc.xml
