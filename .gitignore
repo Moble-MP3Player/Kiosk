@@ -30,5 +30,5 @@ bin/
 
 ##? ##
 *.log
-.idea/misc.xml
+
 /res
