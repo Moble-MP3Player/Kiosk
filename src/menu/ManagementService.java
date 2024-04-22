@@ -5,7 +5,9 @@ import backend.db.DB;
 import backend.db.DBs;
 import model.Product;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Scanner;
 
 /**
@@ -26,17 +28,35 @@ public class ManagementService {
 
    @ManagerMenu("상품 발주하기")
     public void productOrder(){
+        Scanner sc=new Scanner(System.in);
+        String date;
+        String agree;
        for (int i = 0; i < arrayList.size(); i++) {
            Product p=arrayList.get(i);
            if (p.getInventory()==0){
-               p.setInventory(10);
-
+               System.out.println("재고가 없는 상품은 "+p.getName()+"입니다.");
+               System.out.println("상품을 추가 발주하시겠습니까? Y/N");
+               agree=sc.next();
+               if (agree.equals("Y") || agree.equals("y")){
+                   System.out.println("오늘의 날짜를 년 월 일 순으로 입력해주세요 '예:2024년 4월 23일'");
+                   date=sc.next();
+                   p.setDate(date);
+                   p.setInventory(10);
+               }
+               if (agree.equals("n") || agree.equals("N")){
+                    continue;
+               }
+               else{
+                   System.out.println("잘못된 입력입니다. Y또는 N을 눌러주세요" );
+                   break;
+               }
            }
        }
    }
    @ManagerMenu("상품 검색")
     public void serchProduct(){
        Scanner sc=new Scanner(System.in);
+       System.out.println("검색할 상품을 입력해주세요");
        String serch=sc.next();
        boolean found=false;
        for (Product product:arrayList) {
@@ -55,12 +75,18 @@ public class ManagementService {
    @ManagerMenu("상품 수량 선택")
     public void selectProduct(){
         Scanner scanner=new Scanner(System.in);
+        System.out.println("상품을 선택해주세요");
         String select=scanner.next();
         Product selectedProduct=null;
         for (Product product : arrayList){
             if (select.equals(product.getName())){
                 selectedProduct=product;
+
             }
+        }
+        if (selectedProduct==null){
+            System.out.println("해당되는 상품이 없습니다.");
+            return;
         }
         int buy= scanner.nextInt();
         if (selectedProduct!=null && buy<selectedProduct.getInventory()){
