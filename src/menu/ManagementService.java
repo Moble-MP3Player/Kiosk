@@ -45,9 +45,10 @@ public class ManagementService {
                found=true;
                break;
            }
-           if (!found){
-               System.out.println("해당되는 이름의 상품이 없습니다.");
-           }
+
+       }
+       if (!found){
+           System.out.println("해당되는 이름의 상품이 없습니다.");
        }
 
    }
