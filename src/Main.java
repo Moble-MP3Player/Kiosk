@@ -1,4 +1,3 @@
-import backend.db.DBs;
 import kiosk.Kiosk;
 
 public class Main {
