@@ -75,19 +75,28 @@ public class KioskService {
                     kioskMenu.getMenuMethod().invoke(obj, null);
                 } catch (Exception e) {
                     DBs.setLogging(true);
-                    if (e.getCause().getClass() == InputMismatchException.class) throw new InputMismatchException("""
-                            콘솔로 입력받은 데이터의 자료형 불일치
-                            Scanner를 통한 입출력의 자료형이 맞지 않습니다.
-                            ex) sc.nextInt()를 통해 숫자 입력을 요청했는데 int가 아닌 String을 입력했을 경우
+                    try {
+                        if (e.getCause().getClass() == InputMismatchException.class)
+                            throw new InputMismatchException("""
+                                    콘솔로 입력받은 데이터의 자료형 불일치
+                                    Scanner를 통한 입출력의 자료형이 맞지 않습니다.
+                                    ex) sc.nextInt()를 통해 숫자 입력을 요청했는데 int가 아닌 String을 입력했을 경우
 
-                            해당 메뉴 제목 : %s
-                            해당 함수 이름 : %s << 여길 확인하세요.""".formatted(kioskMenu.getMenuTitle(), kioskMenu.getMenuMethod()));
+                                    해당 메뉴 제목 : %s
+                                    해당 함수 이름 : %s << 여길 확인하세요.""".formatted(kioskMenu.getMenuTitle(), kioskMenu.getMenuMethod()));
 
-                    throw new RuntimeException("""
-                            %s
-                            해당 메뉴 제목 : %s
-                            해당 함수 이름 : %s << 여길 확인하세요.
-                            """.formatted(e.getCause(),kioskMenu.getMenuTitle(),kioskMenu.getMenuMethod()));
+                        throw new RuntimeException("""
+                                %s
+                                \n오류 내용 : %s
+                                해당 메뉴 제목 : %s
+                                해당 함수 이름 : %s << 여길 확인하세요.
+                                
+                                """.formatted(e.getMessage(),e.getCause(), kioskMenu.getMenuTitle(), kioskMenu.getMenuMethod()));
+                    }catch (Exception error){
+                        error.printStackTrace();
+                        System.out.println();
+                        System.exit(-1);
+                    }
                 }
                 isExecuted = true;
             }
