@@ -2,7 +2,7 @@ package backend.db;
 
 import GUI.ListTable;
 import backend.dataLoader.DataLoader;
-import backend.dataLoader.MockDataLoader;
+import backend.dataLoader.FileDataLoader;
 import backend.util.ListObserver;
 import model.Card;
 import model.Product;
@@ -25,7 +25,7 @@ public class DB {
     private ArrayList<Card> cards;
     private ArrayList<Receipt> receipts;
 
-    private static final DB instance = new DB(new MockDataLoader());
+    private static final DB instance = new DB(new FileDataLoader());
 
     private DB(DataLoader dataLoader) {
         this.dataLoader = dataLoader;
@@ -89,4 +89,9 @@ public class DB {
     }
 
 
+    public void updateDB() {
+        if(dataLoader instanceof FileDataLoader) {
+            ((FileDataLoader) dataLoader).notifyDataSetChanged();
+        }
+    }
 }
