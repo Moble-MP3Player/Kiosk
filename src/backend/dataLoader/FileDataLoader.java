@@ -178,7 +178,6 @@ public class FileDataLoader implements DataLoader {
                     replaceAll("\\s", "").
                     split("\\|");
             if(datas.length > 1) products.add((Product) Reflections.convertDataTypeStringToMemberVarType(Product.class,datas));
-            System.out.println(products.toString());
         });
 
     }
