@@ -1,6 +1,5 @@
 package backend.db;
 
-import backend.util.ObservableEntity;
 import model.Card;
 import model.Product;
 import model.Receipt;
