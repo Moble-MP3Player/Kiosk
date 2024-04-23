@@ -302,56 +302,63 @@ public class CustomerService {
 //        receipt.printReceipt();
 //    }
 
-    public void addCart() {
-        Scanner scanner = new Scanner(System.in);
-        ShoppingCart wishlist = new ShoppingCart();
+//    public void addCart() {
+//        Scanner scanner = new Scanner(System.in);
+//        ShoppingCart wishlist = new ShoppingCart();
+//
+//        System.out.println("상품과 수량을 입력하세요. 종료하려면 '끝'을 입력하세요.");
+//
+//        while (true) {
+//
+//            System.out.print("상품 이름: ");
+//            String name = scanner.nextLine();
+//
+//            if (name.equalsIgnoreCase("끝")) {
+//                break;
+//            }
+//
+//            // 상품이 이미 목록에 있는지 확인
+//            Product existingProduct = null;
+//            for (Product product : wishlist.getShoppingCart()) {
+//                if (product.getName().equalsIgnoreCase(name)) {
+//                    existingProduct = product;
+//                    break;
+//                }
+//            }
+//
+//            int quantity;
+//            if (existingProduct != null) {
+//                while (true) {
+//                    System.out.print("수량: ");
+//                    quantity = Integer.parseInt(scanner.nextLine());
+//
+//                    if (quantity <= existingProduct.getInventory()) {
+//                        break; // 입력한 수량이 기존 재고보다 작거나 같을 때 루프 탈출
+//                    } else {
+//                        System.out.println("입력한 수량이 기존 재고를 초과했습니다. 다시 입력하세요.");
+//                    }
+//                }
+//            } else {
+//                System.out.print("수량: ");
+//                quantity = Integer.parseInt(scanner.nextLine());
+//            }
+//
+//
+//            wishlist.addProduct(name, quantity);
+//
+//            System.out.println("상품이 추가되었습니다.\n");
+//        }
+//
+//        wishlist.printShoppingCart();
+//    }
 
 
-        System.out.println("상품과 수량을 입력하세요. 종료하려면 '끝'을 입력하세요.");
+    @UserMenu("상품 삭제")
+    public void removeCart() {
 
-        while (true) {
-
-            System.out.print("상품 이름: ");
-            String name = scanner.nextLine();
-
-            if (name.equalsIgnoreCase("끝")) {
-                break;
-            }
-
-            // 상품이 이미 목록에 있는지 확인
-            Product existingProduct = null;
-            for (Product product : wishlist.getShoppingCart()) {
-                if (product.getName().equalsIgnoreCase(name)) {
-                    existingProduct = product;
-                    break;
-                }
-            }
-
-            int quantity;
-            if (existingProduct != null) {
-                while (true) {
-                    System.out.print("수량: ");
-                    quantity = Integer.parseInt(scanner.nextLine());
-
-                    if (quantity <= existingProduct.getInventory()) {
-                        break; // 입력한 수량이 기존 재고보다 작거나 같을 때 루프 탈출
-                    } else {
-                        System.out.println("입력한 수량이 기존 재고를 초과했습니다. 다시 입력하세요.");
-                    }
-                }
-            } else {
-                System.out.print("수량: ");
-                quantity = Integer.parseInt(scanner.nextLine());
-            }
-
-
-            wishlist.addProduct(name, quantity);
-
-            System.out.println("상품이 추가되었습니다.\n");
-        }
-
-        wishlist.printShoppingCart();
     }
+
+
     // 상품 교환
     @UserMenu("상품 교환")
     public void exchange() {

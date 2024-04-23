@@ -23,7 +23,7 @@ public class ShoppingCart {
     }
 
     // 상품 이름으로 상품 객체 찾기
-    private Product findProductByName(String productName) {
+    public Product findProductByName(String productName) {
         for (Product product : DBs.getProducts()) {
             if (product.getName().equalsIgnoreCase(productName)) {
                 return product;
