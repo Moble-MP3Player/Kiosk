@@ -20,18 +20,18 @@ import java.util.Scanner;
 public class CustomerService {
     private ShoppingCart shoppingCart;
 
-    public CustomerService(){
+    public CustomerService() {
         this.shoppingCart = new ShoppingCart();
     }
 
 
     @UserMenu("테스트 출력하기")
-    public void print(){
+    public void print() {
         System.out.println("테스트 결과입니다.");
     }
 
     @UserMenu("상품 결제하기")
-    public void parchaseProducts(){
+    public void parchaseProducts() {
         Scanner sc = new Scanner(System.in);
 
         System.out.print("상품을 결제하려면 아무 키나 눌러 진행해주세요.");
@@ -45,7 +45,6 @@ public class CustomerService {
             // 상품 결제
             Card c = new Card();
 //            c.pay(price); // 총 상품 가격 = price
-
 
 
             // 영수증 출력
@@ -123,39 +122,40 @@ public class CustomerService {
                 if (PointDecision.equals("Y")) {
                     boolean pointEnough = false;
 
-                    while (!pointEnough) {
-                        System.out.print("사용할 포인트 입력 : ");
-                        usedPoint = sc.nextLong(); //사용자가 사용할 포인트
+                    if (selectedCard.getPoint() + selectedCard.getCardBal() >= totalPrice) {
+                        while (!pointEnough) {
+                            System.out.print("사용할 포인트 입력 : ");
+                            usedPoint = sc.nextLong(); //사용자가 사용할 포인트
 
-                        if (selectedCard.getPoint() >= usedPoint) {
-                            selectedCard.subPoint(usedPoint); //subPoint 메서드를 사용하면 사용자의 포인트에서 사용한 포인트를 차감한 후에 남은 포인트를 반환함
-                            payBalance = totalPrice - usedPoint;
-                            System.out.println("포인트를 사용하여 결제합니다.");
-                            System.out.println("========================================");
-
-                            if (totalPrice > 0) {
-                                System.out.println("남은 결제금액: " + payBalance + "원");
-                                selectedCard.pay(payBalance);
-                                pointEnough = true; // 결제가 완료되었으므로 반복문 종료
+                            if (selectedCard.getPoint() >= usedPoint) {
+                                selectedCard.subPoint(usedPoint);
+                                payBalance = totalPrice - usedPoint;
+                                System.out.println("포인트를 사용하여 결제합니다.");
+                                System.out.println("========================================");
+                                if (payBalance > 0) {
+                                    System.out.println("남은 결제금액: " + payBalance + "원");
+                                    selectedCard.pay(payBalance);
+                                    ep1 = (long) (totalPrice * 0.01);
+                                    selectedCard.addPoint(totalPrice);
+                                    remainingPoint = selectedCard.getPoint();
+                                    pointEnough = true;
+                                }
+                            } else {
+                                System.out.println("포인트가 부족합니다. 다시 입력해주세요.");
                             }
-
-                            earnedPoint = selectedCard.addPoint(totalPrice);
-                            ep1 = (long) (totalPrice * 0.01);
-                            System.out.println("결제로 적립된 포인트: " + ep1 + "원");
-                            remainingPoint = selectedCard.getPoint();
-                            System.out.println("잔여 포인트: " + remainingPoint + "원");
-
-                            pointEnough = true; // 결제가 완료되었으므로 반복문 종료
-                        } else {
-                            System.out.println("포인트가 부족하여 결제할 수 없습니다. 다시 입력해주세요.");
                         }
+                    } else {
+                        System.out.println("결제 금액 : " + totalPrice + "원 /현재 포인트 : " + selectedCard.getPoint() + "점, /현재 잔액 : " + selectedCard.getCardBal() + "원");
+                        System.out.println("결제를 진행할 수 없습니다. 잔액이 부족합니다.");
+                        return;
+
                     }
                 } else if (PointDecision.equals("N")) {
                     if (selectedCard.getCardBal() >= totalPrice) {
                         selectedCard.pay(totalPrice); //포인트를 사용하지 않고 해당 카드의 잔액으로 결제
                         earnedPoint = selectedCard.addPoint(totalPrice);
                         ep1 = (long) (totalPrice * 0.01);
-                        System.out.println("결제로 적립된 포인트: " + earnedPoint + "원");
+                        System.out.println("결제로 적립된 포인트: " + ep1 + "원");
                         remainingPoint = selectedCard.getPoint();
                         System.out.println("잔여 포인트: " + remainingPoint + "원");
                         payBalance = totalPrice;
@@ -222,8 +222,8 @@ public class CustomerService {
 
         // Card 목록에서 해당 카드에 비밀번호 체크
         Card c = new Card();
-        for(Card card : DBs.getCards()){
-            if(card.getCardNum() == num){
+        for (Card card : DBs.getCards()) {
+            if (card.getCardNum() == num) {
                 c = card;
             }
         }
@@ -244,7 +244,7 @@ public class CustomerService {
         // Receipt 목록에서 해당 결제기록 찾아오기 <<
         //
         ArrayList<Long> list = new ArrayList<>();
-        for(Receipt receipt1 : DBs.getReceipts()) {
+        for (Receipt receipt1 : DBs.getReceipts()) {
             if (receipt.getCardNum() == num) {
                 list.add(receipt.getTotalPrice());
                 receipt = receipt1;
@@ -290,57 +290,57 @@ public class CustomerService {
         receipt.printReceipt();
     }
 
-    // 상품 장바구니에 담기
-    public void addCart() {
-        Scanner scanner = new Scanner(System.in);
-
-        System.out.println("상품과 수량을 입력하세요. 종료하려면 '끝'을 입력하세요.");
-
-        while (true) {
-            System.out.print("상품 이름: ");
-            String name = scanner.nextLine();
-
-            if (name.equalsIgnoreCase("끝")) {
-                break;
-            }
-
-            // 상품이 이미 목록에 있는지 확인
-            Product existingProduct = null;
-            for (Product product : productList) {
-                if (product.getName().equalsIgnoreCase(name)) {
-                    existingProduct = product;
-                    break;
-                }
-            }
-
-            int quantity;
-            if (existingProduct != null) {
-                while (true) {
-                    System.out.print("수량: ");
-                    quantity = Integer.parseInt(scanner.nextLine());
-
-                    if (quantity <= existingProduct.getInventory()) {
-                        break; // 입력한 수량이 기존 재고보다 작거나 같을 때 루프 탈출
-                    } else {
-                        System.out.println("입력한 수량이 기존 재고를 초과했습니다. 다시 입력하세요.");
-                    }
-                }
-            } else {
-                System.out.print("수량: ");
-                quantity = Integer.parseInt(scanner.nextLine());
-            }
-
-            productList.add(new Product(name, quantity));
-
-            System.out.println("상품이 추가되었습니다.\n");
-        }
-
-        ShoppingCart.printShoppingCart();
-        System.out.println("입력된 모든 상품과 수량 :");
-        for (Product product : productList) {
-            System.out.println(product.getName() + " " + product.getQuantity() + "개");
-        }
-
-
-    }
+//    // 상품 장바구니에 담기
+//    public void addCart() {
+//        Scanner scanner = new Scanner(System.in);
+//
+//        System.out.println("상품과 수량을 입력하세요. 종료하려면 '끝'을 입력하세요.");
+//
+//        while (true) {
+//            System.out.print("상품 이름: ");
+//            String name = scanner.nextLine();
+//
+//            if (name.equalsIgnoreCase("끝")) {
+//                break;
+//            }
+//
+//            // 상품이 이미 목록에 있는지 확인
+//            Product existingProduct = null;
+//            for (Product product : productList) {
+//                if (product.getName().equalsIgnoreCase(name)) {
+//                    existingProduct = product;
+//                    break;
+//                }
+//            }
+//
+//            int quantity;
+//            if (existingProduct != null) {
+//                while (true) {
+//                    System.out.print("수량: ");
+//                    quantity = Integer.parseInt(scanner.nextLine());
+//
+//                    if (quantity <= existingProduct.getInventory()) {
+//                        break; // 입력한 수량이 기존 재고보다 작거나 같을 때 루프 탈출
+//                    } else {
+//                        System.out.println("입력한 수량이 기존 재고를 초과했습니다. 다시 입력하세요.");
+//                    }
+//                }
+//            } else {
+//                System.out.print("수량: ");
+//                quantity = Integer.parseInt(scanner.nextLine());
+//            }
+//
+//            productList.add(new Product(name, quantity));
+//
+//            System.out.println("상품이 추가되었습니다.\n");
+//        }
+//
+//        ShoppingCart.printShoppingCart();
+//        System.out.println("입력된 모든 상품과 수량 :");
+//        for (Product product : productList) {
+//            System.out.println(product.getName() + " " + product.getQuantity() + "개");
+//        }
+//
+//
+//    }
 }
