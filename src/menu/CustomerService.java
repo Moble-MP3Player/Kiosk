@@ -192,4 +192,85 @@ public class CustomerService {
             System.out.println();
         }
     }
+
+    // 상품 반품
+    public void refund() {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("카드 번호를 입력해주세오 : ");
+        int card = sc.nextInt();
+
+        Card c = new Card();
+        Product p = new Product();
+        Receipt receipt = new Receipt();
+        // 결제내역 클래스의 카드번호와 입력한 카드번호가 같으면
+        receipt.printReceipt();
+        c.refund(receipt.getTotalPrice());
+
+        if (usedPoint != 0) {
+            c.point += usedPoint;
+        }
+
+        c.point -= (long) (receipt.getTotalPrice() * 0.01);
+
+        // 재고 수량 회수
+        // 상품 클래스의 상품과 영수증 상품이 같으면
+        p.setInventory(receipt.getCount());
+
+    }
+
+    // 상품 장바구니에 담기
+    public void addCart() {
+        Scanner scanner = new Scanner(System.in);
+        ArrayList<Product> productList = new ArrayList<Product>();
+
+        System.out.println("상품과 수량을 입력하세요. 종료하려면 '끝'을 입력하세요.");
+
+        while (true) {
+            System.out.print("상품 이름: ");
+            String name = scanner.nextLine();
+
+            if (name.equalsIgnoreCase("끝")) {
+                break;
+            }
+
+            // 상품이 이미 목록에 있는지 확인
+            Product existingProduct = null;
+            for (Product product : productList) {
+                if (product.getName().equalsIgnoreCase(name)) {
+                    existingProduct = product;
+                    break;
+                }
+            }
+
+            int quantity;
+            if (existingProduct != null) {
+                while (true) {
+                    System.out.print("수량: ");
+                    quantity = Integer.parseInt(scanner.nextLine());
+
+                    if (quantity <= existingProduct.getQuantity()) {
+                        break; // 입력한 수량이 기존 재고보다 작거나 같을 때 루프 탈출
+                    } else {
+                        System.out.println("입력한 수량이 기존 재고를 초과했습니다. 다시 입력하세요.");
+                    }
+                }
+            } else {
+                System.out.print("수량: ");
+                quantity = Integer.parseInt(scanner.nextLine());
+            }
+
+            Product newProduct = new Product(name, quantity);
+            productList.add(newProduct);
+
+            System.out.println("상품이 추가되었습니다.\n");
+        }
+
+        System.out.println("입력된 모든 상품과 수량 :");
+        for (Product product : productList) {
+            System.out.println(product.name + " " + product.quantity + "개");
+        }
+
+
+    }
 }
