@@ -2,11 +2,22 @@ package model;
 
 public class Card {
 
-    public String cardName; // 카드 사용자 이름
-    public int cardNum; // 카드 번호
-    public long point; // 적립 포인트 잔액
-    public long cardBal; // 카드 잔액
-    public int password; // 카드 비밀번호
+    private String cardName; // 카드 사용자 이름
+    private int cardNum; // 카드 번호
+    private long point; // 적립 포인트 잔액
+    private long cardBal; // 카드 잔액
+    private int password; // 카드 비밀번호
+
+    public Card(){
+
+    }
+    public Card(String cardName, int cardNum, long point, long cardBal, int password) {
+        this.cardName = cardName;
+        this.cardNum = cardNum;
+        this.point = point;
+        this.cardBal = cardBal;
+        this.password = password;
+    }
 
     public String getCardName() { return cardName; }
 
@@ -42,6 +53,7 @@ public class Card {
     public void pay(long price) {  // 상품 결제하기
         if( cardBal - price >= 0) {
             cardBal -= price;
+            System.out.println("결제가 완료되었습니다.");
         } else System.out.println("잔액이 부족합니다.");
     }
 
