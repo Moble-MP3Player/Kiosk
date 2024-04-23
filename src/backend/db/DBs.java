@@ -88,25 +88,18 @@ public class DBs {
     }
 
     /**
-     * 해당 이름으로 검색해서 가격 정보를 담은 Product 생성
+     * 해당 이름으로 검색해서 가격을 가져옴.
      * @param name 상품 이름
-     * @return 상품과 가격 정보 , 상품이 존재하지 않을 경우 null
+     * @return 상품 가격 double
      */
-    public static Product getProductByName(String name){
+    public static double getPriceByName(String name){
         Product newProduct;
         for(Product product : DBs.getProducts()){
             if(product.equals(name)){
-                newProduct = new Product(product.getId(),
-                        product.getName(),
-                        "",
-                        0,
-                        "",
-                        product.getPrice()
-                        );
-                return newProduct;
+                return product.getPrice();
             }
         }
-        return null;
+        return -1;
     }
 }
 
