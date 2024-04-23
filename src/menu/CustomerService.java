@@ -4,8 +4,10 @@ package menu;
 import backend.annotations.UserMenu;
 import backend.db.DBs;
 import model.Card;
+import model.Product;
 import model.Receipt;
 import model.Product;
+import model.ShoppingCart;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -17,6 +19,11 @@ import java.util.Scanner;
  * DBs 클래스 참고하시면 데이터 가져오는 함수 있어요!
  */
 public class CustomerService {
+    private ShoppingCart shoppingCart;
+
+    public CustomerService(){
+        shoppingCart = new ShoppingCart();
+    }
 
     @UserMenu("테스트 출력하기")
     public void print(){
