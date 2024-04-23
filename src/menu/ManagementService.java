@@ -99,6 +99,9 @@ public class ManagementService {
             }
         }
        System.out.println("오늘 날짜: "+today+" 총 판매금액: "+totalMoney);
+       System.out.println("==============================================");
+       System.out.println("프로그램을 종료합니다.");
+       System.exit(1);
    }
 
 
