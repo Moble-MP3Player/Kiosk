@@ -61,7 +61,7 @@ public class ManagementService {
        boolean found=false;
        for (Product product:arrayList) {
            if (serch.equals(product.getName())){
-               System.out.println(product.getName()+product.getInventory());
+               System.out.println("검색하신 상품의 이름: "+product.getName()+"재고: "+product.getInventory());
                found=true;
                break;
            }
@@ -75,8 +75,11 @@ public class ManagementService {
    @ManagerMenu("상품 수량 선택")
     public void selectProduct(){
         Scanner scanner=new Scanner(System.in);
+
         System.out.println("상품을 선택해주세요");
+
         String select=scanner.next();
+
         Product selectedProduct=null;
         for (Product product : arrayList){
             if (select.equals(product.getName())){
@@ -88,9 +91,11 @@ public class ManagementService {
             System.out.println("해당되는 상품이 없습니다.");
             return;
         }
-        int buy= scanner.nextInt();
-        if (selectedProduct!=null && buy<selectedProduct.getInventory()){
-            selectedProduct.setInventory(selectedProduct.getInventory()-buy);
+
+        int choiceproduct= scanner.nextInt();
+        if (choiceproduct<selectedProduct.getInventory()){
+            selectedProduct.setInventory(selectedProduct.getInventory()-choiceproduct);
+
         }
         else {
             System.out.println("현재 재고량: "+selectedProduct.getInventory());
