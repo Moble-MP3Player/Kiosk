@@ -63,6 +63,13 @@ public class Product {
             case "라면" -> "\uD83C\uDF5C";
             case "빵" -> "\uD83C\uDF5E";
             case "과자" -> "\uD83C\uDF6A";
+            case "만두" -> "\uD83E\uDD5F";
+            case "우유" -> "\uD83E\uDD5B";
+            case "소주" -> "\uD83E\uDD43";
+            case "맥주" -> "\uD83C\uDF7A";
+            case "육포" -> "\uD83E\uDD69";
+            case "삼각 김밥" -> "\uD83C\uDF59";
+
 
             default -> "\uD83C\uDF66";
         };
