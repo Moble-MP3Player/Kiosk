@@ -19,18 +19,18 @@ import java.util.Scanner;
 public class CustomerService {
     private ShoppingCart shoppingCart;
 
-    public CustomerService(){
+    public CustomerService() {
         this.shoppingCart = new ShoppingCart();
     }
 
 
     @UserMenu("테스트 출력하기")
-    public void print(){
+    public void print() {
         System.out.println("테스트 결과입니다.");
     }
 
     @UserMenu("상품 결제하기")
-    public void parchaseProducts(){
+    public void parchaseProducts() {
         Scanner sc = new Scanner(System.in);
 
         System.out.print("상품을 결제하려면 아무 키나 눌러 진행해주세요.");
@@ -52,14 +52,14 @@ public class CustomerService {
     }
 
     @UserMenu("상품 결제")
-    public void payment(){
+    public void payment() {
         ArrayList<Card> cards = DBs.getCards(); //카드 객체들을 가져와서 ArrayList에 저장함.
         ArrayList<Receipt> receipts = DBs.getReceipts();
 
         Card selectedCard = null; // 선택된 카드 객체를 저장할 변수
 
-        long totalPrice = 13000; //(테스트용) 장바구니에 담긴 상품들 가격 총 합
-        long payBalance = 0;
+        long totalPrice = 13000; //결제 금액(0으로 수정)
+        long payBalance = 0; //totalPrice에서 usedPoint를 뺀 값 -> 총 결제 금액에서 포인트를 쓰고 남은 결제 금액
 
         Scanner sc = new Scanner(System.in);
 
