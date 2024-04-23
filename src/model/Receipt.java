@@ -38,6 +38,10 @@ public class Receipt {
         this.createDate = LocalDateTime.now(); // 현재 날짜와 시간으로 설정
     }
 
+    public void setCreateDate(LocalDateTime createDate) {
+        this.createDate = createDate;
+    }
+
     // 영수증 생성자 (파일에서 불러오기 위함)
     public Receipt(String productName, int price, int count, long amountReceived, long usedPoint, long totalPrice, String cardName, int cardNum, int receiptNumber, long residual, long accumulate, LocalDateTime createDate) {
         this.productName = productName;
