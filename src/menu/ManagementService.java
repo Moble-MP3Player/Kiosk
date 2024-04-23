@@ -34,8 +34,10 @@ public class ManagementService {
         Scanner sc=new Scanner(System.in);
         String date;
         String agree;
+        boolean found=false;
        for (Product p : arrayList) {
            if (p.getInventory() == 0) {
+               found=true;
                System.out.println("재고가 없는 상품은 " + p.getName() + "입니다.");
                System.out.println("상품을 추가 발주하시겠습니까? Y/N");
                agree = sc.next();
@@ -52,6 +54,10 @@ public class ManagementService {
                }
            }
        }
+       if(!found){
+           System.out.println("재고가 없는 상품이 없습니다. 처음으로 돌아갑니다.");
+       }
+
    }
    @ManagerMenu("상품 검색 및 재고 확인")
     public void serchProduct(){
@@ -75,7 +81,7 @@ public class ManagementService {
     public void checkAllProducts(){
        for (Product product: arrayList){
            if(product.getName()!=null){
-               System.out.println("상품 이름: "+product.getName());
+               System.out.println("상품 이름: "+product.getName()+" ,개수: "+product.getInventory()+" ,유통기한: "+product.getExpiryDate()+" ,입고일: "+product.getDate());
            }
        }
    }
@@ -84,25 +90,16 @@ public class ManagementService {
         ArrayList<Receipt>receipts= DBs.getReceipts();
         LocalDate today=LocalDate.now();
 
-       // DateTimeFormatter로 포맷 정의
-       DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
-       // 날짜/시간 포매팅
-       String formattedDate = today.format(formatter);
-
         int totalMoney=0;
-        Receipt soldoutProduct=null;
-        for (Receipt receipt:receipts ){
+       for (Receipt receipt:receipts ){
             LocalDate receiptDate=receipt.getCreateDate().toLocalDate();
             if(today.isEqual(receiptDate)){
                 totalMoney+= (int) receipt.getTotalPrice();
-                System.out.println("판매된 상품: "+receipt.getProductName());
+                System.out.println("판매된 상품: "+receipt.getProductName()+" 개수: "+receipt.getCount());
             }
         }
        System.out.println("오늘 날짜: "+today+" 총 판매금액: "+totalMoney);
    }
-
-
 
 }
 
