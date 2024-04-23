@@ -159,7 +159,7 @@ public class CustomerService {
                 remainingPoint = selectedCard.getPoint();
                 System.out.println("잔여 포인트: " + remainingPoint + "원");
                 payBalance = totalPrice;
-            }
+            }//.
 
             //영수증 생성(수정 필요)
             Receipt receipt = new Receipt(
