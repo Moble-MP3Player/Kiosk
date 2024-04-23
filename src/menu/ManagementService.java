@@ -4,8 +4,11 @@ import backend.annotations.ManagerMenu;
 import backend.db.DB;
 import backend.db.DBs;
 import model.Product;
+import model.Receipt;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Scanner;
@@ -31,23 +34,20 @@ public class ManagementService {
         Scanner sc=new Scanner(System.in);
         String date;
         String agree;
-       for (int i = 0; i < arrayList.size(); i++) {
-           Product p=arrayList.get(i);
-           if (p.getInventory()==0){
-               System.out.println("재고가 없는 상품은 "+p.getName()+"입니다.");
+       for (Product p : arrayList) {
+           if (p.getInventory() == 0) {
+               System.out.println("재고가 없는 상품은 " + p.getName() + "입니다.");
                System.out.println("상품을 추가 발주하시겠습니까? Y/N");
-               agree=sc.next();
-               if (agree.equals("Y") || agree.equals("y")){
+               agree = sc.next();
+               if (agree.equals("Y") || agree.equals("y")) {
                    System.out.println("오늘의 날짜를 년 월 일 순으로 입력해주세요 '예:2024-04-23'");
-                   date=sc.next();
+                   date = sc.next();
                    p.setDate(date);
                    p.setInventory(10);
-               }
-               else if (agree.equals("n") || agree.equals("N")){
-                    continue;
-               }
-               else{
-                   System.out.println("잘못된 입력입니다. Y또는 N을 눌러주세요" );
+               } else if (agree.equals("n") || agree.equals("N")) {
+                   continue;
+               } else {
+                   System.out.println("잘못된 입력입니다. Y또는 N을 눌러주세요");
                    break;
                }
            }
@@ -70,29 +70,38 @@ public class ManagementService {
        if (!found){
            System.out.println("해당되는 이름의 상품이 없습니다.");
        }
-
    }
-   @ManagerMenu("상품 검색 및 수량 선택")
-    public void selectProduct(){
-        Scanner scanner=new Scanner(System.in);
+   @ManagerMenu("모든 상품 확인")
+    public void checkAllProducts(){
+       for (Product product: arrayList){
+           if(product.getName()!=null){
+               System.out.println("상품 이름: "+product.getName());
+           }
+       }
+   }
+   @ManagerMenu("마감")
+    public void closing(){
+        ArrayList<Receipt>receipts= DBs.getReceipts();
+        LocalDate today=LocalDate.now();
 
-        System.out.println("상품을 선택해주세요");
+       // DateTimeFormatter로 포맷 정의
+       DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-        String select=scanner.next();
+       // 날짜/시간 포매팅
+       String formattedDate = today.format(formatter);
 
-        Product selectedProduct=null;
-        for (Product product : arrayList){
-            if (select.equals(product.getName())){
-                selectedProduct=product;
-
+        int totalMoney=0;
+        Receipt soldoutProduct=null;
+        for (Receipt receipt:receipts ){
+            LocalDate receiptDate=receipt.getCreateDate().toLocalDate();
+            if(today.isEqual(receiptDate)){
+                totalMoney+= (int) receipt.getTotalPrice();
+                System.out.println("판매된 상품: "+receipt.getProductName());
             }
         }
-        if (selectedProduct==null){
-            System.out.println("해당되는 상품이 없습니다.");
-            return;
-        }
-
+       System.out.println("오늘 날짜: "+today+" 총 판매금액: "+totalMoney);
    }
+
 
 
 }
