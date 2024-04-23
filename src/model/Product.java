@@ -7,7 +7,7 @@ public class Product {
     private int inventory;// 상품 재고
     private String expiryDate;// 유통 기한
     private double price;//가격
-
+    public int quantity;
 
     public Product(int id, String name, String inDate, int inventory, String expiryDate, double price) {
         this.id = id;
@@ -17,6 +17,12 @@ public class Product {
         this.expiryDate = expiryDate;
         this.price=price;
     }
+
+    public Product(String name, int quantity) {
+        this.name = name;
+        this.quantity = quantity;
+    }
+
 
     public int getId() {
         return id;
@@ -49,4 +55,8 @@ public class Product {
     public double getPrice(){return price;}
 
     public void setPrice(double price) {this.price = price;}
+
+    public int getQuantity() {
+        return quantity;
+    }
 }

@@ -4,7 +4,7 @@ public class Card {
 
     private String cardName; // 카드 사용자 이름
     private int cardNum; // 카드 번호
-    private long point; // 적립 포인트 잔액
+    public long point; // 적립 포인트 잔액
     private long cardBal; // 카드 잔액
     private int password; // 카드 비밀번호
 
