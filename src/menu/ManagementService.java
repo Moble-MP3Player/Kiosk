@@ -100,6 +100,5 @@ public class ManagementService {
         }
        System.out.println("오늘 날짜: "+today+" 총 판매금액: "+totalMoney);
    }
-
 }
 
