@@ -2,6 +2,7 @@ package menu;
 
 import backend.annotations.UserMenu;
 import backend.db.DBs;
+import jdk.internal.icu.text.UnicodeSet;
 import model.Card;
 import model.Product;
 import model.Receipt;
@@ -246,6 +247,7 @@ public class CustomerService {
         }
 
         // 결제내역 클래스의 카드번호와 입력한 카드번호가 같으면 >> 여러개 일수있음. 선택하게 해야함.
+        long selectedAmount = 0;
         if (list.isEmpty()) {
             System.out.println("해당 카드 번호로 결제된 기록이 없습니다.");
         } else {
@@ -260,20 +262,22 @@ public class CustomerService {
             if (choice < 1 || choice > list.size()) {
                 System.out.println("유효하지 않은 선택입니다.");
             } else {
-                Long selectedAmount = list.get(choice - 1);
+                selectedAmount = list.get(choice - 1);
                 System.out.println("선택한 금액: " + selectedAmount);
             }
         }
 
-        // 결제내역 클래스의 카드번호와 입력한 카드번호가 같으면
-        receipt.printReceipt();
-        c.refund(receipt.getTotalPrice());
-
-        if (receipt.getUsedPoint() != 0) {
-            c.point += receipt.getUsedPoint();
+        // 결제내역 클래스의 카드번호의 금액 선택 후
+        for(Receipt receipt1 : DBs.getReceipts()) {
+            if (receipt.getCardNum() == num && receipt.getTotalPrice() == selectedAmount) {
+                receipt.printReceipt();  // 영수증 재발행
+                c.refund(receipt.getTotalPrice());  // 카드 환불
+                if (receipt.getUsedPoint() != 0) {
+                    c.point += receipt.getUsedPoint();  // 카드 포인트를 사용했다면 포인트 반환
+                }
+                c.point -= (long) (receipt.getTotalPrice() * 0.01);  // 적립한 포인트 차감
+            }
         }
-
-        c.point -= (long) (receipt.getTotalPrice() * 0.01);
 
         // 재고 수량 회수
         // 상품 클래스의 상품과 영수증 상품이 같으면
@@ -287,10 +291,13 @@ public class CustomerService {
     // 상품 장바구니에 담기
     public void addCart() {
         Scanner scanner = new Scanner(System.in);
+        ShoppingCart wishlist = new ShoppingCart();
+
 
         System.out.println("상품과 수량을 입력하세요. 종료하려면 '끝'을 입력하세요.");
 
         while (true) {
+
             System.out.print("상품 이름: ");
             String name = scanner.nextLine();
 
@@ -300,7 +307,7 @@ public class CustomerService {
 
             // 상품이 이미 목록에 있는지 확인
             Product existingProduct = null;
-            for (Product product : productList) {
+            for (Product product : wishlist.getShoppingCart()) {
                 if (product.getName().equalsIgnoreCase(name)) {
                     existingProduct = product;
                     break;
@@ -324,17 +331,13 @@ public class CustomerService {
                 quantity = Integer.parseInt(scanner.nextLine());
             }
 
-            productList.add(new Product(name, quantity));
+
+            wishlist.addProduct(name, quantity);
 
             System.out.println("상품이 추가되었습니다.\n");
         }
 
-        ShoppingCart.printShoppingCart();
-        System.out.println("입력된 모든 상품과 수량 :");
-        for (Product product : productList) {
-            System.out.println(product.getName() + " " + product.getQuantity() + "개");
-        }
-
+        wishlist.printShoppingCart();
 
     }
 }
