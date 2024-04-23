@@ -7,9 +7,7 @@ import model.Product;
 import model.Receipt;
 import model.ShoppingCart;
 
-import java.util.ArrayList;
-import java.util.Objects;
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * 사용자 메뉴 구현하시면됩니다.
@@ -58,16 +56,24 @@ public class CustomerService {
 
         Card selectedCard = null; // 선택된 카드 객체를 저장할 변수
 
-        long totalPrice = 13000; //(테스트용) 장바구니에 담긴 상품들 가격 총 합
-        long payBalance = 0;
+        long totalPrice = 13000; //결제 금액(0으로 수정)
+        long payBalance = 0; //totalPrice에서 usedPoint를 뺀 값 -> 총 결제 금액에서 포인트를 쓰고 남은 결제 금액
 
         Scanner sc = new Scanner(System.in);
 
         while (true) {
             // 먼저 장바구니에 담긴 상품들, 총 결제 금액을 출력하는 로직(미구현)
-            System.out.println("장바구니의 담긴 상품1");
-            System.out.println("장바구니의 담긴 상품2");
-            System.out.println("장바구니의 담긴 상품3");
+            Map<Product, Integer> shopMap = shoppingCart.getShoppingCart();
+
+            for(Product product : shopMap.keySet()){
+                String name = product.getName();
+                int value = shopMap.get(product);
+                long price = 0;
+                totalPrice += price;
+
+                System.out.println("상품명 : " + name + " 수량 : " + value);
+            }
+
 
             //결제 여부
             System.out.print("결제 하시겠습니까?(Y/N)");
@@ -116,8 +122,8 @@ public class CustomerService {
                 String PointDecision = sc.next().toUpperCase();
                 long usedPoint = 0; //사용한 포인트
                 long earnedPoint = 0; //적립금
-                long ep1 = 0;
-                long remainingPoint = selectedCard.getPoint();
+                long ep1 = 0; //결제로 적립된 포인트
+                long remainingPoint = selectedCard.getPoint(); //해당 카드의 적립금
 
                 if (PointDecision.equals("Y")) {
                     boolean pointEnough = false;
@@ -150,9 +156,9 @@ public class CustomerService {
                         return;
 
                     }
-                } else if (PointDecision.equals("N")) {
+                } else if (PointDecision.equals("N")) { //포인트를 사용하지 않고 해당 카드의 잔액으로 결제
                     if (selectedCard.getCardBal() >= totalPrice) {
-                        selectedCard.pay(totalPrice); //포인트를 사용하지 않고 해당 카드의 잔액으로 결제
+                        selectedCard.pay(totalPrice);
                         earnedPoint = selectedCard.addPoint(totalPrice);
                         ep1 = (long) (totalPrice * 0.01);
                         System.out.println("결제로 적립된 포인트: " + ep1 + "원");
@@ -165,7 +171,7 @@ public class CustomerService {
                     }
                 }
 
-                //영수증 생성(수정 필요)
+                //영수증 생성(수정 필요) -> 장바구니 객체에 담겨있는 모든 상품이 출력되도록 수정
                 Receipt receipt = new Receipt(
                         "발렌타인 21Y",    // 상품명
                         13000,            // 상품 가격
@@ -196,11 +202,14 @@ public class CustomerService {
                     return;
                 }
                 //영수증 미발행
-                else {
+                else if(ReceiptDecision.equals("N")){
                     System.out.println();
                     System.out.println("이용해 주셔서 감사합니다.");
                     System.out.println();
                     return;
+                }
+                else { // Y나 N 이외의 문자를 입력했을 경우
+                    System.out.println("잘못된 입력입니다. 다시 입력해주세요.(Y/N)");
                 }
             } else if (decision.equals("N")) { //결제를 취소하는 경우
                 System.out.println("결제를 취소하였습니다. 메뉴 탭으로 이동합니다.");
@@ -213,83 +222,83 @@ public class CustomerService {
         }
     }
 
-    // 상품 반품
-    public void refund() {
-        Scanner sc = new Scanner(System.in);
-
-        System.out.print("카드 번호를 입력해주세오 : ");
-        int num = sc.nextInt();
-
-        // Card 목록에서 해당 카드에 비밀번호 체크
-        Card c = new Card();
-        for (Card card : DBs.getCards()) {
-            if (card.getCardNum() == num) {
-                c = card;
-            }
-        }
-
-        System.out.print("카드 번호를 입력해주세오 : ");
-        int cardPw = sc.nextInt();
-
-        // 카드 비밀번호 확인 절차 <<
-        while (true) {
-            if (cardPw == c.getPassword()) {
-                break;
-            } else {
-                System.out.println("비밀번호가 일치하지 않습니다.");
-            }
-        }
-
-        Receipt receipt = new Receipt();
-        // Receipt 목록에서 해당 결제기록 찾아오기 <<
-        //
-        ArrayList<Long> list = new ArrayList<>();
-        for (Receipt receipt1 : DBs.getReceipts()) {
-            if (receipt.getCardNum() == num) {
-                list.add(receipt.getTotalPrice());
-                receipt = receipt1;
-            }
-        }
-
-        // 결제내역 클래스의 카드번호와 입력한 카드번호가 같으면 >> 여러개 일수있음. 선택하게 해야함.
-        if (list.isEmpty()) {
-            System.out.println("해당 카드 번호로 결제된 기록이 없습니다.");
-        } else {
-            System.out.println("해당 카드 번호로 결제된 금액:");
-            for (int i = 0; i < list.size(); i++) {
-                System.out.println((i + 1) + ". " + list.get(i));
-            }
-
-            System.out.print("선택할 금액의 번호를 입력하세요: ");
-            int choice = Integer.parseInt(sc.nextLine());
-
-            if (choice < 1 || choice > list.size()) {
-                System.out.println("유효하지 않은 선택입니다.");
-            } else {
-                Long selectedAmount = list.get(choice - 1);
-                System.out.println("선택한 금액: " + selectedAmount);
-            }
-        }
-
-        // 결제내역 클래스의 카드번호와 입력한 카드번호가 같으면
-        receipt.printReceipt();
-        c.refund(receipt.getTotalPrice());
-
-        if (receipt.getUsedPoint() != 0) {
-            c.point += receipt.getUsedPoint();
-        }
-
-        c.point -= (long) (receipt.getTotalPrice() * 0.01);
-
-        // 재고 수량 회수
-        // 상품 클래스의 상품과 영수증 상품이 같으면
-        for (Product product : DBs.getProducts()) {
-            product.setInventory(product.getInventory() - receipt.getCount());
-        }
-
-        receipt.printReceipt();
-    }
-
+//    // 상품 반품
+//    public void refund() {
+//        Scanner sc = new Scanner(System.in);
+//
+//        System.out.print("카드 번호를 입력해주세오 : ");
+//        int num = sc.nextInt();
+//
+//        // Card 목록에서 해당 카드에 비밀번호 체크
+//        Card c = new Card();
+//        for (Card card : DBs.getCards()) {
+//            if (card.getCardNum() == num) {
+//                c = card;
+//            }
+//        }
+//
+//        System.out.print("카드 번호를 입력해주세오 : ");
+//        int cardPw = sc.nextInt();
+//
+//        // 카드 비밀번호 확인 절차 <<
+//        while (true) {
+//            if (cardPw == c.getPassword()) {
+//                break;
+//            } else {
+//                System.out.println("비밀번호가 일치하지 않습니다.");
+//            }
+//        }
+//
+//        Receipt receipt = new Receipt();
+//        // Receipt 목록에서 해당 결제기록 찾아오기 <<
+//        //
+//        ArrayList<Long> list = new ArrayList<>();
+//        for (Receipt receipt1 : DBs.getReceipts()) {
+//            if (receipt.getCardNum() == num) {
+//                list.add(receipt.getTotalPrice());
+//                receipt = receipt1;
+//            }
+//        }
+//
+//        // 결제내역 클래스의 카드번호와 입력한 카드번호가 같으면 >> 여러개 일수있음. 선택하게 해야함.
+//        if (list.isEmpty()) {
+//            System.out.println("해당 카드 번호로 결제된 기록이 없습니다.");
+//        } else {
+//            System.out.println("해당 카드 번호로 결제된 금액:");
+//            for (int i = 0; i < list.size(); i++) {
+//                System.out.println((i + 1) + ". " + list.get(i));
+//            }
+//
+//            System.out.print("선택할 금액의 번호를 입력하세요: ");
+//            int choice = Integer.parseInt(sc.nextLine());
+//
+//            if (choice < 1 || choice > list.size()) {
+//                System.out.println("유효하지 않은 선택입니다.");
+//            } else {
+//                Long selectedAmount = list.get(choice - 1);
+//                System.out.println("선택한 금액: " + selectedAmount);
+//            }
+//        }
+//
+//        // 결제내역 클래스의 카드번호와 입력한 카드번호가 같으면
+//        receipt.printReceipt();
+//        c.refund(receipt.getTotalPrice());
+//
+//        if (receipt.getUsedPoint() != 0) {
+//            c.point += receipt.getUsedPoint();
+//        }
+//
+//        c.point -= (long) (receipt.getTotalPrice() * 0.01);
+//
+//        // 재고 수량 회수
+//        // 상품 클래스의 상품과 영수증 상품이 같으면
+//        for (Product product : DBs.getProducts()) {
+//            product.setInventory(product.getInventory() - receipt.getCount());
+//        }
+//
+//        receipt.printReceipt();
+//    }
+//
 //    // 상품 장바구니에 담기
 //    public void addCart() {
 //        Scanner scanner = new Scanner(System.in);
