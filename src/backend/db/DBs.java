@@ -86,5 +86,20 @@ public class DBs {
     public static void update() {
         getInstance().updateDB();
     }
+
+    /**
+     * 해당 이름으로 검색해서 가격을 가져옴.
+     * @param name 상품 이름
+     * @return 상품 가격 double
+     */
+    public static double getPriceByName(String name){
+        Product newProduct;
+        for(Product product : DBs.getProducts()){
+            if(product.equals(name)){
+                return product.getPrice();
+            }
+        }
+        return -1;
+    }
 }
 
