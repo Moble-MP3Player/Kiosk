@@ -90,12 +90,6 @@ public class ManagementService {
         ArrayList<Receipt>receipts= DBs.getReceipts();
         LocalDate today=LocalDate.now();
 
-       // DateTimeFormatter로 포맷 정의
-       DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
-       // 날짜/시간 포매팅
-       String formattedDate = today.format(formatter);
-
         int totalMoney=0;
        for (Receipt receipt:receipts ){
             LocalDate receiptDate=receipt.getCreateDate().toLocalDate();
