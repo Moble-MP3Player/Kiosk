@@ -67,7 +67,9 @@ public class ManagementService {
        boolean found=false;
        for (Product product:arrayList) {
            if (serch.equals(product.getName())){
-               System.out.println("검색하신 상품의 이름: "+product.getName()+"재고: "+product.getInventory());
+               System.out.println("검색하신 상품의 이름: "+product.getName()+product.getEmoji());
+               System.out.println("재고: "+product.getInventory());
+               System.out.println("관리자 모드로 돌아갑니다.");
                found=true;
                break;
            }
@@ -80,8 +82,10 @@ public class ManagementService {
    @ManagerMenu("모든 상품 확인")
     public void checkAllProducts(){
        for (Product product: arrayList){
+           System.out.println("==================================================================");
            if(product.getName()!=null){
-               System.out.println("상품 이름: "+product.getName()+" ,개수: "+product.getInventory()+" ,유통기한: "+product.getExpiryDate()+" ,입고일: "+product.getDate());
+               System.out.println("id: "+product.getId()+"상품 이름: "+product.getName()+product.getEmoji()+" | 개수: "+product.getInventory()+" | 유통기한: "+product.getExpiryDate()+" | 입고일: "+product.getDate());
+               System.out.println("==================================================================");
            }
        }
    }
@@ -99,6 +103,12 @@ public class ManagementService {
             }
         }
        System.out.println("오늘 날짜: "+today+" 총 판매금액: "+totalMoney);
+       System.out.println("==============================================");
+       System.out.println("프로그램을 종료합니다.");
+       System.exit(1);
    }
+
+
+
 }
 
