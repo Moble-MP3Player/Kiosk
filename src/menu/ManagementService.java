@@ -38,12 +38,12 @@ public class ManagementService {
                System.out.println("상품을 추가 발주하시겠습니까? Y/N");
                agree=sc.next();
                if (agree.equals("Y") || agree.equals("y")){
-                   System.out.println("오늘의 날짜를 년 월 일 순으로 입력해주세요 '예:2024년 4월 23일'");
+                   System.out.println("오늘의 날짜를 년 월 일 순으로 입력해주세요 '예:2024-04-23'");
                    date=sc.next();
                    p.setDate(date);
                    p.setInventory(10);
                }
-               if (agree.equals("n") || agree.equals("N")){
+               else if (agree.equals("n") || agree.equals("N")){
                     continue;
                }
                else{

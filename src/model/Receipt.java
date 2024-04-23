@@ -15,14 +15,15 @@ public class Receipt {
     String cardName; //카드명
     int cardNum; //카드번호
     int receiptNumber; //영수증 번호
-    long accumulate = 0; //적립 금액
+    long residual; //잔여 포인트
+    long accumulate = 0; //결제로 적립된 포인트
 
     private static int receiptCounter = 0; //영수증 번호를 관리하기 위한 static 변수
 
     LocalDateTime createDate; //영수증 생성 날짜와 시간
 
     //영수증 생성자
-    public Receipt(String productName, int price, int count, long amountReceived, long usedPoint, long totalPrice, String cardName, int cardNum, long accumulate){
+    public Receipt(String productName, int price, int count, long amountReceived, long usedPoint, long totalPrice, String cardName, int cardNum, long accumulate,long residual){
         this.productName = productName;
         this.price = price;
         this.count = count;
@@ -32,14 +33,13 @@ public class Receipt {
         this.cardName = cardName;
         this.cardNum = cardNum;
         this.receiptNumber = ++receiptCounter; //영수증 객체가 생성될 때마다 receiptCounter를 1씩 증가시키고 해당 영수증 객체의 영수증 번호에 저장
-        this.accumulate = accumulate;
+        this.residual = residual; //잔여 포인트
+        this.accumulate = accumulate; //적립된 포인트
         this.createDate = LocalDateTime.now(); // 현재 날짜와 시간으로 설정
     }
 
     // 영수증 생성자 (파일에서 불러오기 위함)
-
-
-    public Receipt(String productName, int price, int count, long amountReceived, long usedPoint, long totalPrice, String cardName, int cardNum, int receiptNumber, long accumulate, LocalDateTime createDate) {
+    public Receipt(String productName, int price, int count, long amountReceived, long usedPoint, long totalPrice, String cardName, int cardNum, int receiptNumber, long residual, long accumulate, LocalDateTime createDate) {
         this.productName = productName;
         this.price = price;
         this.count = count;
@@ -51,6 +51,7 @@ public class Receipt {
         this.receiptNumber = receiptNumber;
         this.accumulate = accumulate;
         this.createDate = createDate;
+        this.residual = residual;
     }
 
     public Receipt() {
@@ -59,6 +60,8 @@ public class Receipt {
 
 
     //setter
+    void setResidual(long residual) {this.residual = residual;}
+
     void setAccumulate(long accumulate){ this.accumulate = accumulate; }
 
     void setProductName(String productName){
@@ -99,7 +102,14 @@ public class Receipt {
 
 
     //getter
-    public long getAccumulate(){ return accumulate; }
+
+    public long getResidual() {
+        return residual;
+    }
+
+    public long getAccumulate(){
+        return accumulate;
+    }
 
     public String getProductName(){
         return productName;
@@ -157,8 +167,9 @@ public class Receipt {
         System.out.println("판매 총액 : " + this.getTotalPrice());
         System.out.println("-----------------------------------------------");
         System.out.println("사용 포인트 : " + this.getUsedPoint());
+        System.out.println("적립 포인트 : " + this.getAccumulate());
+        System.out.println("잔여 포인트 : " + this.getResidual());
         System.out.println("받은 금액 : " + this.getAmountReceived());
-        System.out.println("적립 금액 : " + this.getAccumulate());
         System.out.println("-----------------------------------------------");
         System.out.println("카드 번호 : " + this.getCardNum() + " " + this.getCardName() + "님");
         System.out.println("-----------------------------------------------");
