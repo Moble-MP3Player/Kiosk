@@ -9,7 +9,7 @@ import java.util.Map;
 public class ShoppingCart{
     private String productName; // 상품이름
     private long price; // 상품단가
-    private int quantity;
+    private int quantity; // 수량
     private long productPrice; // 금액
     private int cartQuantity; // 총상품수량
     private long totalPrice; // 총상품금액
@@ -49,7 +49,7 @@ public class ShoppingCart{
         System.out.println("  상품: " + getCartQuantity() + "개  가격: " + getTotalPrice() + "원");
     }
 
-
+    // 장바구니
     public Map<String, Integer> shoppingCart;
     int newQuantity; // 최종수량 = 기존 수량 +(-) 입력한 수량
     int currentQuantity; // 기존 장바구니 수량
@@ -57,6 +57,8 @@ public class ShoppingCart{
     public ShoppingCart() {
         shoppingCart = new HashMap<>();
     }
+
+    public Map<String, Integer> getShoppingCart() { return shoppingCart; }
 
     // 장바구니 추가
     public void addProduct(String productName, int quantity) {
