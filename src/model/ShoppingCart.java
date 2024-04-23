@@ -35,7 +35,7 @@ public class ShoppingCart {
     // 장바구니에서 상품 삭제
     public void removeProduct(Product product, int quantity) {
         int currentQuantity = shoppingCart.getOrDefault(product, 0); // 기존 수량
-        int newQuantity = currentQuantity - quantity; // 최종 수량 = 기존수량 - 삭제할 수량
+        int newQuantity = currentQuantity - quantity; // 최종 수량 = 기존 수량 - 삭제할 수량
 
         // 삭제 후 수량을 0과 비교 후 삭제
         if (newQuantity >= 0) {
