@@ -5,6 +5,7 @@ import backend.db.DBs;
 import model.Card;
 import model.Product;
 import model.Receipt;
+import model.ShoppingCart;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -17,6 +18,12 @@ import java.util.Scanner;
  * DBs 클래스 참고하시면 데이터 가져오는 함수 있어요!
  */
 public class CustomerService {
+    private ShoppingCart shoppingCart;
+
+    public CustomerService(){
+        this.shoppingCart = new ShoppingCart();
+    }
+
 
     @UserMenu("테스트 출력하기")
     public void print(){
@@ -244,7 +251,6 @@ public class CustomerService {
             }
         }
 
-
         // 결제내역 클래스의 카드번호와 입력한 카드번호가 같으면 >> 여러개 일수있음. 선택하게 해야함.
         if (list.isEmpty()) {
             System.out.println("해당 카드 번호로 결제된 기록이 없습니다.");
@@ -264,8 +270,6 @@ public class CustomerService {
                 System.out.println("선택한 금액: " + selectedAmount);
             }
         }
-
-        //Product p = new Product(String name, int quantity);
 
         // 결제내역 클래스의 카드번호와 입력한 카드번호가 같으면
         receipt.printReceipt();
@@ -289,7 +293,6 @@ public class CustomerService {
     // 상품 장바구니에 담기
     public void addCart() {
         Scanner scanner = new Scanner(System.in);
-        ArrayList<Product> productList = new ArrayList<Product>();
 
         System.out.println("상품과 수량을 입력하세요. 종료하려면 '끝'을 입력하세요.");
 
@@ -332,6 +335,7 @@ public class CustomerService {
             System.out.println("상품이 추가되었습니다.\n");
         }
 
+        ShoppingCart.printShoppingCart();
         System.out.println("입력된 모든 상품과 수량 :");
         for (Product product : productList) {
             System.out.println(product.getName() + " " + product.getQuantity() + "개");
