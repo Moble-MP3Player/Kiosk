@@ -195,12 +195,12 @@ public class CustomerService {
         Scanner sc = new Scanner(System.in);
 
         System.out.print("카드 번호를 입력해주세오 : ");
-        int cardnum = sc.nextInt();
+        int num = sc.nextInt();
 
         // Card 목록에서 해당 카드에 비밀번호 체크
         Card c = new Card();
         for(Card card : DBs.getCards()){
-            if(card.getCardNum() == cardnum){
+            if(card.getCardNum() == num){
                 c = card;
             }
         }
@@ -222,7 +222,7 @@ public class CustomerService {
         //
         ArrayList<Long> list = new ArrayList<>();
         for(Receipt receipt1 : DBs.getReceipts()) {
-            if (receipt.getCardNum() == cardnum) {
+            if (receipt.getCardNum() == num) {
                 list.add(receipt.getTotalPrice());
                 receipt = receipt1;
             }
@@ -263,7 +263,9 @@ public class CustomerService {
 
         // 재고 수량 회수
         // 상품 클래스의 상품과 영수증 상품이 같으면
-       // p.setInventory(receipt.getCount());
+        for (Product product : DBs.getProducts()) {
+            product.setInventory(product.getInventory() - receipt.getCount());
+        }
 
         receipt.printReceipt();
     }
