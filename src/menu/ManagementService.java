@@ -53,7 +53,7 @@ public class ManagementService {
            }
        }
    }
-   @ManagerMenu("상품 검색")
+   @ManagerMenu("상품 검색 및 재고 확인")
     public void serchProduct(){
        Scanner sc=new Scanner(System.in);
        System.out.println("검색할 상품을 입력해주세요");
@@ -72,7 +72,7 @@ public class ManagementService {
        }
 
    }
-   @ManagerMenu("상품 수량 선택")
+   @ManagerMenu("상품 검색 및 수량 선택")
     public void selectProduct(){
         Scanner scanner=new Scanner(System.in);
 
@@ -92,14 +92,6 @@ public class ManagementService {
             return;
         }
 
-        int choiceproduct= scanner.nextInt();
-        if (choiceproduct<selectedProduct.getInventory()){
-            selectedProduct.setInventory(selectedProduct.getInventory()-choiceproduct);
-
-        }
-        else {
-            System.out.println("현재 재고량: "+selectedProduct.getInventory());
-        }
    }
 
 
