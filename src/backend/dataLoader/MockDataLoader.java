@@ -24,7 +24,7 @@ public class MockDataLoader implements DataLoader {
         products.add(new Product(9,"냉동만두","2024-04-23",3,"2024-10-23",4000));
         products.add(new Product(10,"육포","2024-04-23",5,"2024-11-22",5000));
         products.add(new Product(11,"우유","2024-04-23",9,"2024-04-31",1500));
-        products.add((new Product(12,"삼각 김밥","2024-04-23",5,"2024-04-27",1200)));
+        products.add((new Product(12,"햄버거","2024-04-23",5,"2024-04-27",1200)));
 
 
 
