@@ -24,9 +24,16 @@ public class CustomerService {
     }
 
 
-    @UserMenu("테스트 출력하기")
+    @UserMenu("상품 확인")
     public void print() {
-        System.out.println("테스트 결과입니다.");
+        ArrayList<Product>products=DBs.getProducts();
+        System.out.println("==================================================================");
+        for (Product product : products){
+            if(product.getName()!=null){
+                System.out.println("상품 이름: "+product.getName()+product.getEmoji()+" | 개수: "+product.getInventory()+" | 유통기한: "+product.getExpiryDate());
+                System.out.println("==================================================================");
+            }
+        }
     }
 
     @UserMenu("상품 결제하기")
