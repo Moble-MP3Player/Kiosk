@@ -134,7 +134,6 @@ public class CustomerService {
                         System.out.println("결제로 적립된 포인트: " + earnedPoint + "원");
                         remainingPoint = selectedCard.getPoint();
                         System.out.println("잔여 포인트: " + remainingPoint + "원");
-                        System.out.println("잔여 포인트: " + remainingPoint + "원");
 
                         pointEnough = true; // 결제가 완료되었으므로 반복문 종료
                     } else {
@@ -161,8 +160,8 @@ public class CustomerService {
                     totalPrice,       // 총 결제 금액
                     selectedCard.getCardName(), // 카드명
                     selectedCard.getCardNum(),  // 카드번호
-                    earnedPoint,       // 적립된 포인트
-                    remainingPoint // 해당 사용자의 잔여 포인트
+                    remainingPoint, // 해당 사용자의 잔여 포인트
+                    earnedPoint // 결제로 적립된 포인트
             );
 
 

@@ -60,6 +60,8 @@ public class Receipt {
 
 
     //setter
+    void setResidual(long residual) {this.residual = residual;}
+
     void setAccumulate(long accumulate){ this.accumulate = accumulate; }
 
     void setProductName(String productName){
@@ -100,7 +102,14 @@ public class Receipt {
 
 
     //getter
-    public long getAccumulate(){ return accumulate; }
+
+    public long getResidual() {
+        return residual;
+    }
+
+    public long getAccumulate(){
+        return accumulate;
+    }
 
     public String getProductName(){
         return productName;
@@ -158,7 +167,8 @@ public class Receipt {
         System.out.println("판매 총액 : " + this.getTotalPrice());
         System.out.println("-----------------------------------------------");
         System.out.println("사용 포인트 : " + this.getUsedPoint());
-        System.out.println("잔여 포인트 : " + this.getAccumulate());
+        System.out.println("적립 포인트 : " + this.getAccumulate());
+        System.out.println("잔여 포인트 : " + this.getResidual());
         System.out.println("받은 금액 : " + this.getAmountReceived());
         System.out.println("-----------------------------------------------");
         System.out.println("카드 번호 : " + this.getCardNum() + " " + this.getCardName() + "님");
