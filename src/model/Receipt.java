@@ -39,7 +39,7 @@ public class Receipt {
     }
 
     // 영수증 생성자 (파일에서 불러오기 위함)
-    public Receipt(String productName, int price, int count, long amountReceived, long usedPoint, long totalPrice, String cardName, int cardNum, int receiptNumber, long accumulate, LocalDateTime createDate, long residual) {
+    public Receipt(String productName, int price, int count, long amountReceived, long usedPoint, long totalPrice, String cardName, int cardNum, int receiptNumber, long residual, long accumulate, LocalDateTime createDate) {
         this.productName = productName;
         this.price = price;
         this.count = count;
