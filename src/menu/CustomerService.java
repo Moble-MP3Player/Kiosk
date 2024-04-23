@@ -54,20 +54,22 @@ public class CustomerService {
 
     @UserMenu("상품 결제")
     public void payment() {
-        ArrayList<Card> cards = DBs.getCards(); //카드 객체들을 가져와서 ArrayList에 저장함.
-        ArrayList<Receipt> receipts = DBs.getReceipts();
+        ArrayList<Card> cards = DBs.getCards(); //카드 객체들을 가져옴
+        ArrayList<Receipt> receipts = DBs.getReceipts(); //영수증 객체를 가져옴
 
         Card selectedCard = null; // 선택된 카드 객체를 저장할 변수
 
-        long totalPrice = 13000; //결제 금액(0으로 수정)
+        long totalPrice = 0; //결제 금액
         long payBalance = 0; //totalPrice에서 usedPoint를 뺀 값 -> 총 결제 금액에서 포인트를 쓰고 남은 결제 금액
 
         Scanner sc = new Scanner(System.in);
+        
+        for(String productName : shoppingCart.getShoppingCart().keySet()){ //상품들의 총 가격의 합을 계산하는 반복문
+            totalPrice += DBs.getPriceByName(productName) * shoppingCart.getShoppingCart().get(productName);
+        }
 
-        // 먼저 장바구니에 담긴 상품들, 총 결제 금액을 출력하는 로직(미구현)
-        System.out.println("장바구니의 담긴 상품1");
-        System.out.println("장바구니의 담긴 상품2");
-        System.out.println("장바구니의 담긴 상품3");
+        // 먼저 장바구니에 담긴 상품들, 총 결제 금액을 출력
+        shoppingCart.printShoppingCart();
 
         //결제 여부
         System.out.print("결제 하시겠습니까?(Y/N)");
@@ -79,7 +81,7 @@ public class CustomerService {
             while (!cardFound) { //일치하는 카드를 찾을 때까지 반복
                 System.out.println("========================================");
                 System.out.print("결제하실 카드 번호 입력 : ");
-                int cardNum = sc.nextInt();
+                int cardNum = sc.nextInt(); //사용자가 입력한 카드 번호를 저장
 
                 for (Card card : cards) { //ArrayList를 돌면서 일치하는 카드가 있는지 검사
                     if (card.getCardNum() == cardNum) { //사용자가 입력한 카드번호와 ArrayList에 있는 카드객체들의 카드번호가 일치할 때
@@ -88,9 +90,9 @@ public class CustomerService {
                         System.out.println("카드가 확인되었습니다.");
                         System.out.println();
                         System.out.print("카드 비밀번호 입력 : ");
-                        int cardPassword = sc.nextInt();
+                        int cardPassword = sc.nextInt(); //사용자가 입력한 카드 비밀번호 저장
 
-                        if (card.getPassword() == cardPassword) {
+                        if (card.getPassword() == cardPassword) { //사용자가 입력한 비밀번호와 ArrayList에 있는 카드객체들의 비밀번호가 일치할 때
                             System.out.println("비밀번호가 일치합니다. 결제가 진행됩니다.");
                             System.out.println("========================================");
                             selectedCard = card; // 일치하는 카드 객체를 변수에 저장합니다.
@@ -111,15 +113,16 @@ public class CustomerService {
             }
 
             //결제 진행
+            System.out.println("현재 잔액 : " + selectedCard.getCardBal() + "원");
             System.out.println("현재 포인트 : " + selectedCard.getPoint() + "원");
             System.out.print("포인트를 사용하시겠습니까?(Y/N)");
-            String PointDecision = sc.next().toUpperCase();
+            String PointDecision = sc.next().toUpperCase(); //포인트 사용여부를 입력 받음
             long usedPoint = 0; //사용한 포인트
             long earnedPoint = 0; //적립금
-            long ep1 = 0;
-            long remainingPoint = selectedCard.getPoint();
+            long ep1 = 0; //결제 후 적립 될 포인트
+            long remainingPoint = selectedCard.getPoint(); //사용자 카드의 현재 포인트
 
-            if (PointDecision.equals("Y")) {
+            if (PointDecision.equals("Y")) { //포인트를 사용할 때
                 boolean pointEnough = false;
 
                 while (!pointEnough) {
@@ -161,41 +164,45 @@ public class CustomerService {
                 payBalance = totalPrice;
             }//.
 
-            //영수증 생성(수정 필요)
-            Receipt receipt = new Receipt(
-                    "발렌타인 21Y",    // 상품명
-                    13000,            // 상품 가격
-                    1,                // 상품 수량
-                    payBalance,       // 받은 금액 (사용자의 카드 잔액에서 사용한 금액)
-                    usedPoint,        // 사용한 포인트
-                    totalPrice,       // 총 결제 금액
-                    selectedCard.getCardName(), // 카드명
-                    selectedCard.getCardNum(),  // 카드번호
-                    ep1, // 결제로 적립된 포인트
-                    remainingPoint // 해당 사용자의 잔여 포인트
-            );
+            for(String productName : shoppingCart.getShoppingCart().keySet()) {
+                int productPrice = (int) DBs.getPriceByName(productName);
+                //영수증 생성(수정 필요)
+                Receipt receipt = new Receipt(
+                        productName,    // 상품명
+                        productPrice,            // 상품 가격(단가)
+                        shoppingCart.getShoppingCart().get(productName),                // 상품 수량
+                        usedPoint > productPrice ? 0 : productPrice - usedPoint,       // 받은 금액 (사용자의 카드 잔액에서 사용한 금액)
+                        usedPoint > productPrice ? productPrice : usedPoint,// 사용한 포인트
+                        (long) DBs.getPriceByName(productName) * shoppingCart.getShoppingCart().get(productName),       // 총 결제 금액
+                        selectedCard.getCardName(), // 카드명
+                        selectedCard.getCardNum(),  // 카드번호
+                        ep1, // 결제로 적립된 포인트
+                        remainingPoint // 해당 사용자의 잔여 포인트
+                );
+                usedPoint -= productPrice;
 
+                //영수증 List에 방금 생성한 영수증 추가
+                receipts.add(receipt);
 
-            //영수증 List에 방금 생성한 영수증 추가
-            receipts.add(receipt);
+                //영수증 발행여부
+                System.out.print("영수증을 발행하시겠습니까?(Y/N)");
+                String ReceiptDecision = sc.next().toUpperCase();
 
-            //영수증 발행여부
-            System.out.print("영수증을 발행하시겠습니까?(Y/N)");
-            String ReceiptDecision = sc.next().toUpperCase();
-
-            //영수증 발행
-            if(ReceiptDecision.equals("Y")) {
-                receipt.printReceipt();
-                System.out.println();
-                System.out.println("이용해 주셔서 감사합니다.");
-                System.out.println();
+                //영수증 발행
+                if(ReceiptDecision.equals("Y")) {
+                    receipt.printReceipt();
+                    System.out.println();
+                    System.out.println("이용해 주셔서 감사합니다.");
+                    System.out.println();
+                }
+                //영수증 미발행
+                else {
+                    System.out.println();
+                    System.out.println("이용해 주셔서 감사합니다.");
+                    System.out.println();
+                }
             }
-            //영수증 미발행
-            else {
-                System.out.println();
-                System.out.println("이용해 주셔서 감사합니다.");
-                System.out.println();
-            }
+
         }
         else if(decision.equals("N")) { //결제를 취소하는 경우
             System.out.println("결제를 취소하였습니다. 메뉴 탭으로 이동합니다.");
