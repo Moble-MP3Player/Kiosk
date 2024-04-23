@@ -5,6 +5,7 @@ import backend.db.DBs;
 import model.Card;
 import model.Product;
 import model.Receipt;
+import model.ShoppingCart;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -17,6 +18,12 @@ import java.util.Scanner;
  * DBs 클래스 참고하시면 데이터 가져오는 함수 있어요!
  */
 public class CustomerService {
+    private ShoppingCart shoppingCart;
+
+    public CustomerService(){
+        this.shoppingCart = new ShoppingCart();
+    }
+
 
     @UserMenu("테스트 출력하기")
     public void print(){
@@ -107,31 +114,34 @@ public class CustomerService {
             System.out.println("현재 포인트 : " + selectedCard.getPoint() + "원");
             System.out.print("포인트를 사용하시겠습니까?(Y/N)");
             String PointDecision = sc.next().toUpperCase();
-            long usedPoint = 0;
-            long earnedPoint = 0;
+            long usedPoint = 0; //사용한 포인트
+            long earnedPoint = 0; //적립금
+            long ep1 = 0;
+            long remainingPoint = selectedCard.getPoint();
 
             if (PointDecision.equals("Y")) {
                 boolean pointEnough = false;
 
                 while (!pointEnough) {
                     System.out.print("사용할 포인트 입력 : ");
-                    usedPoint = sc.nextLong();
+                    usedPoint = sc.nextLong(); //사용자가 사용할 포인트
 
                     if (selectedCard.getPoint() >= usedPoint) {
-                        selectedCard.subPoint(usedPoint);
+                        selectedCard.subPoint(usedPoint); //subPoint 메서드를 사용하면 사용자의 포인트에서 사용한 포인트를 차감한 후에 남은 포인트를 반환함
                         payBalance = totalPrice - usedPoint;
                         System.out.println("포인트를 사용하여 결제합니다.");
                         System.out.println("========================================");
 
                         if (totalPrice > 0) {
                             System.out.println("남은 결제금액: " + payBalance + "원");
-                            selectedCard.pay(totalPrice);
+                            selectedCard.pay(payBalance);
                             pointEnough = true; // 결제가 완료되었으므로 반복문 종료
                         }
 
                         earnedPoint = selectedCard.addPoint(totalPrice);
-                        System.out.println("결제로 적립된 포인트: " + earnedPoint + "원");
-                        long remainingPoint = selectedCard.getPoint();
+                        ep1 = (long) (totalPrice * 0.01);
+                        System.out.println("결제로 적립된 포인트: " + ep1 + "원");
+                        remainingPoint = selectedCard.getPoint();
                         System.out.println("잔여 포인트: " + remainingPoint + "원");
 
                         pointEnough = true; // 결제가 완료되었으므로 반복문 종료
@@ -143,9 +153,15 @@ public class CustomerService {
 
             else if (PointDecision.equals("N")) {
                 selectedCard.pay(totalPrice); //포인트를 사용하지 않고 해당 카드의 잔액으로 결제
-            }
+                earnedPoint = selectedCard.addPoint(totalPrice);
+                ep1 = (long) (totalPrice * 0.01);
+                System.out.println("결제로 적립된 포인트: " + earnedPoint + "원");
+                remainingPoint = selectedCard.getPoint();
+                System.out.println("잔여 포인트: " + remainingPoint + "원");
+                payBalance = totalPrice;
+            }//.
 
-            //영수증 생성
+            //영수증 생성(수정 필요)
             Receipt receipt = new Receipt(
                     "발렌타인 21Y",    // 상품명
                     13000,            // 상품 가격
@@ -155,7 +171,8 @@ public class CustomerService {
                     totalPrice,       // 총 결제 금액
                     selectedCard.getCardName(), // 카드명
                     selectedCard.getCardNum(),  // 카드번호
-                    earnedPoint       // 적립된 포인트
+                    ep1, // 결제로 적립된 포인트
+                    remainingPoint // 해당 사용자의 잔여 포인트
             );
 
 
@@ -195,12 +212,12 @@ public class CustomerService {
         Scanner sc = new Scanner(System.in);
 
         System.out.print("카드 번호를 입력해주세오 : ");
-        int cardnum = sc.nextInt();
+        int num = sc.nextInt();
 
         // Card 목록에서 해당 카드에 비밀번호 체크
         Card c = new Card();
         for(Card card : DBs.getCards()){
-            if(card.getCardNum() == cardnum){
+            if(card.getCardNum() == num){
                 c = card;
             }
         }
@@ -222,12 +239,11 @@ public class CustomerService {
         //
         ArrayList<Long> list = new ArrayList<>();
         for(Receipt receipt1 : DBs.getReceipts()) {
-            if (receipt.getCardNum() == cardnum) {
+            if (receipt.getCardNum() == num) {
                 list.add(receipt.getTotalPrice());
                 receipt = receipt1;
             }
         }
-
 
         // 결제내역 클래스의 카드번호와 입력한 카드번호가 같으면 >> 여러개 일수있음. 선택하게 해야함.
         if (list.isEmpty()) {
@@ -249,8 +265,6 @@ public class CustomerService {
             }
         }
 
-        //Product p = new Product(String name, int quantity);
-
         // 결제내역 클래스의 카드번호와 입력한 카드번호가 같으면
         receipt.printReceipt();
         c.refund(receipt.getTotalPrice());
@@ -263,7 +277,9 @@ public class CustomerService {
 
         // 재고 수량 회수
         // 상품 클래스의 상품과 영수증 상품이 같으면
-       // p.setInventory(receipt.getCount());
+        for (Product product : DBs.getProducts()) {
+            product.setInventory(product.getInventory() - receipt.getCount());
+        }
 
         receipt.printReceipt();
     }
@@ -271,7 +287,6 @@ public class CustomerService {
     // 상품 장바구니에 담기
     public void addCart() {
         Scanner scanner = new Scanner(System.in);
-        ArrayList<Product> productList = new ArrayList<Product>();
 
         System.out.println("상품과 수량을 입력하세요. 종료하려면 '끝'을 입력하세요.");
 
@@ -314,6 +329,7 @@ public class CustomerService {
             System.out.println("상품이 추가되었습니다.\n");
         }
 
+        ShoppingCart.printShoppingCart();
         System.out.println("입력된 모든 상품과 수량 :");
         for (Product product : productList) {
             System.out.println(product.getName() + " " + product.getQuantity() + "개");
