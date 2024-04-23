@@ -286,7 +286,6 @@ public class CustomerService {
         Scanner scanner = new Scanner(System.in);
         ShoppingCart wishlist = new ShoppingCart();
 
-
         System.out.println("상품과 수량을 입력하세요. 종료하려면 '끝'을 입력하세요.");
 
         while (true) {
@@ -332,6 +331,14 @@ public class CustomerService {
 
         wishlist.printShoppingCart();
     }
+
+
+    @UserMenu("상품 삭제")
+    public void removeCart() {
+
+    }
+
+
     // 상품 교환
     @UserMenu("상품 교환")
     public void exchange() {
