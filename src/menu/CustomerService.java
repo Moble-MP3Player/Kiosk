@@ -215,135 +215,203 @@ public class CustomerService {
     }
 
     // 상품 반품
-    public void refund() {
+//    @UserMenu("반품")
+//    public void refund() {
+//        Scanner sc = new Scanner(System.in);
+//
+//        System.out.print("카드 번호를 입력해주세오 : ");
+//        int num = sc.nextInt();
+//
+//        // Card 목록에서 해당 카드에 비밀번호 체크
+//        Card c =null;
+//        for(Card card : DBs.getCards()){
+//            if(card.getCardNum() == num){
+//                c = card;
+//            }
+//        }
+//
+//        System.out.print("카드 비밀번호를 입력해주세오 : ");
+//        int cardPw = sc.nextInt();
+//
+//        // 카드 비밀번호 확인 절차 <<
+//        while (true) {
+//            if (cardPw == c.getPassword()) {
+//                break;
+//            } else {
+//                System.out.println("비밀번호가 일치하지 않습니다.");
+//            }
+//        }
+//
+//        Receipt receipt = null;
+//        // Receipt 목록에서 해당 결제기록 찾아오기 <<
+//        //
+//        ArrayList<Long> list = new ArrayList<>();
+//        for(Receipt receipt1 : DBs.getReceipts()) {
+//            if (receipt1.getCardNum() == num) {
+//                list.add(receipt1.getTotalPrice());
+//                receipt = receipt1;
+//            }
+//        }
+//
+//        // 결제내역 클래스의 카드번호와 입력한 카드번호가 같으면 >> 여러개 일수있음. 선택하게 해야함.
+//        long selectedAmount = 0;
+//        if (list.isEmpty()) {
+//            System.out.println("해당 카드 번호로 결제된 기록이 없습니다.");
+//        } else {
+//            System.out.println("해당 카드 번호로 결제된 금액:");
+//            for (int i = 0; i < list.size(); i++) {
+//                System.out.println((i + 1) + ". " + list.get(i));
+//            }
+//
+//            System.out.print("선택할 금액의 번호를 입력하세요: ");
+//            int choice = Integer.parseInt(sc.next());
+//
+//            if (choice < 1 || choice > list.size()) {
+//                System.out.println("유효하지 않은 선택입니다.");
+//            } else {
+//                selectedAmount = list.get(choice - 1);
+//                System.out.println("선택한 금액: " + selectedAmount);
+//            }
+//        }
+//
+//        // 결제내역 클래스의 카드번호의 금액 선택 후
+//        for(Receipt receipt : DBs.getReceipts()) {
+//            if (receipt.getCardNum() == num && receipt.getTotalPrice() == selectedAmount) {
+//                receipt.printReceipt();  // 영수증 재발행
+//                c.refund(receipt.getTotalPrice());  // 카드 환불
+//                if (receipt.getUsedPoint() != 0) {
+//                    c.point += receipt.getUsedPoint();  // 카드 포인트를 사용했다면 포인트 반환
+//                }
+//                c.point -= (long) (receipt.getTotalPrice() * 0.01);  // 적립한 포인트 차감
+//            }
+//        }
+//
+//        // 재고 수량 회수
+//        // 상품 클래스의 상품과 영수증 상품이 같으면
+//        for (Product product : DBs.getProducts()) {
+//            product.setInventory(product.getInventory() - receipt.getCount());
+//        }
+//        System.out.println("qweqweqeqwe!!!!!!!!!!!!!!!");
+//        receipt.printReceipt();
+//    }
+
+    // 상품 교환
+    @UserMenu("상품 교환")
+    public void exchange() {
         Scanner sc = new Scanner(System.in);
 
+        // 1. 카드 번호 입력
         System.out.print("카드 번호를 입력해주세오 : ");
-        int num = sc.nextInt();
+        int cardNumber = Integer.parseInt(sc.nextLine());
 
-        // Card 목록에서 해당 카드에 비밀번호 체크
-        Card c = new Card();
-        for(Card card : DBs.getCards()){
-            if(card.getCardNum() == num){
+        // 2. 입력한 카드 존재 유무 확인
+        Card c = null;
+        for (Card card : DBs.getCards()) {
+            if (card.getCardNum() == cardNumber) {
                 c = card;
+                break;
             }
         }
 
-        System.out.print("카드 번호를 입력해주세오 : ");
-        int cardPw = sc.nextInt();
+        if (c == null) {
+            System.out.println("해당 카드가 존재하지 않습니다.");
+            return;
+        }
 
-        // 카드 비밀번호 확인 절차 <<
+        // 3. 카드 비밀번호 확인
+        int countPw = 0; // 비밀번호 입력 시도 횟수 초기화
+        final int MAX_PASSWORD_ATTEMPTS = 5; // 최대 시도 횟수
+
         while (true) {
-            if (cardPw == c.getPassword()) {
-                break;
+            // 카드 비밀번호 입력
+            System.out.print("카드 번호를 입력해주세요");
+            int cardPw = Integer.parseInt(sc.nextLine());
+
+            // 비밀번호 일치 여부 확인
+            if (c.getPassword() == cardPw) {
+                break; // 일치하면 반복문 종료
             } else {
                 System.out.println("비밀번호가 일치하지 않습니다.");
+                countPw++; // 시도 횟수 증가
             }
         }
 
-        Receipt receipt = new Receipt();
-        // Receipt 목록에서 해당 결제기록 찾아오기 <<
-        //
-        ArrayList<Long> list = new ArrayList<>();
-        for(Receipt receipt1 : DBs.getReceipts()) {
-            if (receipt.getCardNum() == num) {
-                list.add(receipt.getTotalPrice());
-                receipt = receipt1;
+        // 비밀번호 5회 이상 잘못 입력 시 프로그램 종료
+        if (countPw >= MAX_PASSWORD_ATTEMPTS) {
+            System.out.println("비밀번호를 5회 이상 잘못 입력하여 프로그램을 종료합니다.");
+            return;
+        }
+
+        // 4. 교환할 결제 내역 선택
+        System.out.println("카드 결제 내역");
+
+        // 해당 카드로 결제된 모든 내역 가져오기
+        ArrayList<Receipt> cardReceipts = new ArrayList<>();
+        for (Receipt r : DBs.getReceipts()) {
+            if (r.getCardNum() == cardNumber) {
+                cardReceipts.add(r);
             }
         }
 
-        // 결제내역 클래스의 카드번호와 입력한 카드번호가 같으면 >> 여러개 일수있음. 선택하게 해야함.
-        long selectedAmount = 0;
-        if (list.isEmpty()) {
-            System.out.println("해당 카드 번호로 결제된 기록이 없습니다.");
-        } else {
-            System.out.println("해당 카드 번호로 결제된 금액:");
-            for (int i = 0; i < list.size(); i++) {
-                System.out.println((i + 1) + ". " + list.get(i));
+        // 5. 교환
+        if (!cardReceipts.isEmpty()) {
+            System.out.println("해당 카드 번호로 결제한 내역입니다.");
+
+            // 결제 내역 출력
+            for (int i = 0; i < cardReceipts.size(); i++) {
+                System.out.println((i + 1) + ". " + cardReceipts.get(i));
             }
 
-            System.out.print("선택할 금액의 번호를 입력하세요: ");
-            int choice = Integer.parseInt(sc.nextLine());
+            // 출력된 결제 내역 중 사용자 입력으로 교환할 내역 선택
+            System.out.print("교환할 결제 내역의 번호를 입력해주세요. ");
+            int exchangeIndex = Integer.parseInt(sc.nextLine()) - 1; // 사용자가 선택한 교환할 결제 내역
 
-            if (choice < 1 || choice > list.size()) {
+            // 입력이 올바르지 않을 경우
+            Receipt exchangeReceipt = null;
+            if (exchangeIndex < 0 || exchangeIndex >= cardReceipts.size()) {
                 System.out.println("유효하지 않은 선택입니다.");
             } else {
-                selectedAmount = list.get(choice - 1);
-                System.out.println("선택한 금액: " + selectedAmount);
-            }
-        }
-
-        // 결제내역 클래스의 카드번호의 금액 선택 후
-        for(Receipt receipt1 : DBs.getReceipts()) {
-            if (receipt.getCardNum() == num && receipt.getTotalPrice() == selectedAmount) {
-                receipt.printReceipt();  // 영수증 재발행
-                c.refund(receipt.getTotalPrice());  // 카드 환불
-                if (receipt.getUsedPoint() != 0) {
-                    c.point += receipt.getUsedPoint();  // 카드 포인트를 사용했다면 포인트 반환
-                }
-                c.point -= (long) (receipt.getTotalPrice() * 0.01);  // 적립한 포인트 차감
-            }
-        }
-
-        // 재고 수량 회수
-        // 상품 클래스의 상품과 영수증 상품이 같으면
-        for (Product product : DBs.getProducts()) {
-            product.setInventory(product.getInventory() - receipt.getCount());
-        }
-
-        receipt.printReceipt();
-    }
-
-    // 상품 장바구니에 담기
-    public void addCart() {
-        Scanner scanner = new Scanner(System.in);
-        ShoppingCart wishlist = new ShoppingCart();
+                // 올바른 입력일 경우 선택한 내역 출력하여 사용자에게 확인
+                exchangeReceipt = cardReceipts.get(exchangeIndex);
+                System.out.println("교환할 내역: " + exchangeReceipt);
 
 
-        System.out.println("상품과 수량을 입력하세요. 종료하려면 '끝'을 입력하세요.");
-
-        while (true) {
-
-            System.out.print("상품 이름: ");
-            String name = scanner.nextLine();
-
-            if (name.equalsIgnoreCase("끝")) {
-                break;
-            }
-
-            // 상품이 이미 목록에 있는지 확인
-            Product existingProduct = null;
-            for (Product product : wishlist.getShoppingCart()) {
-                if (product.getName().equalsIgnoreCase(name)) {
-                    existingProduct = product;
-                    break;
-                }
-            }
-
-            int quantity;
-            if (existingProduct != null) {
+                inputVailed:
                 while (true) {
-                    System.out.print("수량: ");
-                    quantity = Integer.parseInt(scanner.nextLine());
+                    System.out.println("수량 선택");
+                    int count = sc.nextInt();
 
-                    if (quantity <= existingProduct.getInventory()) {
-                        break; // 입력한 수량이 기존 재고보다 작거나 같을 때 루프 탈출
-                    } else {
-                        System.out.println("입력한 수량이 기존 재고를 초과했습니다. 다시 입력하세요.");
+                    for (Product product : DBs.getProducts()) {
+                        if (count > exchangeReceipt.getCount()) {
+                            System.out.println("구매한 갯수보다 입력 값이 큽니다.");
+                            continue inputVailed;
+                        }
+                        if (product.getName().equals(exchangeReceipt.getProductName())) {
+
+                            if (product.getInventory() == 0) {
+                                System.out.println("상품의 재고가 없습니다.");
+                                break inputVailed;
+                            }
+
+                            if (product.getInventory() >= count) {
+                                System.out.println("교환 되셨습니다.");
+                                product.setInventory(count);
+
+                                // 영수증 날리기
+                                DBs.getReceipts().remove(exchangeReceipt);
+
+                                break inputVailed;
+
+                            } else {
+                                System.out.println("입력값이 현재 재고보다 큽니다.");
+                                continue inputVailed; // 입력 다시 받기
+                            }
+                        }
                     }
                 }
-            } else {
-                System.out.print("수량: ");
-                quantity = Integer.parseInt(scanner.nextLine());
             }
 
-
-            wishlist.addProduct(name, quantity);
-
-            System.out.println("상품이 추가되었습니다.\n");
         }
-
-        wishlist.printShoppingCart();
-
     }
 }
+

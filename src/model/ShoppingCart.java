@@ -1,6 +1,10 @@
 package model;
 
 import backend.db.DBs;
+import model.Card;
+import model.Product;
+import model.Receipt;
+
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -86,7 +90,7 @@ public class ShoppingCart {
         int cartQuantity = 0; // 장바구니에 들어간 상품의 수량
 
         // 상품 수량 가져오기
-        for(String productName : shoppingCart.keySet()) {
+        for (String productName : shoppingCart.keySet()) {
             int quantity = shoppingCart.get(productName);
 
             // 상품 이름으로 상품 객체를 조회 후 가격 가져오기
@@ -109,106 +113,4 @@ public class ShoppingCart {
         System.out.println();
         System.out.println("  상품: " + cartQuantity + "개  가격: " + totalPrice + "원");
     }
-
-
-    // 상품 교환
-    public void exchange() {
-        Scanner sc = new Scanner(System.in);
-
-        // 1. 카드 번호 입력
-        System.out.print("카드 번호를 입력해주세오 : ");
-        int cardNumber = Integer.parseInt(sc.nextLine());
-
-        // 2. 입력한 카드 존재 유무 확인
-        Card c = null;
-        for (Card card : DBs.getCards()) {
-            if (card.getCardNum() == cardNumber) {
-                c = card;
-                break;
-            }
-        }
-
-        if(c == null)  {
-            System.out.println("해당 카드가 존재하지 않습니다.");
-            return;
-        }
-
-        // 3. 카드 비밀번호 확인
-        int countPw = 0; // 비밀번호 입력 시도 횟수 초기화
-        final int MAX_PASSWORD_ATTEMPTS = 5; // 최대 시도 횟수
-
-        while(true) {
-            // 카드 비밀번호 입력
-            System.out.print("카드 번호를 입력해주세요");
-            int cardPw = Integer.parseInt(sc.nextLine());
-
-            // 비밀번호 일치 여부 확인
-            if (c.getPassword() == cardPw) {
-                break; // 일치하면 반복문 종료
-            } else {
-                System.out.println("비밀번호가 일치하지 않습니다.");
-                countPw++; // 시도 횟수 증가
-            }
-        }
-
-        // 비밀번호 5회 이상 잘못 입력 시 프로그램 종료
-        if (countPw >= MAX_PASSWORD_ATTEMPTS) {
-            System.out.println("비밀번호를 5회 이상 잘못 입력하여 프로그램을 종료합니다.");
-            return;
-        }
-
-        // 4. 교환할 결제 내역 선택
-        System.out.println("카드 결제 내역");
-
-        // 해당 카드로 결제된 모든 내역 가져오기
-        ArrayList<Receipt> cardReceipts = new ArrayList<>();
-        for(Receipt r : DBs.getReceipts()) {
-            if (r.getCardNum() == cardNumber) {
-                cardReceipts.add(r);
-            }
-        }
-
-        // 5. 교환
-        if (!cardReceipts.isEmpty()) {
-            System.out.println("해당 카드 번호로 결제한 내역입니다.");
-
-            // 결제 내역 출력
-            for (int i = 0; i < cardReceipts.size(); i++) {
-                System.out.println((i + 1) + ". " + cardReceipts.get(i));
-            }
-
-            // 출력된 결제 내역 중 사용자 입력으로 교환할 내역 선택
-            System.out.print("교환할 결제 내역의 번호를 입력해주세요. ");
-            int exchangeIndex = Integer.parseInt(sc.nextLine()) - 1; // 사용자가 선택한 교환할 결제 내역
-
-            // 입력이 올바르지 않을 경우
-            Receipt exchangeReceipt = null;
-            if (exchangeIndex < 0 || exchangeIndex >= cardReceipts.size()) {
-                System.out.println("유효하지 않은 선택입니다.");
-            } else {
-                // 올바른 입력일 경우 선택한 내역 출력하여 사용자에게 확인
-                exchangeReceipt = cardReceipts.get(exchangeIndex);
-                System.out.println("교환할 내역: " + exchangeReceipt);
-            }
-
-            // 선택한 결제 내역에 대한 교환 작업
-//            exchangeReceipt.printReceipt();
-
-//            // 결제 내역 중 교환할 상품 및 수량 선택
-//            Product exchangedProduct = exchangeReceipt.productName();
-//            int exchangedQuantity = exchangeReceipt.getQuantity();
-//
-//            for (Product product : DBs.getProducts()) {
-//                if (product.getName().equals(exchangeReceipt.getProductName())) {
-//                    product.setInventory(product.getInventory() - exchangeReceipt.getCount());
-//                    break;
-//                }
-//            }
-//
-//            // 장바구니에서 해당 결제 내역 삭제
-//            DBs.getReceipts().remove(exchangeReceipt);
-//        }
-//    } else {
-//        System.out.println("해당 카드 번호로 결제한 기록이 없습니다.");
-//    }
-}}}
+}
