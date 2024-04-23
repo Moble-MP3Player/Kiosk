@@ -45,6 +45,7 @@ public class ShoppingCart{
                 getPrice() +  "                   "  +
                 getQuantity() +  "                   "  +
                 getProductPrice() +  "                   ");
+        System.out.println();
         System.out.println("  상품: " + getCartQuantity() + "개  가격: " + getTotalPrice() + "원");
     }
 
@@ -69,7 +70,7 @@ public class ShoppingCart{
                 System.out.println(productName + "을(를) " + quantity + "개 담았습니다.");
             } else {
                 System.out.println("입력하신 수량이 너무 많습니다.");
-                System.out.println(getAvailableQuantity(productName) - currentQuantity + "개 이하로 담아주세요.");;
+                System.out.println(getAvailableQuantity(productName) - currentQuantity + "개 이하로 담아주세요.");
             }
         } else { // 장바구니에 없는 상품일 경우 > 재고 수량과 비교 후 추가 or 오류메시지
             if (quantity <= getAvailableQuantity(productName)) {
@@ -97,7 +98,7 @@ public class ShoppingCart{
                 // 재고 수량과 비교
             } else { // 삭제 후 수량이 0보다 작을 경우
                 System.out.println("입력하신 수량이 너무 많습니다.");
-                System.out.println(currentQuantity + "개 이하로 입력해주세요.");;
+                System.out.println(currentQuantity + "개 이하로 입력해주세요.");
             }
         } else { // 장바구니에 없는 상품일 경우 오류메시지
             if (quantity <= getAvailableQuantity(productName)) {
