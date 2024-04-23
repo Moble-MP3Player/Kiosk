@@ -55,5 +55,17 @@ public class Product {
 
     public void setPrice(double price) {this.price = price;}
 
+    public String getEmoji(){
+        String emoji = switch (name){
+            case "담배" -> "\uD83D\uDEAC";
+            case "탄산음료" -> "\uD83E\uDD64";
+            case "이온음료" -> "\uD83E\uDDCB";
+            case "라면" -> "\uD83C\uDF5C";
+            case "빵" -> "\uD83C\uDF5E";
+            case "과자" -> "\uD83C\uDF6A";
 
+            default -> "\uD83C\uDF66";
+        };
+        return emoji;
+    }
 }
