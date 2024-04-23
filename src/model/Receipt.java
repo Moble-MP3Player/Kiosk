@@ -53,6 +53,11 @@ public class Receipt {
         this.createDate = createDate;
     }
 
+    public Receipt() {
+
+    }
+
+
     //setter
     void setAccumulate(long accumulate){ this.accumulate = accumulate; }
 
