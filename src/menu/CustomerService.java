@@ -162,17 +162,17 @@ public class CustomerService {
                 remainingPoint = selectedCard.getPoint();
                 System.out.println("잔여 포인트: " + remainingPoint + "원");
                 payBalance = totalPrice;
-            }//.
+            }
 
             for(String productName : shoppingCart.getShoppingCart().keySet()) {
                 int productPrice = (int) DBs.getPriceByName(productName);
                 //영수증 생성(수정 필요)
                 Receipt receipt = new Receipt(
-                        productName,    // 상품명
-                        productPrice,            // 상품 가격(단가)
-                        shoppingCart.getShoppingCart().get(productName),                // 상품 수량
-                        usedPoint > productPrice ? 0 : productPrice - usedPoint,       // 받은 금액 (사용자의 카드 잔액에서 사용한 금액)
-                        usedPoint > productPrice ? productPrice : usedPoint,// 사용한 포인트
+                        productName, // 상품명
+                        productPrice, // 상품 가격(단가)
+                        shoppingCart.getShoppingCart().get(productName), // 상품 수량
+                        usedPoint > productPrice ? 0 : productPrice - usedPoint, // 받은 금액 (사용자의 카드 잔액에서 사용한 금액)
+                        usedPoint > productPrice ? productPrice : usedPoint, // 사용한 포인트
                         (long) DBs.getPriceByName(productName) * shoppingCart.getShoppingCart().get(productName),       // 총 결제 금액
                         selectedCard.getCardName(), // 카드명
                         selectedCard.getCardNum(),  // 카드번호
