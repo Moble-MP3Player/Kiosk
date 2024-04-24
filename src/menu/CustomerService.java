@@ -54,7 +54,12 @@ public class CustomerService {
         for(String productName : shoppingCart.getShoppingCart().keySet()){ //상품들의 총 가격의 합을 계산하는 반복문
             totalPrice += DBs.getPriceByName(productName) * shoppingCart.getShoppingCart().get(productName);
         }
-
+        
+        if(shoppingCart.getShoppingCart().size() == 0){ //장바구니에 상품을 담지 않고 결제를 실행할 때
+            System.out.println("장바구니에 담긴 상품이 없습니다.");
+            return;
+        }
+        
         // 먼저 장바구니에 담긴 상품들, 총 결제 금액을 출력
         shoppingCart.printShoppingCart();
 
@@ -149,7 +154,7 @@ public class CustomerService {
                 System.out.println("결제로 적립된 포인트: " + earnedPoint + "원");
                 remainingPoint = selectedCard.getPoint();
                 System.out.println("잔여 포인트: " + remainingPoint + "원");
-                payBalance = totalPrice;
+                payBalance = totalPrice;///
             }
 
             for(String productName : shoppingCart.getShoppingCart().keySet()) {
@@ -329,16 +334,15 @@ public class CustomerService {
         while (true) {
 
             System.out.print("상품 이름: ");
-            String name = scanner.nextLine();
+            String name = scanner.next();
 
             if (name.equalsIgnoreCase("끝")) {
+                scanner.nextLine();
                 break;
             }
 
-            int quantity;
-
             System.out.print("수량: ");
-            quantity = Integer.parseInt(scanner.nextLine());
+            int quantity = scanner.nextInt();
 
             cart.addProduct(name, quantity);
             System.out.println("상품이 추가되었습니다.\n");
@@ -408,17 +412,23 @@ public class CustomerService {
         ArrayList<Receipt> cardReceipts = new ArrayList<>();
         for (Receipt r : DBs.getReceipts()) {
             if (r.getCardNum() == cardNumber) {
+                if(r.getTotalPrice() != 0)
                 cardReceipts.add(r);
             }
         }
+        if(cardReceipts.isEmpty()){
+            System.out.println("해당 카드로 결제한 내역이 존재하지 않습니다.");
+            System.out.println("메뉴로 돌아갑니다. ");
+            return;
+        }
 
         // 5. 교환
-        if (!cardReceipts.isEmpty()) {
             System.out.println("해당 카드 번호로 결제한 내역입니다.");
 
             // 결제 내역 출력
             for (int i = 0; i < cardReceipts.size(); i++) {
-                System.out.println((i + 1) + ". " + cardReceipts.get(i));
+                Receipt toChangeReceipt = cardReceipts.get(i);
+                System.out.println((i + 1) + ". " + toChangeReceipt.getProductName() + "구매 수량 :" + toChangeReceipt.getCount());
             }
 
             // 출력된 결제 내역 중 사용자 입력으로 교환할 내역 선택
@@ -432,7 +442,7 @@ public class CustomerService {
             } else {
                 // 올바른 입력일 경우 선택한 내역 출력하여 사용자에게 확인
                 exchangeReceipt = cardReceipts.get(exchangeIndex);
-                System.out.println("교환할 내역: " + exchangeReceipt);
+                System.out.println("교환할 상품: " + exchangeReceipt.getProductName());
 
 
                 inputVailed:
@@ -445,6 +455,11 @@ public class CustomerService {
                             System.out.println("구매한 갯수보다 입력 값이 큽니다.");
                             continue inputVailed;
                         }
+                        if (count == 0 ){
+                            System.out.println("교환을 취소합니다.");
+                            continue ;
+                        }
+
                         if (product.getName().equals(exchangeReceipt.getProductName())) {
 
                             if (product.getInventory() == 0) {
@@ -470,7 +485,7 @@ public class CustomerService {
                 }
             }
 
-        }
+
     }
 }
 
