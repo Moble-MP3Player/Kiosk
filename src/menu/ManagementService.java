@@ -21,13 +21,8 @@ import java.util.Scanner;
  */
 public class ManagementService {
     // 예시 코드
-     private ArrayList<Product> arrayList=DBs.getProducts();
+     private final ArrayList<Product> arrayList=DBs.getProducts();
 
-
-    @ManagerMenu("테스트 출력하기")
-    public void printTest(){
-        System.out.println("매니저 모드입니다.");
-    }
 
    @ManagerMenu("상품 발주하기")
     public void productOrder(){
@@ -38,42 +33,42 @@ public class ManagementService {
        for (Product p : arrayList) {
            if (p.getInventory() == 0) {
                found=true;
-               System.out.println("재고가 없는 상품은 " + p.getName() + "입니다.");
-               System.out.println("상품을 추가 발주하시겠습니까? Y/N");
+               System.out.println("| 재고가 없는 상품은 " + p.getName() + "입니다. |");
+               System.out.println("| 상품을 추가 발주하시겠습니까? Y/N |");
                agree = sc.next();
                if (agree.equals("Y") || agree.equals("y")) {
-                   System.out.println("오늘의 날짜를 년 월 일 순으로 입력해주세요 '예:2024-04-23'");
+                   System.out.println("| 오늘의 날짜를 년 월 일 순으로 입력해주세요 '예:2024-04-23' |");
                    date = sc.next();
                    p.setDate(date);
                    p.setInventory(10);
                } else if (agree.equals("n") || agree.equals("N")) {
                    continue;
                } else {
-                   System.out.println("잘못된 입력입니다. Y또는 N을 눌러주세요");
+                   System.out.println("| 잘못된 입력입니다. Y또는 N을 눌러주세요 |");
                    break;
                }
            }
        }
        if(!found){
-           System.out.println("재고가 없는 상품이 없습니다. 처음으로 돌아갑니다.");
+           System.out.println("| 재고가 없는 상품이 없습니다. 처음으로 돌아갑니다. |");
        }
 
    }
    @ManagerMenu("상품 검색 및 재고 확인")
-    public void serchProduct(){
+    public void searchProduct(){
        Scanner sc=new Scanner(System.in);
        System.out.println("==================================================================");
-       System.out.println("검색할 상품을 입력해주세요");
-       String serch=sc.next();
+       System.out.println("| 검색할 상품을 입력해주세요 |");
+       String search=sc.next();
        boolean found=false;
        for (Product product:arrayList) {
-           if (product.getName().contains(serch)){
+           if (product.getName().contains(search)){
                System.out.println("==================================================================");
-               System.out.println("검색하신 상품의 이름: "+product.getName()+product.getEmoji());
+               System.out.println("| 검색하신 상품의 이름: "+product.getName()+product.getEmoji()+" |");
                System.out.println("==================================================================");
-               System.out.println("재고: "+product.getInventory());
+               System.out.println("| 재고: "+product.getInventory()+" |");
                System.out.println("==================================================================");
-               System.out.println("관리자 모드로 돌아갑니다.");
+               System.out.println("| 관리자 모드로 돌아갑니다. |");
                System.out.println("==================================================================");
                found=true;
                break;
@@ -86,15 +81,15 @@ public class ManagementService {
    }
    @ManagerMenu("모든 상품 확인")
     public void checkAllProducts(){
+       System.out.println("===============================================================================");
        for (Product product: arrayList){
-           System.out.println("==================================================================");
            if(product.getName()!=null){
-               System.out.println("id: "+product.getId()+"상품 이름: "+product.getName()+product.getEmoji()+" | 개수: "+product.getInventory()+" | 유통기한: "+product.getExpiryDate()+" | 입고일: "+product.getDate());
-               System.out.println("==================================================================");
+               System.out.println("| id: "+product.getId()+" | 상품 이름: "+product.getName()+product.getEmoji()+" | 개수: "+product.getInventory()+" | 유통기한: "+product.getExpiryDate()+" | 입고일: "+product.getDate()+" |");
+               System.out.println("===============================================================================");
            }
        }
    }
-   @ManagerMenu("마감")
+   @ManagerMenu("마감하기")
     public void closing(){
         ArrayList<Receipt>receipts= DBs.getReceipts();
         LocalDate today=LocalDate.now();
@@ -111,6 +106,42 @@ public class ManagementService {
        System.out.println("==================================================================");
        System.out.println("프로그램을 종료합니다.");
        System.exit(1);
+   }
+    @ManagerMenu("유통 기한 확인")
+   public void ProductManagement(){
+        LocalDate today=LocalDate.now();
+        Scanner sc=new Scanner(System.in);
+        boolean found=false;
+        Product checkDate=null;
+        int check=0;
+        for (Product product : arrayList){
+            LocalDate expiryDate=LocalDate.parse(product.getExpiryDate());
+            if (expiryDate.isBefore(today)){
+                System.out.println("| 현재 유통기한이 지난 상품은 "+product.getName()+"입니다. "+" 해당 상품의 유통기한: "+product.getExpiryDate()+" |");
+                found=true;
+                checkDate=product;
+                System.out.println("| 해당 상품을 품절하려면 1을 입력해주세요. |");
+            }
+        }
+
+        if (found) {
+            while (true){
+                check=sc.nextInt();
+                try {
+                    if(check==1){
+                        checkDate.setInventory(0);
+                        break;
+                    }else {
+                        System.out.println("| 잘못된 입력입니다. 1을 입력해주세요. |");
+                    }
+                }catch (Exception e){
+                    System.out.println("| 잘못된 입력입니다. 1을 입력해주세요. |");
+                }
+            }
+            System.out.println("| 해당 상품이 품절 처리 되었습니다. |");
+        }else {
+            System.out.println(("| 현재 유통기한이 지난 상품이 없습니다. |"));
+        }
    }
 
 
