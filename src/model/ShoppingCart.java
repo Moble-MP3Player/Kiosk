@@ -62,6 +62,7 @@ public class ShoppingCart {
                 newQuantity = currentQuantity + quantity;
             }
         }
+        System.out.println("상품이 추가되었습니다.\n");
     }
 
     // 장바구니에서 상품 삭제
