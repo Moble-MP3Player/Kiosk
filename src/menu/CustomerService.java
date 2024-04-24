@@ -331,13 +331,13 @@ public class CustomerService {
 
         System.out.println("상품과 수량을 입력하세요. 종료하려면 '끝'을 입력하세요.");
 
-        while (true) {////
+        while (true) {
 
             System.out.print("상품 이름: ");
             String name = scanner.next();
 
             if (name.equalsIgnoreCase("끝")) {
-                scanner.nextLine();/////
+                scanner.nextLine();
                 break;
             }
 
