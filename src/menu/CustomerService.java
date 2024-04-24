@@ -281,7 +281,7 @@ public class CustomerService {
         // 정상적으로 금액을 선택했을 경우,
         // 1 영수증 재발행
         Receipt newRefundReceipt = new Receipt(
-                toRefundReceipt.getProductName(),
+                toRefundReceipt.getProductName()+"(반품)",
                 toRefundReceipt.getPrice(),
                 toRefundReceipt.getCount(),
                 0, // 받은 금액
@@ -364,7 +364,7 @@ public class CustomerService {
         Scanner sc = new Scanner(System.in);
 
         // 1. 카드 번호 입력
-        System.out.print("카드 번호를 입력해주세오 : ");
+        System.out.print("카드 번호를 입력해주세요 : ");
         int cardNumber = Integer.parseInt(sc.nextLine());
 
         // 2. 입력한 카드 존재 유무 확인
@@ -387,7 +387,7 @@ public class CustomerService {
 
         while (true) {
             // 카드 비밀번호 입력
-            System.out.print("카드 번호를 입력해주세요");
+            System.out.print("카드 번호를 입력해주세요 : ");
             int cardPw = Integer.parseInt(sc.nextLine());
 
             // 비밀번호 일치 여부 확인
@@ -469,7 +469,7 @@ public class CustomerService {
 
                             if (product.getInventory() >= count) {
                                 System.out.println("교환 되셨습니다.");
-                                product.setInventory(count);
+                                product.setInventory(product.getInventory()-count);
 
                                 // 영수증 날리기
                                 DBs.getReceipts().remove(exchangeReceipt);
