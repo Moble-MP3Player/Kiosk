@@ -337,7 +337,7 @@ public class CustomerService {
             String name = scanner.next();
 
             if (name.equalsIgnoreCase("끝")) {
-                scanner.nextLine();
+                scanner.nextLine();/////
                 break;
             }
 
