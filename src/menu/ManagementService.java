@@ -1,16 +1,14 @@
 package menu;
 
 import backend.annotations.ManagerMenu;
-import backend.db.DB;
 import backend.db.DBs;
 import model.Product;
 import model.Receipt;
 
+import java.time.DateTimeException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Locale;
 import java.util.Scanner;
 
 /**
@@ -30,6 +28,7 @@ public class ManagementService {
         String date;
         String agree;
         boolean found=false;
+        DateTimeFormatter formatter=DateTimeFormatter.ofPattern("yyyy-MM-dd");
        for (Product p : arrayList) {
            if (p.getInventory() == 0) {
                found=true;
@@ -39,8 +38,15 @@ public class ManagementService {
                if (agree.equals("Y") || agree.equals("y")) {
                    System.out.println("| 오늘의 날짜를 년 월 일 순으로 입력해주세요 '예:2024-04-23' |");
                    date = sc.next();
-                   p.setDate(date);
-                   p.setInventory(10);
+                   try {
+                       LocalDate realDate= LocalDate.parse(date,formatter);
+                       p.setExpiryDate(realDate.toString());
+                       p.setInventory(10);
+                       System.out.println(p.getName()+p.getEmoji()+"의 발주가 완료되었습니다. |");
+                   }catch(DateTimeException e){
+                       System.out.println("| 날짜를 잘못 입력하셨습니다. |");
+                   }
+
                } else if (agree.equals("n") || agree.equals("N")) {
                    continue;
                } else {
@@ -57,27 +63,25 @@ public class ManagementService {
    @ManagerMenu("상품 검색 및 재고 확인")
     public void searchProduct(){
        Scanner sc=new Scanner(System.in);
-       System.out.println("==================================================================");
+       System.out.println("===============================================================================");
        System.out.println("| 검색할 상품을 입력해주세요 |");
        String search=sc.next();
        boolean found=false;
        for (Product product:arrayList) {
            if (product.getName().contains(search)){
-               System.out.println("==================================================================");
+               System.out.println("===============================================================================");
                System.out.println("| 검색하신 상품의 이름: "+product.getName()+product.getEmoji()+" |");
-               System.out.println("==================================================================");
+               System.out.println("===============================================================================");
                System.out.println("| 재고: "+product.getInventory()+" |");
-               System.out.println("==================================================================");
-               System.out.println("| 관리자 모드로 돌아갑니다. |");
-               System.out.println("==================================================================");
                found=true;
-               break;
            }
 
        }
        if (!found){
-           System.out.println("해당되는 이름의 상품이 없습니다.");
+           System.out.println("| 해당되는 이름의 상품이 없습니다. |");
        }
+       System.out.println("| 관리자 모드로 돌아갑니다. |");
+       System.out.println("===============================================================================");
    }
    @ManagerMenu("모든 상품 확인")
     public void checkAllProducts(){
@@ -93,7 +97,7 @@ public class ManagementService {
     public void closing(){
         ArrayList<Receipt>receipts= DBs.getReceipts();
         LocalDate today=LocalDate.now();
-       System.out.println("==================================================================");
+       System.out.println("===============================================================================");
         int totalMoney=0;
        for (Receipt receipt:receipts ){
             LocalDate receiptDate=receipt.getCreateDate().toLocalDate();
@@ -103,7 +107,7 @@ public class ManagementService {
             }
         }
        System.out.println("오늘 날짜: "+today+" 총 판매금액: "+totalMoney);
-       System.out.println("==================================================================");
+       System.out.println("===============================================================================");
        System.out.println("프로그램을 종료합니다.");
        System.exit(1);
    }

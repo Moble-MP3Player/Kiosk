@@ -9,7 +9,6 @@ import model.Receipt;
 import model.ShoppingCart;
 
 import java.util.ArrayList;
-import java.util.Objects;
 import java.util.Scanner;
 
 /**
@@ -19,11 +18,11 @@ import java.util.Scanner;
  * DBs 클래스 참고하시면 데이터 가져오는 함수 있어요!
  */
 public class CustomerService {
-    private ShoppingCart shoppingCart;
+    private ShoppingCart cart;
     private Scanner sc = new Scanner(System.in);
 
     public CustomerService() {
-        this.shoppingCart = new ShoppingCart();
+        this.cart = new ShoppingCart();
     }
 
 
@@ -51,17 +50,17 @@ public class CustomerService {
 
         Scanner sc = new Scanner(System.in);
         
-        for(String productName : shoppingCart.getShoppingCart().keySet()){ //상품들의 총 가격의 합을 계산하는 반복문
-            totalPrice += DBs.getPriceByName(productName) * shoppingCart.getShoppingCart().get(productName);
+        for(String productName : cart.getShoppingCart().keySet()){ //상품들의 총 가격의 합을 계산하는 반복문
+            totalPrice += DBs.getPriceByName(productName) * cart.getShoppingCart().get(productName);
         }
         
-        if(shoppingCart.getShoppingCart().size() == 0){ //장바구니에 상품을 담지 않고 결제를 실행할 때
+        if(cart.getShoppingCart().size() == 0){ //장바구니에 상품을 담지 않고 결제를 실행할 때
             System.out.println("장바구니에 담긴 상품이 없습니다.");
             return;
         }
         
         // 먼저 장바구니에 담긴 상품들, 총 결제 금액을 출력
-        shoppingCart.printShoppingCart();
+        cart.printShoppingCart();
 
         //결제 여부
         System.out.print("결제 하시겠습니까?(Y/N)");
@@ -157,16 +156,16 @@ public class CustomerService {
                 payBalance = totalPrice;///
             }
 
-            for(String productName : shoppingCart.getShoppingCart().keySet()) {
+            for(String productName : cart.getShoppingCart().keySet()) {
                 int productPrice = (int) DBs.getPriceByName(productName);
                 //영수증 생성
                 Receipt receipt = new Receipt(
                         productName, // 상품명
                         productPrice, // 상품 가격(단가)
-                        shoppingCart.getShoppingCart().get(productName), // 상품 수량
+                        cart.getShoppingCart().get(productName), // 상품 수량
                         usedPoint > productPrice ? 0 : productPrice - usedPoint, // 받은 금액 (사용자의 카드 잔액에서 사용한 금액)
                         usedPoint > productPrice ? productPrice : usedPoint, // 사용한 포인트
-                        (long) DBs.getPriceByName(productName) * shoppingCart.getShoppingCart().get(productName),       // 총 결제 금액
+                        (long) DBs.getPriceByName(productName) * cart.getShoppingCart().get(productName),       // 총 결제 금액
                         selectedCard.getCardName(), // 카드명
                         selectedCard.getCardNum(),  // 카드번호
                         ep1, // 결제로 적립된 포인트
@@ -279,9 +278,9 @@ public class CustomerService {
             return;
         }
         // 정상적으로 금액을 선택했을 경우,
-        // 1 영수증 재발행
+        // 1 영수증 재발행 ?
         Receipt newRefundReceipt = new Receipt(
-                toRefundReceipt.getProductName(),
+                toRefundReceipt.getProductName()+"(반품)",
                 toRefundReceipt.getPrice(),
                 toRefundReceipt.getCount(),
                 0, // 받은 금액
@@ -319,15 +318,10 @@ public class CustomerService {
     }
 
 
-
-
-
-
    // 상품 담기
     @UserMenu("장바구니 담기")
     public void addCart() {
         Scanner scanner = new Scanner(System.in);
-        ShoppingCart cart = new ShoppingCart();
 
         System.out.println("상품과 수량을 입력하세요. 종료하려면 '끝'을 입력하세요.");
 
@@ -347,16 +341,29 @@ public class CustomerService {
             cart.addProduct(name, quantity);
             System.out.println("상품이 추가되었습니다.\n");
         }
+
+        System.out.println("상품을 삭제하려면 d키, 상품 결제는 c키를 눌러 진행해주세요.");
+
+        String key = sc.next();
+
+        while (true) {
+            if (key.equals("d")) {
+                System.out.print("삭제할 상품을 입력해주세요 : ");
+                String dname = sc.next();
+
+                if (dname.equals("c")) {
+                    break;
+                }
+
+                System.out.print("수량: ");
+                int dquantity = scanner.nextInt();
+                cart.removeProduct(dname, dquantity);
+            } else if (key.equals("c")) {
+                break;
+            } else break;
+        }
         cart.printShoppingCart();
     }
-
-
-
-    @UserMenu("상품 삭제")
-    public void removeCart() {
-
-    }
-
 
     // 상품 교환
     @UserMenu("상품 교환")
@@ -364,7 +371,7 @@ public class CustomerService {
         Scanner sc = new Scanner(System.in);
 
         // 1. 카드 번호 입력
-        System.out.print("카드 번호를 입력해주세오 : ");
+        System.out.print("카드 번호를 입력해주세요 : ");
         int cardNumber = Integer.parseInt(sc.nextLine());
 
         // 2. 입력한 카드 존재 유무 확인
@@ -387,7 +394,7 @@ public class CustomerService {
 
         while (true) {
             // 카드 비밀번호 입력
-            System.out.print("카드 번호를 입력해주세요");
+            System.out.print("카드 번호를 입력해주세요 : ");
             int cardPw = Integer.parseInt(sc.nextLine());
 
             // 비밀번호 일치 여부 확인
@@ -469,7 +476,7 @@ public class CustomerService {
 
                             if (product.getInventory() >= count) {
                                 System.out.println("교환 되셨습니다.");
-                                product.setInventory(count);
+                                product.setInventory(product.getInventory()-count);
 
                                 // 영수증 날리기
                                 DBs.getReceipts().remove(exchangeReceipt);
