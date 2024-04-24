@@ -379,7 +379,9 @@ public class CustomerService {
                 break;
             } else break;
         }
-        cart.printShoppingCart();
+
+
+        payment();
     }
 
     // 상품 교환
