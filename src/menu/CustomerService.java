@@ -42,6 +42,7 @@ public class CustomerService {
     public void payment() {
         ArrayList<Card> cards = DBs.getCards(); //카드 객체들을 가져옴
         ArrayList<Receipt> receipts = DBs.getReceipts(); //영수증 객체를 가져옴
+        ArrayList<Product>products=DBs.getProducts();
 
         Card selectedCard = null; // 선택된 카드 객체를 저장할 변수
 
@@ -158,6 +159,21 @@ public class CustomerService {
 
             for(String productName : cart.getShoppingCart().keySet()) {
                 int productPrice = (int) DBs.getPriceByName(productName);
+                int quantity = cart.getShoppingCart().get(productName); // 상품 수량 가져오기
+
+                // 해당 상품을 장바구니에서 찾아서 재고를 감소시킴
+                for (Product product : products) {
+                    if (product.getName().equalsIgnoreCase(productName)) { // 상품 이름이 일치하는 경우
+                        int currentInventory = product.getInventory(); // 현재 재고
+                        if (currentInventory >= quantity) { // 결제 수량이 재고보다 적은 경우에만 감소
+                            product.setInventory(currentInventory - quantity); // 상품 재고 감소
+                        } else {
+                            System.out.println("상품 " + productName + "의 재고가 부족하여 결제가 취소됩니다.");
+                            return; // 재고 부족으로 결제 취소
+                        }
+                        break;
+                    }
+                }
                 //영수증 생성
                 Receipt receipt = new Receipt(
                         productName, // 상품명
@@ -179,6 +195,7 @@ public class CustomerService {
                 //영수증 발행여부
                 System.out.print("영수증을 발행하시겠습니까?(Y/N)");
                 String ReceiptDecision = sc.next().toUpperCase();
+
 
                 //영수증 발행
                 if(ReceiptDecision.equals("Y")) {
