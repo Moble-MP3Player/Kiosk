@@ -104,114 +104,124 @@ public class CustomerService {
                 }
             }
 
-            //결제 진행
-            System.out.println("결제 금액 : " + totalPrice + "원");
-            System.out.println("현재 잔액 : " + selectedCard.getCardBal() + "원");
-            System.out.println("현재 포인트 : " + selectedCard.getPoint() + "원");
-            System.out.print("포인트를 사용하시겠습니까?(Y/N)");
-            String PointDecision = sc.next().toUpperCase(); //포인트 사용여부를 입력 받음
-            long usedPoint = 0; //사용한 포인트
-            long earnedPoint = 0; //적립금
-            long ep1 = 0; //결제 후 적립 될 포인트
-            long remainingPoint = selectedCard.getPoint(); //사용자 카드의 현재 포인트
+            if (selectedCard.getCardBal() + selectedCard.getPoint() < totalPrice) {
+                System.out.println("잔액이 부족하여 결제할 수 없습니다. 메뉴창으로 이동합니다.");
+                System.out.println("결제 금액 : " + totalPrice + "원");
+                System.out.println("현재 잔액 : " + selectedCard.getCardBal() + "원, 포인트 : " + selectedCard.getPoint() + "원");
+                return;
+            } else {
+                //결제 진행
+                System.out.println("결제 금액 : " + totalPrice + "원");
+                System.out.println("현재 잔액 : " + selectedCard.getCardBal() + "원");
+                System.out.println("현재 포인트 : " + selectedCard.getPoint() + "원");
+                System.out.print("포인트를 사용하시겠습니까?(Y/N)");
+                String PointDecision = sc.next().toUpperCase(); //포인트 사용여부를 입력 받음
+                long usedPoint = 0; //사용한 포인트
+                long earnedPoint = 0; //적립금
+                long ep1 = 0; //결제 후 적립 될 포인트
+                long remainingPoint = selectedCard.getPoint(); //사용자 카드의 현재 포인트
 
-            if (PointDecision.equals("Y")) { //포인트를 사용할 때
-                boolean pointEnough = false;
+                if (PointDecision.equals("Y")) { //포인트를 사용할 때
+                    boolean pointEnough = false;
 
-                while (!pointEnough) {
-                    System.out.print("사용할 포인트 입력 : ");
-                    usedPoint = sc.nextLong(); //사용자가 사용할 포인트
+                    while (!pointEnough) {
+                        System.out.print("사용할 포인트 입력 : ");
+                        usedPoint = sc.nextLong(); //사용자가 사용할 포인트
 
-                    if (selectedCard.getPoint() >= usedPoint) {
-                        selectedCard.subPoint(usedPoint); //subPoint 메서드를 사용하면 사용자의 포인트에서 사용한 포인트를 차감한 후에 남은 포인트를 반환함
-                        payBalance = totalPrice - usedPoint;
-                        System.out.println("포인트를 사용하여 결제합니다.");
-                        System.out.println("========================================");
+                        if (selectedCard.getPoint() >= usedPoint) {
+                            selectedCard.subPoint(usedPoint); //subPoint 메서드를 사용하면 사용자의 포인트에서 사용한 포인트를 차감한 후에 남은 포인트를 반환함
+                            payBalance = totalPrice - usedPoint;
+                            System.out.println("포인트를 사용하여 결제합니다.");
+                            System.out.println("========================================");
 
-                        if (totalPrice > 0) {
-                            System.out.println("남은 결제금액: " + payBalance + "원");
-                            selectedCard.pay(payBalance);
+                            if (totalPrice > 0) {
+                                System.out.println("남은 결제금액: " + payBalance + "원");
+                                selectedCard.pay(payBalance);
+                                pointEnough = true; // 결제가 완료되었으므로 반복문 종료
+                            }
+
+                            earnedPoint = selectedCard.addPoint(totalPrice);
+                            ep1 = (long) (totalPrice * 0.01);
+                            System.out.println("결제로 적립된 포인트: " + ep1 + "원");
+                            remainingPoint = selectedCard.getPoint();
+                            System.out.println("잔여 포인트: " + remainingPoint + "원");
+
                             pointEnough = true; // 결제가 완료되었으므로 반복문 종료
-                        }
-
-                        earnedPoint = selectedCard.addPoint(totalPrice);
-                        ep1 = (long) (totalPrice * 0.01);
-                        System.out.println("결제로 적립된 포인트: " + ep1 + "원");
-                        remainingPoint = selectedCard.getPoint();
-                        System.out.println("잔여 포인트: " + remainingPoint + "원");
-
-                        pointEnough = true; // 결제가 완료되었으므로 반복문 종료
-                    } else {
-                        System.out.println("포인트가 부족하여 결제할 수 없습니다. 다시 입력해주세요.");
-                    }
-                }
-            }
-
-            else if (PointDecision.equals("N")) {
-                selectedCard.pay(totalPrice); //포인트를 사용하지 않고 해당 카드의 잔액으로 결제
-                earnedPoint = selectedCard.addPoint(totalPrice);
-                ep1 = (long) (totalPrice * 0.01);
-                System.out.println("결제로 적립된 포인트: " + ep1 + "원");
-                remainingPoint = selectedCard.getPoint();
-                System.out.println("잔여 포인트: " + remainingPoint + "원");
-                payBalance = totalPrice;///
-            }
-
-            for(String productName : cart.getShoppingCart().keySet()) {
-                int productPrice = (int) DBs.getPriceByName(productName);
-                int quantity = cart.getShoppingCart().get(productName); // 상품 수량 가져오기
-
-                // 해당 상품을 장바구니에서 찾아서 재고를 감소시킴
-                for (Product product : products) {
-                    if (product.getName().equalsIgnoreCase(productName)) { // 상품 이름이 일치하는 경우
-                        int currentInventory = product.getInventory(); // 현재 재고
-                        if (currentInventory >= quantity) { // 결제 수량이 재고보다 적은 경우에만 감소
-                            product.setInventory(currentInventory - quantity); // 상품 재고 감소
                         } else {
-                            System.out.println("상품 " + productName + "의 재고가 부족하여 결제가 취소됩니다.");
-                            return; // 재고 부족으로 결제 취소
+                            System.out.println("포인트가 부족하여 결제할 수 없습니다. 다시 입력해주세요.");
                         }
-                        break;
+                    }
+                } else if (PointDecision.equals("N")) {
+                    selectedCard.pay(totalPrice); //포인트를 사용하지 않고 해당 카드의 잔액으로 결제
+                    earnedPoint = selectedCard.addPoint(totalPrice);
+                    ep1 = (long) (totalPrice * 0.01);
+                    System.out.println("결제로 적립된 포인트: " + ep1 + "원");
+                    remainingPoint = selectedCard.getPoint();
+                    System.out.println("잔여 포인트: " + remainingPoint + "원");
+                    payBalance = totalPrice;///
+                }
+
+                for (String productName : cart.getShoppingCart().keySet()) {
+                    int productPrice = (int) DBs.getPriceByName(productName);
+                    int quantity = cart.getShoppingCart().get(productName); // 상품 수량 가져오기
+
+                    // 해당 상품을 장바구니에서 찾아서 재고를 감소시킴
+                    for (Product product : products) {
+                        if (product.getName().equalsIgnoreCase(productName)) { // 상품 이름이 일치하는 경우
+                            int currentInventory = product.getInventory(); // 현재 재고
+                            if (currentInventory >= quantity) { // 결제 수량이 재고보다 적은 경우에만 감소
+                                product.setInventory(currentInventory - quantity); // 상품 재고 감소
+                            } else {
+                                System.out.println("상품 " + productName + "의 재고가 부족하여 결제가 취소됩니다.");
+                                return; // 재고 부족으로 결제 취소
+                            }
+                            break;
+                        }
+                    }
+                    //영수증 생성
+                    Receipt receipt = new Receipt(
+                            productName, // 상품명
+                            productPrice, // 상품 가격(단가)
+                            cart.getShoppingCart().get(productName), // 상품 수량
+                            usedPoint >= productPrice ? 0 : (int)(productPrice * cart.getShoppingCart().get(productName)) - usedPoint, // 받은 금액 (사용자의 카드 잔액에서 사용한 금액)
+                            usedPoint > productPrice ? productPrice : usedPoint < 0 ? 0 : usedPoint, // 사용한 포인트
+                            (long) DBs.getPriceByName(productName) * cart.getShoppingCart().get(productName),       // 총 결제 금액
+                            selectedCard.getCardName(), // 카드명
+                            selectedCard.getCardNum(),  // 카드번호
+                            ep1, // 결제로 적립된 포인트
+                            remainingPoint // 해당 사용자의 잔여 포인트
+                    );
+                    if(usedPoint - productPrice <= 0){
+                        usedPoint = 0;
+                    }
+                    else {
+                        usedPoint -= productPrice;
+                    }
+
+                    //영수증 List에 방금 생성한 영수증 추가
+                    receipts.add(receipt);
+
+                    //영수증 발행여부
+                    System.out.print("영수증을 발행하시겠습니까?(Y/N)");
+                    String ReceiptDecision = sc.next().toUpperCase();
+
+
+                    //영수증 발행
+                    if (ReceiptDecision.equals("Y")) {
+                        receipt.printReceipt();
+                        System.out.println();
+                        System.out.println("이용해 주셔서 감사합니다.");
+                        System.out.println();
+                    }
+                    //영수증 미발행
+                    else {
+                        System.out.println();
+                        System.out.println("이용해 주셔서 감사합니다.");
+                        System.out.println();
                     }
                 }
-                //영수증 생성
-                Receipt receipt = new Receipt(
-                        productName, // 상품명
-                        productPrice, // 상품 가격(단가)
-                        cart.getShoppingCart().get(productName), // 상품 수량
-                        usedPoint > productPrice ? 0 : productPrice - usedPoint, // 받은 금액 (사용자의 카드 잔액에서 사용한 금액)
-                        usedPoint > productPrice ? productPrice : usedPoint < 0? 0 : usedPoint, // 사용한 포인트
-                        (long) DBs.getPriceByName(productName) * cart.getShoppingCart().get(productName),       // 총 결제 금액
-                        selectedCard.getCardName(), // 카드명
-                        selectedCard.getCardNum(),  // 카드번호
-                        ep1, // 결제로 적립된 포인트
-                        remainingPoint // 해당 사용자의 잔여 포인트
-                );
-                usedPoint -= productPrice;
 
-                //영수증 List에 방금 생성한 영수증 추가
-                receipts.add(receipt);
-
-                //영수증 발행여부
-                System.out.print("영수증을 발행하시겠습니까?(Y/N)");
-                String ReceiptDecision = sc.next().toUpperCase();
-
-
-                //영수증 발행
-                if(ReceiptDecision.equals("Y")) {
-                    receipt.printReceipt();
-                    System.out.println();
-                    System.out.println("이용해 주셔서 감사합니다.");
-                    System.out.println();
-                }
-                //영수증 미발행
-                else {
-                    System.out.println();
-                    System.out.println("이용해 주셔서 감사합니다.");
-                    System.out.println();
-                }
             }
-
         }
         else if(decision.equals("N")) { //결제를 취소하는 경우
             System.out.println("결제를 취소하였습니다. 메뉴 탭으로 이동합니다.");
