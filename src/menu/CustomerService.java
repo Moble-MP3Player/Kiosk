@@ -169,7 +169,7 @@ public class CustomerService {
                 System.out.println("결제로 적립된 포인트: " + earnedPoint + "원");
                 remainingPoint = selectedCard.getPoint();
                 System.out.println("잔여 포인트: " + remainingPoint + "원");
-                payBalance = totalPrice;
+                payBalance = totalPrice;///
             }
 
             for(String productName : shoppingCart.getShoppingCart().keySet()) {
