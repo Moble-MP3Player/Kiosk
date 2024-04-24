@@ -43,8 +43,10 @@ public class ManagementService {
                    date = sc.next();
                    try {
                        LocalDate realDate= LocalDate.parse(date,formatter);
-                       p.setExpiryDate(realDate.toString());
+                       p.setDate(realDate.toString());
                        p.setInventory(10);
+                       LocalDate expiryDate=realDate.plusDays(10);
+                       p.setExpiryDate(expiryDate.toString());
                        System.out.println(p.getName()+p.getEmoji()+"의 발주가 완료되었습니다. |");
                    }catch(DateTimeException e){
                        System.out.println("| 날짜를 잘못 입력하셨습니다. |");
