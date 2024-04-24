@@ -58,6 +58,21 @@ public class Receipt {
         this.residual = residual;
     }
 
+    //생성자 테스트
+    public Receipt(String productName, int price, int count, long amountReceived, long usedPoint, long totalPrice, String cardName, int cardNum, long residual, long accumulate, LocalDateTime createDate) {
+        this.productName = productName;
+        this.price = price;
+        this.count = count;
+        this.amountReceived = amountReceived;
+        this.usedPoint = usedPoint;
+        this.totalPrice = totalPrice;
+        this.cardName = cardName;
+        this.cardNum = cardNum;
+        this.accumulate = accumulate;
+        this.createDate = createDate;
+        this.residual = residual;
+    }
+
     public Receipt() {
 
     }
