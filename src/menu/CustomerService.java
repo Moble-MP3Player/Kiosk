@@ -334,16 +334,15 @@ public class CustomerService {
         while (true) {
 
             System.out.print("상품 이름: ");
-            String name = scanner.nextLine();
+            String name = scanner.next();
 
             if (name.equalsIgnoreCase("끝")) {
+                scanner.nextLine();
                 break;
             }
 
-            int quantity;
-
             System.out.print("수량: ");
-            quantity = Integer.parseInt(scanner.nextLine());
+            int quantity = scanner.nextInt();
 
             cart.addProduct(name, quantity);
             System.out.println("상품이 추가되었습니다.\n");
@@ -417,9 +416,13 @@ public class CustomerService {
                 cardReceipts.add(r);
             }
         }
+        if(cardReceipts.isEmpty()){
+            System.out.println("해당 카드로 결제한 내역이 존재하지 않습니다.");
+            System.out.println("메뉴로 돌아갑니다. ");
+            return;
+        }
 
         // 5. 교환
-        if (!cardReceipts.isEmpty()) {
             System.out.println("해당 카드 번호로 결제한 내역입니다.");
 
             // 결제 내역 출력
@@ -482,7 +485,7 @@ public class CustomerService {
                 }
             }
 
-        }
+
     }
 }
 
