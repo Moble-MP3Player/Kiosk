@@ -16,14 +16,14 @@ public class MockDataLoader implements DataLoader {
         products.add(new Product(1,"담배","2024-04-17",10,"2034-04-17",4500));
         products.add(new Product(2,"탄산음료","2024-04-17",15,"2026-04-17",1000));
         products.add(new Product(3,"이온음료","2024-04-17",18,"2028-04-17",1500));
-        products.add(new Product(4,"라면","2024-04-17",4,"2025-1-23",900));
+        products.add(new Product(4,"라면","2024-04-17",4,"2025-01-23",900));
         products.add(new Product(5,"과자","2024-04-17",14,"2025-03-28",1800));
         products.add(new Product(6,"빵","2024-04-17",5,"2024-04-24",2000));
         products.add(new Product(7,"맥주","2024-04-23",20,"2034-04-23",3900));
         products.add(new Product(8,"소주","2024-04-23",20,"2034-04-23",3000));
         products.add(new Product(9,"냉동만두","2024-04-23",3,"2024-10-23",4000));
         products.add(new Product(10,"육포","2024-04-23",5,"2024-11-22",5000));
-        products.add(new Product(11,"우유","2024-04-23",9,"2024-04-31",1500));
+        products.add(new Product(11,"우유","2024-04-21",9,"2024-04-23",1500));
         products.add((new Product(12,"햄버거","2024-04-23",5,"2024-04-27",1200)));
 
 
