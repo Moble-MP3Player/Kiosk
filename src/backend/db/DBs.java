@@ -95,7 +95,7 @@ public class DBs {
     public static double getPriceByName(String name){
         Product newProduct;
         for(Product product : DBs.getProducts()){
-            if(product.equals(name)){
+            if(product.getName().equals(name)){
                 return product.getPrice();
             }
         }
