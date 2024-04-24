@@ -50,7 +50,7 @@ public class ShoppingCart {
         }
 
         // 재고 수량과 비교후 추가
-        while (true) {
+        while (true){
             if (newQuantity <= existingProduct.getInventory()) {
                 shoppingCart.put(productName, newQuantity);
                 break;
@@ -59,6 +59,7 @@ public class ShoppingCart {
                 System.out.println(existingProduct.getInventory() - currentQuantity + "개 이하로 담아주세요.");
                 System.out.print("수량: ");
                 quantity = sc.nextInt();
+                newQuantity = currentQuantity + quantity;
             }
         }
     }
