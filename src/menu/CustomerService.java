@@ -49,7 +49,7 @@ public class CustomerService {
         long totalPrice = 0; //결제 금액
         long payBalance = 0; //totalPrice에서 usedPoint를 뺀 값 -> 총 결제 금액에서 포인트를 쓰고 남은 결제 금액
 
-        Scanner sc = new Scanner(System.in);//////
+        Scanner sc = new Scanner(System.in);
         
         for(String productName : shoppingCart.getShoppingCart().keySet()){ //상품들의 총 가격의 합을 계산하는 반복문
             totalPrice += DBs.getPriceByName(productName) * shoppingCart.getShoppingCart().get(productName);
