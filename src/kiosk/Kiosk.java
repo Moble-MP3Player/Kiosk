@@ -32,7 +32,7 @@ public class Kiosk {
             System.out.println(Strings.printMiniKiosk());
 
             // 디자인 재능있으신분 도와주세요... 진짜 가독성 개별로에요
-            System.out.println("───────────────── [어서오세요] ─────────────────");
+            System.out.println("──────────────── [\uD83D\uDE4B\u200D♂\uFE0F 어서오세요] ─────────────────");
             System.out.println(">> 메뉴를 선택해주세요.");
             System.out.println("──────────────────────────────────────────────");
 
@@ -43,8 +43,6 @@ public class Kiosk {
             System.out.println("-1) 관리자모드");
             System.out.println("──────────────────────────────────────────────");
             System.out.print(">>> ");
-            System.out.println();
-            System.out.println();
 
             int input = nextInt(); // 입력 받기
 
@@ -53,7 +51,7 @@ public class Kiosk {
             else {
                 // 관리자 모드
                 while (true) {
-                    System.out.println("───────────────── [관리자모드] ─────────────────");
+                    System.out.println("──────────────── [\uFE0F관리자모드⚙\uFE0F] ────────────────");
                     System.out.println(">> 메뉴를 선택해주세요.");
                     System.out.println("──────────────────────────────────────────────");
 
