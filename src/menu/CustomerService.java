@@ -279,9 +279,9 @@ public class CustomerService {
             return;
         }
         // 정상적으로 금액을 선택했을 경우,
-        // 1 영수증 재발행
+        // 1 영수증 재발행 ?
         Receipt newRefundReceipt = new Receipt(
-                toRefundReceipt.getProductName(),
+                toRefundReceipt.getProductName()+"(반품)",
                 toRefundReceipt.getPrice(),
                 toRefundReceipt.getCount(),
                 0, // 받은 금액
@@ -347,16 +347,29 @@ public class CustomerService {
             cart.addProduct(name, quantity);
             System.out.println("상품이 추가되었습니다.\n");
         }
+
+        System.out.println("상품을 삭제하려면 d키, 상품 결제는 c키를 눌러 진행해주세요.");
+
+        String key = sc.next();
+
+        while (true) {
+            if (key.equals("d")) {
+                System.out.print("삭제할 상품을 입력해주세요 : ");
+                String dname = sc.next();
+
+                if (dname.equals("c")) {
+                    break;
+                }
+
+                System.out.print("수량: ");
+                int dquantity = scanner.nextInt();
+                cart.removeProduct(dname, dquantity);
+            } else if (key.equals("c")) {
+                break;
+            }
+        }
         cart.printShoppingCart();
     }
-
-
-
-    @UserMenu("상품 삭제")
-    public void removeCart() {
-
-    }
-
 
     // 상품 교환
     @UserMenu("상품 교환")
@@ -364,7 +377,7 @@ public class CustomerService {
         Scanner sc = new Scanner(System.in);
 
         // 1. 카드 번호 입력
-        System.out.print("카드 번호를 입력해주세오 : ");
+        System.out.print("카드 번호를 입력해주세요 : ");
         int cardNumber = Integer.parseInt(sc.nextLine());
 
         // 2. 입력한 카드 존재 유무 확인
@@ -387,7 +400,7 @@ public class CustomerService {
 
         while (true) {
             // 카드 비밀번호 입력
-            System.out.print("카드 번호를 입력해주세요");
+            System.out.print("카드 번호를 입력해주세요 : ");
             int cardPw = Integer.parseInt(sc.nextLine());
 
             // 비밀번호 일치 여부 확인
@@ -469,7 +482,7 @@ public class CustomerService {
 
                             if (product.getInventory() >= count) {
                                 System.out.println("교환 되셨습니다.");
-                                product.setInventory(count);
+                                product.setInventory(product.getInventory()-count);
 
                                 // 영수증 날리기
                                 DBs.getReceipts().remove(exchangeReceipt);

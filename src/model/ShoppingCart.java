@@ -64,23 +64,34 @@ public class ShoppingCart {
     public void removeProduct(String productName, int quantity) {
         int currentQuantity = shoppingCart.getOrDefault(productName, 0); // 기존 수량
         int newQuantity = currentQuantity - quantity; // 최종 수량 = 기존 수량 - 삭제할 수량
+        Scanner sc = new Scanner(System.in);
 
         // 입력한 상품 이름이 유효한지 확인
         Product existingProduct = findProductByName(productName);
-        if (existingProduct == null) {
-            System.out.println("유효하지 않은 상품입니다.");
-            return;
+        while(true) {
+            if (existingProduct == null) {
+                System.out.println("유효하지 않은 상품입니다.");
+                System.out.print("상품 이름 : ");
+                productName = sc.next();
+            } else break;
         }
 
         // 삭제 후 수량을 0과 비교 후 삭제
-        if (newQuantity >= 0) {
-            shoppingCart.put(productName, newQuantity);
-            System.out.println(existingProduct.getName() + "을(를) " + quantity + "개 삭제했습니다.");
-        } else {
-            System.out.println("입력하신 수량이 너무 많습니다.");
-            System.out.println(currentQuantity + "개 이하로 입력해주세요.");
+        while (true) {
+            if (newQuantity < 0) {
+                System.out.println("입력하신 수량이 너무 많습니다.");
+                System.out.println(currentQuantity + "개 이하로 입력해주세요.");
+                System.out.print("수량: ");
+                quantity = sc.nextInt();
+                newQuantity = currentQuantity - quantity;
+            } else break;
         }
+
+        System.out.println(existingProduct.getName() + "을(를) " + quantity + "개 삭제했습니다.");
+        shoppingCart.put(productName, newQuantity);
     }
+
+
 
     // 장바구니 초기화
     public void resetShoppingCart() {
