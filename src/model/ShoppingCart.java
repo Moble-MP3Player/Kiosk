@@ -95,7 +95,7 @@ public class ShoppingCart {
 
     // 장바구니 출력
     public void printShoppingCart() {
-        System.out.println("=============================== 장바구니 목록 =================================");
+        System.out.println("================================ 장바구니 목록 ==================================");
         System.out.println(String.format(" %-10s %20s %20s %20s", "상품명", "단가", "수량", "금액"));
 
 
