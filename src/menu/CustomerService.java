@@ -120,6 +120,7 @@ public class CustomerService {
             }
 
             //결제 진행
+            System.out.println("결제 금액 : " + totalPrice + "원");
             System.out.println("현재 잔액 : " + selectedCard.getCardBal() + "원");
             System.out.println("현재 포인트 : " + selectedCard.getPoint() + "원");
             System.out.print("포인트를 사용하시겠습니까?(Y/N)");
@@ -173,7 +174,7 @@ public class CustomerService {
 
             for(String productName : shoppingCart.getShoppingCart().keySet()) {
                 int productPrice = (int) DBs.getPriceByName(productName);
-                //영수증 생성(수정 필요)
+                //영수증 생성
                 Receipt receipt = new Receipt(
                         productName, // 상품명
                         productPrice, // 상품 가격(단가)
