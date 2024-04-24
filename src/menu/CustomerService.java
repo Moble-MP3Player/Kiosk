@@ -413,6 +413,7 @@ public class CustomerService {
         ArrayList<Receipt> cardReceipts = new ArrayList<>();
         for (Receipt r : DBs.getReceipts()) {
             if (r.getCardNum() == cardNumber) {
+                if(r.getTotalPrice() != 0)
                 cardReceipts.add(r);
             }
         }
@@ -423,7 +424,8 @@ public class CustomerService {
 
             // 결제 내역 출력
             for (int i = 0; i < cardReceipts.size(); i++) {
-                System.out.println((i + 1) + ". " + cardReceipts.get(i));
+                Receipt toChangeReceipt = cardReceipts.get(i);
+                System.out.println((i + 1) + ". " + toChangeReceipt.getProductName() + "구매 수량 :" + toChangeReceipt.getCount());
             }
 
             // 출력된 결제 내역 중 사용자 입력으로 교환할 내역 선택
@@ -437,7 +439,7 @@ public class CustomerService {
             } else {
                 // 올바른 입력일 경우 선택한 내역 출력하여 사용자에게 확인
                 exchangeReceipt = cardReceipts.get(exchangeIndex);
-                System.out.println("교환할 내역: " + exchangeReceipt);
+                System.out.println("교환할 상품: " + exchangeReceipt.getProductName());
 
 
                 inputVailed:
@@ -450,6 +452,11 @@ public class CustomerService {
                             System.out.println("구매한 갯수보다 입력 값이 큽니다.");
                             continue inputVailed;
                         }
+                        if (count == 0 ){
+                            System.out.println("교환을 취소합니다.");
+                            continue ;
+                        }
+
                         if (product.getName().equals(exchangeReceipt.getProductName())) {
 
                             if (product.getInventory() == 0) {
