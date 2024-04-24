@@ -346,7 +346,7 @@ public class CustomerService {
 
 
    // 상품 담기
-    @UserMenu("장바구니 담기")
+    @UserMenu("장바구니 담기 및 삭제")
     public void addCart() {
         Scanner scanner = new Scanner(System.in);
 
