@@ -89,8 +89,8 @@ public class ShoppingCart {
 
     // 장바구니 출력
     public void printShoppingCart() {
-        System.out.println("=================== 장바구니 목록 ===================");
-        System.out.println(String.format(" %-12s %12s %12s %12s", "상품명", "단가", "수량", "금액"));
+        System.out.println("=============================== 장바구니 목록 =================================");
+        System.out.println(String.format(" %-10s %20s %20s %20s", "상품명", "단가", "수량", "금액"));
 
 
         long totalPrice = 0; // 최종 결제 예상 금액
@@ -111,7 +111,7 @@ public class ShoppingCart {
             long subtotal = productPrice * quantity; // 상품별 금액 = 단가 * 수량
             totalPrice += subtotal;
             cartQuantity += quantity;
-            System.out.println(String.format(" %-12s %,12d %,12d %,12d", product.getName(), productPrice, quantity, subtotal));
+            System.out.println(String.format(" %-10s %,20d %,20d %,20d", product.getName(), productPrice, quantity, subtotal));
         }
 
         System.out.println();
