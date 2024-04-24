@@ -1,17 +1,14 @@
 package menu;
 
 import backend.annotations.ManagerMenu;
-import backend.db.DB;
 import backend.db.DBs;
 import model.Product;
 import model.Receipt;
 
 import java.time.DateTimeException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Locale;
 import java.util.Scanner;
 
 /**

@@ -1,12 +1,9 @@
 package backend.util;
 
 import backend.db.DBs;
-import kiosk.Kiosk;
 import model.Product;
 
 import java.util.ArrayList;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 /**
  * 문자열 처리를 위한 함수가 정의된 클래스

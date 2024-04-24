@@ -1,12 +1,7 @@
 package model;
 
 import backend.db.DBs;
-import model.Card;
-import model.Product;
-import model.Receipt;
 
-
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
