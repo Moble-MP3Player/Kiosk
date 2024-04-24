@@ -51,18 +51,15 @@ public class ShoppingCart {
 
         // 재고 수량과 비교후 추가
         while (true){
-            if (newQuantity <= existingProduct.getInventory()) {
-                shoppingCart.put(productName, newQuantity);
-                break;
-            } else {
-                System.out.println("입력하신 수량이 재고를 초과하였습니다.");
+            if (newQuantity > existingProduct.getInventory()) {System.out.println("입력하신 수량이 재고를 초과하였습니다.");
                 System.out.println(existingProduct.getInventory() - currentQuantity + "개 이하로 담아주세요.");
                 System.out.print("수량: ");
                 quantity = sc.nextInt();
                 newQuantity = currentQuantity + quantity;
+                break;
             }
         }
-        System.out.println("상품이 추가되었습니다.\n");
+        shoppingCart.put(productName, newQuantity);
     }
 
     // 장바구니에서 상품 삭제
