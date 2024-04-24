@@ -371,14 +371,6 @@ public class CustomerService {
         cart.printShoppingCart();
     }
 
-
-
-    @UserMenu("상품 삭제")
-    public void removeCart() {
-
-    }
-
-
     // 상품 교환
     @UserMenu("상품 교환")
     public void exchange() {
