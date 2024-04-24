@@ -1,5 +1,8 @@
 package backend.util;
 
+import java.util.function.Consumer;
+import java.util.function.Supplier;
+
 /**
  * 문자열 처리를 위한 함수가 정의된 클래스
  */
@@ -36,5 +39,20 @@ public class Strings {
         }
 
         return builder.toString();
+    }
+
+    /**
+     * N초뒤 해당 STr 실행
+     */
+    public static void delayAndPrint(int count, String str, Runnable runnable) throws InterruptedException{
+            for(int i = count; i>0; i--){
+                try {
+                    Thread.sleep(1000);
+                    System.out.println(i + str);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            runnable.run();
     }
 }
