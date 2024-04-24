@@ -31,7 +31,7 @@ public class CustomerService {
         System.out.println("==================================================================");
         for (Product product : products){
             if(product.getName()!=null){
-                System.out.println("상품 이름: "+product.getName()+product.getEmoji()+" | 개수: "+product.getInventory()+" | 유통기한: "+product.getExpiryDate());
+                System.out.println("| 상품 이름: "+product.getName()+product.getEmoji()+" | 개수: "+product.getInventory()+" | 유통기한: "+product.getExpiryDate()+" |");
                 System.out.println("==================================================================");
             }
         }
