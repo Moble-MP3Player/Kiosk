@@ -88,10 +88,10 @@ public class ListTable {
      */
     private void updateFrameLocation(){
         frame.setLocation(locations);
-        locations.x = locations.x + 500;
-        if(locations.x>1500){ // x가 1500이 넘어갈 경우
-            locations.x = 10; // x를 10으로 수정
-            locations.y = locations.y + 310; // y축 310 이동(ui 화면 크기 + 10)
+        locations.y = locations.y + 260;
+        if(locations.y>1500){ // x가 1500이 넘어갈 경우
+            locations.y = 10; // y를 10으로 수정
+            locations.x = locations.x + 510; // x축 510 이동(ui 화면 크기 + 10)
         }
     }
 
