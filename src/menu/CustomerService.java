@@ -19,11 +19,11 @@ import java.util.Scanner;
  * DBs 클래스 참고하시면 데이터 가져오는 함수 있어요!
  */
 public class CustomerService {
-    private ShoppingCart shoppingCart;
+    private ShoppingCart cart;
     private Scanner sc = new Scanner(System.in);
 
     public CustomerService() {
-        this.shoppingCart = new ShoppingCart();
+        this.cart = new ShoppingCart();
     }
 
 
@@ -51,17 +51,17 @@ public class CustomerService {
 
         Scanner sc = new Scanner(System.in);
         
-        for(String productName : shoppingCart.getShoppingCart().keySet()){ //상품들의 총 가격의 합을 계산하는 반복문
-            totalPrice += DBs.getPriceByName(productName) * shoppingCart.getShoppingCart().get(productName);
+        for(String productName : cart.getShoppingCart().keySet()){ //상품들의 총 가격의 합을 계산하는 반복문
+            totalPrice += DBs.getPriceByName(productName) * cart.getShoppingCart().get(productName);
         }
         
-        if(shoppingCart.getShoppingCart().size() == 0){ //장바구니에 상품을 담지 않고 결제를 실행할 때
+        if(cart.getShoppingCart().size() == 0){ //장바구니에 상품을 담지 않고 결제를 실행할 때
             System.out.println("장바구니에 담긴 상품이 없습니다.");
             return;
         }
         
         // 먼저 장바구니에 담긴 상품들, 총 결제 금액을 출력
-        shoppingCart.printShoppingCart();
+        cart.printShoppingCart();
 
         //결제 여부
         System.out.print("결제 하시겠습니까?(Y/N)");
@@ -157,16 +157,16 @@ public class CustomerService {
                 payBalance = totalPrice;///
             }
 
-            for(String productName : shoppingCart.getShoppingCart().keySet()) {
+            for(String productName : cart.getShoppingCart().keySet()) {
                 int productPrice = (int) DBs.getPriceByName(productName);
                 //영수증 생성
                 Receipt receipt = new Receipt(
                         productName, // 상품명
                         productPrice, // 상품 가격(단가)
-                        shoppingCart.getShoppingCart().get(productName), // 상품 수량
+                        cart.getShoppingCart().get(productName), // 상품 수량
                         usedPoint > productPrice ? 0 : productPrice - usedPoint, // 받은 금액 (사용자의 카드 잔액에서 사용한 금액)
                         usedPoint > productPrice ? productPrice : usedPoint, // 사용한 포인트
-                        (long) DBs.getPriceByName(productName) * shoppingCart.getShoppingCart().get(productName),       // 총 결제 금액
+                        (long) DBs.getPriceByName(productName) * cart.getShoppingCart().get(productName),       // 총 결제 금액
                         selectedCard.getCardName(), // 카드명
                         selectedCard.getCardNum(),  // 카드번호
                         ep1, // 결제로 적립된 포인트
@@ -327,7 +327,6 @@ public class CustomerService {
     @UserMenu("장바구니 담기")
     public void addCart() {
         Scanner scanner = new Scanner(System.in);
-        ShoppingCart cart = new ShoppingCart();
 
         System.out.println("상품과 수량을 입력하세요. 종료하려면 '끝'을 입력하세요.");
 
@@ -366,7 +365,7 @@ public class CustomerService {
                 cart.removeProduct(dname, dquantity);
             } else if (key.equals("c")) {
                 break;
-            }
+            } else break;
         }
         cart.printShoppingCart();
     }
