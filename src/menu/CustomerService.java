@@ -347,6 +347,27 @@ public class CustomerService {
             cart.addProduct(name, quantity);
             System.out.println("상품이 추가되었습니다.\n");
         }
+
+        System.out.println("상품을 삭제하려면 d키, 상품 결제는 c키를 눌러 진행해주세요.");
+
+        String key = sc.next();
+
+        while (true) {
+            if (key.equals("d")) {
+                System.out.print("삭제할 상품을 입력해주세요 : ");
+                String dname = sc.next();
+
+                if (dname.equals("c")) {
+                    break;
+                }
+
+                System.out.print("수량: ");
+                int dquantity = scanner.nextInt();
+                cart.removeProduct(dname, dquantity);
+            } else if (key.equals("c")) {
+                break;
+            }
+        }
         cart.printShoppingCart();
     }
 

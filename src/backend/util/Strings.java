@@ -1,5 +1,10 @@
 package backend.util;
 
+import backend.db.DBs;
+import kiosk.Kiosk;
+import model.Product;
+
+import java.util.ArrayList;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -54,5 +59,49 @@ public class Strings {
                 }
             }
             runnable.run();
+    }
+
+    /**
+     * PrintMiniKiosk
+     *             ╔════════════KIOSK═══════════╗
+     *             ║════════════════════════════║
+     *             ║ 🥤 x 01  🚬 x 00  🥤 x 01  ║
+     *             ║ 🥤 x 01  🧋 x 00  🍜 x 02  ║
+     *             ║ 🥤 x 01  🍪 x 10  🍞 x 05  ║
+     *             ║ 🥤 x 01  🍪 x 10  🍞 x 05  ║
+     *             ║────────────────────────────║
+     *             ║                   ______   ║
+     *             ║────────────────────────────║
+     *             ║|                           ║
+     *             ║────────────────────────────║
+     */
+    public static String printMiniKiosk(){
+        ArrayList<Product> products = DBs.getProducts();
+
+        StringBuilder builder = new StringBuilder();
+        builder.append("""
+              %10s╔════════════KIOSK═══════════╗
+              %10s║════════════════════════════║
+                """.formatted("",""));
+
+        for(int i = 0 ; i < products.size()/3*3; i++) {
+            if(i%3==0) builder.append("%10s║".formatted(""));
+            builder.append(" %1s x %02d ".formatted(
+                        products.get(i).getEmoji(),
+                        products.get(i).getInventory()));
+            if(i%3==2) builder.append("║\n");
+        }
+        builder.append("""
+                %10s║────────────────────────────║
+                %10s║                   ______   ║
+                %10s║────────────────────────────║
+                %10s║|                           ║
+                %10s║────────────────────────────║
+                """.formatted("","","","",""));
+        return builder.toString();
+    }
+
+    public static void main(String[] args) {
+        System.out.println(printMiniKiosk());
     }
 }
