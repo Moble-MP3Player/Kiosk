@@ -368,6 +368,8 @@ public class CustomerService {
             } else break;
         }
         cart.printShoppingCart();
+
+        payment();
     }
 
     // 상품 교환
