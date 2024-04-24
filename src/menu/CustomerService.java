@@ -417,9 +417,13 @@ public class CustomerService {
                 cardReceipts.add(r);
             }
         }
+        if(cardReceipts.isEmpty()){
+            System.out.println("해당 카드로 결제한 내역이 존재하지 않습니다.");
+            System.out.println("메뉴로 돌아갑니다. ");
+            return;
+        }
 
         // 5. 교환
-        if (!cardReceipts.isEmpty()) {
             System.out.println("해당 카드 번호로 결제한 내역입니다.");
 
             // 결제 내역 출력
@@ -482,7 +486,7 @@ public class CustomerService {
                 }
             }
 
-        }
+
     }
 }
 
