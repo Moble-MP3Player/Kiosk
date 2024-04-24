@@ -118,31 +118,33 @@ public class ManagementService {
         Scanner sc=new Scanner(System.in);
         boolean found=false;
         Product checkDate=null;
+        int check=0;
         for (Product product : arrayList){
             LocalDate expiryDate=LocalDate.parse(product.getExpiryDate());
             if (expiryDate.isBefore(today)){
                 System.out.println("| 현재 유통기한이 지난 상품은 "+product.getName()+"입니다. "+" 해당 상품의 유통기한: "+product.getExpiryDate()+" |");
                 found=true;
                 checkDate=product;
+                System.out.println("| 해당 상품을 품절하려면 1을 입력해주세요. |");
             }
         }
-       System.out.println("| 해당 상품을 품절하려면 1을 입력해주세요. |");
-        int check=0;
-        while (true){
-            check=sc.nextInt();
-            try {
-                if(check==1){
-                    checkDate.setInventory(0);
-                    break;
-                }else {
+
+        if (found) {
+            while (true){
+                check=sc.nextInt();
+                try {
+                    if(check==1){
+                        checkDate.setInventory(0);
+                        break;
+                    }else {
+                        System.out.println("| 잘못된 입력입니다. 1을 입력해주세요. |");
+                    }
+                }catch (Exception e){
                     System.out.println("| 잘못된 입력입니다. 1을 입력해주세요. |");
                 }
-            }catch (Exception e){
-                System.out.println("| 잘못된 입력입니다. 1을 입력해주세요. |");
             }
-        }
-        System.out.println("| 해당 상품이 품절 처리 되었습니다. |");
-        if (!found){
+            System.out.println("| 해당 상품이 품절 처리 되었습니다. |");
+        }else {
             System.out.println(("| 현재 유통기한이 지난 상품이 없습니다. |"));
         }
    }
