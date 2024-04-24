@@ -279,7 +279,7 @@ public class CustomerService {
             return;
         }
         // 정상적으로 금액을 선택했을 경우,
-        // 1 영수증 재발행
+        // 1 영수증 재발행 ?
         Receipt newRefundReceipt = new Receipt(
                 toRefundReceipt.getProductName()+"(반품)",
                 toRefundReceipt.getPrice(),
