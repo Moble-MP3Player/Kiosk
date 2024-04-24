@@ -45,8 +45,7 @@ public class ShoppingCart {
                 System.out.println("유효하지 않은 상품입니다. 다시 입력해주세요.");
                 System.out.print("상품 이름 : ");
                 productName = sc.next();
-                break;
-            }
+            } else break;
         }
 
         // 재고 수량과 비교후 추가
@@ -56,8 +55,7 @@ public class ShoppingCart {
                 System.out.print("수량: ");
                 quantity = sc.nextInt();
                 newQuantity = currentQuantity + quantity;
-                break;
-            }
+            } else break;
         }
         shoppingCart.put(productName, newQuantity);
     }
