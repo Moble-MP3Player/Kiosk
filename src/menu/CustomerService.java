@@ -150,7 +150,7 @@ public class CustomerService {
                 selectedCard.pay(totalPrice); //포인트를 사용하지 않고 해당 카드의 잔액으로 결제
                 earnedPoint = selectedCard.addPoint(totalPrice);
                 ep1 = (long) (totalPrice * 0.01);
-                System.out.println("결제로 적립된 포인트: " + earnedPoint + "원");
+                System.out.println("결제로 적립된 포인트: " + ep1 + "원");
                 remainingPoint = selectedCard.getPoint();
                 System.out.println("잔여 포인트: " + remainingPoint + "원");
                 payBalance = totalPrice;///
@@ -164,7 +164,7 @@ public class CustomerService {
                         productPrice, // 상품 가격(단가)
                         cart.getShoppingCart().get(productName), // 상품 수량
                         usedPoint > productPrice ? 0 : productPrice - usedPoint, // 받은 금액 (사용자의 카드 잔액에서 사용한 금액)
-                        usedPoint > productPrice ? productPrice : usedPoint, // 사용한 포인트
+                        usedPoint > productPrice ? productPrice : usedPoint < 0? 0 : usedPoint, // 사용한 포인트
                         (long) DBs.getPriceByName(productName) * cart.getShoppingCart().get(productName),       // 총 결제 금액
                         selectedCard.getCardName(), // 카드명
                         selectedCard.getCardNum(),  // 카드번호
