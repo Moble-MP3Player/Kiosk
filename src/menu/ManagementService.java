@@ -24,11 +24,6 @@ public class ManagementService {
      private final ArrayList<Product> arrayList=DBs.getProducts();
 
 
-    @ManagerMenu("테스트 출력하기")
-    public void printTest(){
-        System.out.println("매니저 모드입니다.");
-    }
-
    @ManagerMenu("상품 발주하기")
     public void productOrder(){
         Scanner sc=new Scanner(System.in);
@@ -94,7 +89,7 @@ public class ManagementService {
            }
        }
    }
-   @ManagerMenu("마감")
+   @ManagerMenu("마감하기")
     public void closing(){
         ArrayList<Receipt>receipts= DBs.getReceipts();
         LocalDate today=LocalDate.now();

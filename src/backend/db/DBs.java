@@ -101,5 +101,19 @@ public class DBs {
         }
         return -1;
     }
+
+    /**
+     * 카드 비밀번호로 일치하는 해당 카드 객체를 가져옴.
+     */
+    public static Card getCardUserFromPassword(int password){
+        // Card 목록에서 해당 카드에 비밀번호 체크
+        Card c =null;
+        for(Card card : DBs.getCards()){
+            if(card.getCardNum() == password ){
+                c = card;
+            }
+        }
+        return c;
+    }
 }
 
