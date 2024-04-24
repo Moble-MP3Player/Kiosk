@@ -62,14 +62,19 @@ public class ManagementService {
    @ManagerMenu("상품 검색 및 재고 확인")
     public void serchProduct(){
        Scanner sc=new Scanner(System.in);
+       System.out.println("==================================================================");
        System.out.println("검색할 상품을 입력해주세요");
        String serch=sc.next();
        boolean found=false;
        for (Product product:arrayList) {
-           if (serch.equals(product.getName())){
+           if (product.getName().contains(serch)){
+               System.out.println("==================================================================");
                System.out.println("검색하신 상품의 이름: "+product.getName()+product.getEmoji());
+               System.out.println("==================================================================");
                System.out.println("재고: "+product.getInventory());
+               System.out.println("==================================================================");
                System.out.println("관리자 모드로 돌아갑니다.");
+               System.out.println("==================================================================");
                found=true;
                break;
            }
@@ -93,7 +98,7 @@ public class ManagementService {
     public void closing(){
         ArrayList<Receipt>receipts= DBs.getReceipts();
         LocalDate today=LocalDate.now();
-
+       System.out.println("==================================================================");
         int totalMoney=0;
        for (Receipt receipt:receipts ){
             LocalDate receiptDate=receipt.getCreateDate().toLocalDate();
@@ -103,7 +108,7 @@ public class ManagementService {
             }
         }
        System.out.println("오늘 날짜: "+today+" 총 판매금액: "+totalMoney);
-       System.out.println("==============================================");
+       System.out.println("==================================================================");
        System.out.println("프로그램을 종료합니다.");
        System.exit(1);
    }

@@ -23,7 +23,7 @@ public class ShoppingCart {
     }
 
     // 상품 이름으로 상품 객체 찾기
-    private Product findProductByName(String productName) {
+    public Product findProductByName(String productName) {
         for (Product product : DBs.getProducts()) {
             if (product.getName().equalsIgnoreCase(productName)) {
                 return product;
@@ -34,23 +34,33 @@ public class ShoppingCart {
 
     // 장바구니에 추가
     public void addProduct(String productName, int quantity) {
+        Scanner sc = new Scanner(System.in);
         int currentQuantity = shoppingCart.getOrDefault(productName, 0); // 기존 수량
         int newQuantity = currentQuantity + quantity; // 최종 수량 = 기존 수량 + 입력한 수량
 
         // 입력한 상품 이름이 유효한지 확인
         Product existingProduct = findProductByName(productName);
-        if (existingProduct == null) {
-            System.out.println("유효하지 않은 상품입니다.");
-            return;
+        while (true) {
+            if (existingProduct == null) {
+                System.out.println("유효하지 않은 상품입니다. 다시 입력해주세요.");
+                System.out.print("상품 이름 : ");
+                productName = sc.next();
+                break;
+            }
         }
 
         // 재고 수량과 비교후 추가
-        if (newQuantity <= existingProduct.getInventory()) {
-            shoppingCart.put(productName, newQuantity);
-            System.out.println(existingProduct.getName() + "을(를) " + quantity + "개 장바구니에 담았습니다.");
-        } else {
-            System.out.println("입력하신 수량이 너무 많습니다.");
-            System.out.println(existingProduct.getInventory() - currentQuantity + "개 이하로 담아주세요.");
+        while (true) {
+            if (newQuantity <= existingProduct.getInventory()) {
+                shoppingCart.put(productName, newQuantity);
+                System.out.println(existingProduct.getName() + "을(를) " + quantity + "개 장바구니에 담았습니다.");
+                break;
+            } else {
+                System.out.println("입력하신 수량이 재고를 초과하였습니다.");
+                System.out.println(existingProduct.getInventory() - currentQuantity + "개 이하로 담아주세요.");
+                System.out.print("수량: ");
+                quantity = sc.nextInt();
+            }
         }
     }
 
