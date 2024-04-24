@@ -303,7 +303,7 @@ public class CustomerService {
 //    }
 
    // 상품 담기
-
+    @UserMenu("장바구니 담기")
     public void addCart() {
         Scanner scanner = new Scanner(System.in);
         ShoppingCart cart = new ShoppingCart();
