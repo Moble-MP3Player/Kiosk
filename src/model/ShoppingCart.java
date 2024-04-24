@@ -43,7 +43,7 @@ public class ShoppingCart {
         while (true) {
             if (existingProduct == null) {
                 System.out.println("유효하지 않은 상품입니다. 다시 입력해주세요.");
-                System.out.println("상품 이름 : ");
+                System.out.print("상품 이름 : ");
                 productName = sc.next();
                 break;
             }
