@@ -1,17 +1,14 @@
 package menu;
 
 import backend.annotations.ManagerMenu;
-import backend.db.DB;
 import backend.db.DBs;
 import model.Product;
 import model.Receipt;
 
 import java.time.DateTimeException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Locale;
 import java.util.Scanner;
 
 /**
@@ -43,8 +40,10 @@ public class ManagementService {
                    date = sc.next();
                    try {
                        LocalDate realDate= LocalDate.parse(date,formatter);
-                       p.setExpiryDate(realDate.toString());
+                       p.setDate(realDate.toString());
                        p.setInventory(10);
+                       LocalDate expiryDate=realDate.plusDays(10);
+                       p.setExpiryDate(expiryDate.toString());
                        System.out.println(p.getName()+p.getEmoji()+"의 발주가 완료되었습니다. |");
                    }catch(DateTimeException e){
                        System.out.println("| 날짜를 잘못 입력하셨습니다. |");
