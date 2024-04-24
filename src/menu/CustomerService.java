@@ -74,7 +74,12 @@ public class CustomerService {
         for(String productName : shoppingCart.getShoppingCart().keySet()){ //상품들의 총 가격의 합을 계산하는 반복문
             totalPrice += DBs.getPriceByName(productName) * shoppingCart.getShoppingCart().get(productName);
         }
-
+        
+        if(shoppingCart.getShoppingCart().size() == 0){ //장바구니에 상품을 담지 않고 결제를 실행할 때
+            System.out.println("장바구니에 담긴 상품이 없습니다.");
+            return;
+        }
+        
         // 먼저 장바구니에 담긴 상품들, 총 결제 금액을 출력
         shoppingCart.printShoppingCart();
 
