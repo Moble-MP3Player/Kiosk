@@ -53,7 +53,6 @@ public class ShoppingCart {
         while (true) {
             if (newQuantity <= existingProduct.getInventory()) {
                 shoppingCart.put(productName, newQuantity);
-                System.out.println(existingProduct.getName() + "을(를) " + quantity + "개 장바구니에 담았습니다.");
                 break;
             } else {
                 System.out.println("입력하신 수량이 재고를 초과하였습니다.");

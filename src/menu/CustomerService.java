@@ -313,16 +313,15 @@ public class CustomerService {
         while (true) {
 
             System.out.print("상품 이름: ");
-            String name = scanner.nextLine();
+            String name = scanner.next();
 
             if (name.equalsIgnoreCase("끝")) {
+                scanner.nextLine();
                 break;
             }
 
-            int quantity;
-
             System.out.print("수량: ");
-            quantity = Integer.parseInt(scanner.nextLine());
+            int quantity = scanner.nextInt();
 
             cart.addProduct(name, quantity);
             System.out.println("상품이 추가되었습니다.\n");
