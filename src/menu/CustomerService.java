@@ -367,7 +367,7 @@ public class CustomerService {
                 break;
             } else break;
         }
-        cart.printShoppingCart();
+        
 
         payment();
     }
