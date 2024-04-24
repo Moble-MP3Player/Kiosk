@@ -49,17 +49,20 @@ public class ShoppingCart {
             }
         }
 
-        // 재고 수량과 비교후 추가
+        // 재고 수량과 비교 후 추가
         while (true) {
             if (newQuantity <= existingProduct.getInventory()) {
                 shoppingCart.put(productName, newQuantity);
                 System.out.println(existingProduct.getName() + "을(를) " + quantity + "개 장바구니에 담았습니다.");
-                break;
+                break; // 재고를 초과하지 않으면 루프를 종료하고 메시지를 출력 후 나감
             } else {
                 System.out.println("입력하신 수량이 재고를 초과하였습니다.");
                 System.out.println(existingProduct.getInventory() - currentQuantity + "개 이하로 담아주세요.");
                 System.out.print("수량: ");
                 quantity = sc.nextInt();
+
+                // 새로운 수량을 기반으로 다시 계산
+                newQuantity = currentQuantity + quantity;
             }
         }
     }
