@@ -1,6 +1,7 @@
 package kiosk;
 
 import backend.db.DBs;
+import backend.util.Strings;
 import menu.CustomerService;
 import menu.ManagementService;
 
@@ -26,19 +27,22 @@ public class Kiosk {
      * 키오스크 실행 함수 화면 출력 및 기능 동작 관리
      */
     public void start() throws InputMismatchException {
-        System.out.println("\uD83D\uDE22 메뉴 디자인이 너무 구립니다.. 추천좀해주세요");
         while (true) {
+
+            System.out.println(Strings.printMiniKiosk());
+
             // 디자인 재능있으신분 도와주세요... 진짜 가독성 개별로에요
-            System.out.println("====== [사용자모드] ======");
-            System.out.println("메뉴를 선택해주세요.");
-            System.out.println("=======================");
+            System.out.println("───────────────── [어서오세요] ─────────────────");
+            System.out.println(">> 메뉴를 선택해주세요.");
+            System.out.println("──────────────────────────────────────────────");
 
             kioskService.showUserMenu();
 
-            System.out.println("=======================");
+            System.out.println("──────────────────────────────────────────────");
             System.out.println("0) 종료");
             System.out.println("-1) 관리자모드");
-            System.out.println("=======================");
+            System.out.println("──────────────────────────────────────────────");
+            System.out.print(">>> ");
             System.out.println();
             System.out.println();
 
@@ -49,22 +53,27 @@ public class Kiosk {
             else {
                 // 관리자 모드
                 while (true) {
-                    System.out.println("===== [관리자 모드] ======");
-                    System.out.println("메뉴를 선택해주세요.");
-                    System.out.println("=======================");
+                    System.out.println("───────────────── [관리자모드] ─────────────────");
+                    System.out.println(">> 메뉴를 선택해주세요.");
+                    System.out.println("──────────────────────────────────────────────");
 
                     kioskService.showManageMenu();
 
-                    System.out.println("=======================");
+                    System.out.println("──────────────────────────────────────────────");
                     System.out.println("0) 관리자 모드 종료");
-                    System.out.println("=======================");
-
+                    System.out.println("──────────────────────────────────────────────");
+                    System.out.print(">>> ");
                     input = nextInt();
                     if (input == 0) break; // 0이면 종료
 
                     kioskService.chooseAndExecuteManagerMenu(input);
 
                 }
+            }
+            try {
+                Strings.delayAndPrint(3,"초 후 메뉴로 돌아갑니다.",System.out::println);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
             }
         }
     }
