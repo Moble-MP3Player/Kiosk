@@ -85,7 +85,7 @@
     <td><img src="https://github.com/Moble-MP3Player/Kiosk/assets/54611807/4900fd6c-412c-48ca-8d97-31505cfb816a" alt="장바구니 상품 교환" width=800 ></td>
     <td><img src="https://github.com/Moble-MP3Player/Kiosk/assets/54611807/c13bfeb5-4955-4c70-ad43-4c08d8f7cb31" alt="상품 교환하기" width=800 ></td>
     <td><img src="https://github.com/Moble-MP3Player/Kiosk/assets/54611807/ececd0b5-a7bf-4b6f-a2ad-fb7d5aadbb7e" alt="상품 반품하기" width=800 ></td>
-    <td><img src="https://github.com/Moble-MP3Player/Kiosk/assets/54611807/bbc18cdb-4e08-4391-9c3d-7ad21bcb790e" alt="상품 결제하기" width=800 ></td>
+    <td><img src="https://github.com/Moble-MP3Player/Kiosk/assets/54611807/bbc18cdb-4e08-4391-9c3d-7ad21bcb790e" alt="상품 결제하기" width=500 ></td>
     <td>
       <img src="https://github.com/Moble-MP3Player/Kiosk/assets/54611807/4500628f-8527-4368-ae26-35e9760fb925" alt="관리자 모드 1"  width=500 >
     </td>
