@@ -3,7 +3,7 @@
 <img src="https://github.com/Moble-MP3Player/Kiosk/assets/54611807/241e845a-d09d-482b-b393-d76ad77d69eb" width=500, height=500>
 
 <br>
- 2023. 04.17 ~ 2023. 04.23 <br>
+ 2024. 04.17 ~ 2024. 04.23 <br>
  swing gui를 통한 재고 확인 및 콘솔을 통한 상품 재고 관리 및 결제 기능을 제공합니다.
 
 <br>
@@ -15,7 +15,7 @@
 | 항목 | 내용 |
 | --- | --- |
 | OS | Windows 10 |
-| IDE | intellij community 2023.3.02 |
+| IDE | intellij community 2024.3.02 |
 | Language | Java |
 | java Version | 22 |
 
