@@ -60,6 +60,7 @@
 
 <table>
   <tr>
+    <th> 기능 </th>
     <th>장바구니 담기</th>
     <th>장바구니 상품 교환</th>
     <th>상품 교환하기</th>
@@ -68,6 +69,7 @@
     <th colspan=2>관리자 모드</th>
   </tr>
   <tr>
+    <td> 담당 </td>
     <td>장수진/송민영</td>
     <td>장수진</td>
     <td>송민영</td>
@@ -75,16 +77,20 @@
     <td>황영진</td>
     <td colspan=2>간현진</td>
   </tr>
+
   <tr height="500" width="500">
+     <td> 실행 화면 </td>
     <td><img src="https://github.com/Moble-MP3Player/Kiosk/assets/54611807/ea7be023-1064-461c-96d9-279805b7767b" alt="장바구니 담기" width=500 ></td>
     <td><img src="https://github.com/Moble-MP3Player/Kiosk/assets/54611807/4900fd6c-412c-48ca-8d97-31505cfb816a" alt="장바구니 상품 교환" width=500 ></td>
     <td><img src="https://github.com/Moble-MP3Player/Kiosk/assets/54611807/c13bfeb5-4955-4c70-ad43-4c08d8f7cb31" alt="상품 교환하기" width=500 ></td>
     <td><img src="https://github.com/Moble-MP3Player/Kiosk/assets/54611807/ececd0b5-a7bf-4b6f-a2ad-fb7d5aadbb7e" alt="상품 반품하기" width=500 ></td>
     <td><img src="https://github.com/Moble-MP3Player/Kiosk/assets/54611807/d976809b-7312-4f85-b58b-b339b6b6787b" alt="상품 결제하기" width=500 ></td>
-    <td colspan=2>
+    <td>
       <img src="https://github.com/Moble-MP3Player/Kiosk/assets/54611807/4500628f-8527-4368-ae26-35e9760fb925" alt="관리자 모드 1"  width=500 >
-      <img src="https://github.com/Moble-MP3Player/Kiosk/assets/54611807/3df6c950-3a64-45a8-b029-6e29148a378b" alt="관리자 모드 2"  width=500 >
     </td>
+   <td>
+     <img src="https://github.com/Moble-MP3Player/Kiosk/assets/54611807/3df6c950-3a64-45a8-b029-6e29148a378b" alt="관리자 모드 2"  width=500 >
+   </td>
   </tr>
 </table>
 
