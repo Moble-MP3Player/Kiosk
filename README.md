@@ -15,7 +15,7 @@
 | 항목 | 내용 |
 | --- | --- |
 | OS | Windows 10 |
-| IDE | intellij community 2024.3.02 |
+| IDE | intellij community 2023.3.02 |
 | Language | Java |
 | java Version | 22 |
 
